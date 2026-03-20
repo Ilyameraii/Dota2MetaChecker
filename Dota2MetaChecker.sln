@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dota2MetaChecker.TelegramBot", "Dota2MetaChecker.TelegramBot\Dota2MetaChecker.TelegramBot.csproj", "{98409754-7C5A-44FE-A212-E440CF7EEC31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{FECE2932-C0D0-4B2C-8B9F-C55597453001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Contracts", "Services.Contracts\Services.Contracts.csproj", "{C512916A-FF4E-436D-95B3-7CFCF721151A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{AD7E73CD-4506-4748-83EC-BF68569514E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dota2Models", "..\StratzApi\Dota2Models\Dota2Models.csproj", "{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98409754-7C5A-44FE-A212-E440CF7EEC31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98409754-7C5A-44FE-A212-E440CF7EEC31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98409754-7C5A-44FE-A212-E440CF7EEC31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98409754-7C5A-44FE-A212-E440CF7EEC31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FECE2932-C0D0-4B2C-8B9F-C55597453001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FECE2932-C0D0-4B2C-8B9F-C55597453001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FECE2932-C0D0-4B2C-8B9F-C55597453001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FECE2932-C0D0-4B2C-8B9F-C55597453001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C512916A-FF4E-436D-95B3-7CFCF721151A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C512916A-FF4E-436D-95B3-7CFCF721151A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C512916A-FF4E-436D-95B3-7CFCF721151A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C512916A-FF4E-436D-95B3-7CFCF721151A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD7E73CD-4506-4748-83EC-BF68569514E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD7E73CD-4506-4748-83EC-BF68569514E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD7E73CD-4506-4748-83EC-BF68569514E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD7E73CD-4506-4748-83EC-BF68569514E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
