@@ -10,8 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entiti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dota2Models", "..\StratzApi\Dota2Models\Dota2Models.csproj", "{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dota2Models", "Dota2Models\Dota2Models.csproj", "{A690B8B2-E9DF-48AE-B87D-D0E8B909D0B6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,9 +36,5 @@ Global
 		{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A690B8B2-E9DF-48AE-B87D-D0E8B909D0B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A690B8B2-E9DF-48AE-B87D-D0E8B909D0B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A690B8B2-E9DF-48AE-B87D-D0E8B909D0B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A690B8B2-E9DF-48AE-B87D-D0E8B909D0B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

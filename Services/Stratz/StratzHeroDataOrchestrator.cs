@@ -3,16 +3,17 @@ using Services.Contracts.Stratz;
 
 namespace Services.Stratz;
 
-public class StratzHeroDataOrchestrator(StratzApiService api, StratzHeroParser heroParser):IStratzHeroDataOrchestrator
+public class StratzHeroDataOrchestrator(IStratzApiService api, IStratzHeroParser heroParser)
+    : IStratzHeroDataOrchestrator
 {
     public async Task<List<Hero>> GetHeroesAsync()
     {
         // Порядок гарантирован — имена всегда первые
         var namesJson = await api.GetHeroesNames();
-        var names     = heroParser.ParseHeroesNames(namesJson);
+        var names = heroParser.ParseHeroesNames(namesJson);
 
         var statsJson = await api.GetHeroesStats();
-        var heroes    = heroParser.ParseHeroStats(statsJson, names);
+        var heroes = heroParser.ParseHeroStats(statsJson, names);
 
         return heroes;
     }
