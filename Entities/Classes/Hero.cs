@@ -1,6 +1,6 @@
 namespace Entities.Classes;
 
-public class HeroSummary
+public class Hero
 {
     public int HeroId { get; set; }
     public string? Name { get; set; }

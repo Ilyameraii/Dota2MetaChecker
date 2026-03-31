@@ -26,7 +26,7 @@ var heroStatisticsService = new HeroStatisticsService(
     new StratzApiService(token),
     new StratzHeroParser()
 );
-
+var heroInfoFormatter = new HeroInfoFormatter();
 if (heroStatisticsService.TimeOfLastUpdate < DateTime.UtcNow - TimeSpan.FromHours(1))
     await heroStatisticsService.UpdateDataAsync();
 
@@ -34,7 +34,7 @@ if (heroStatisticsService.HeroStats != null)
 {
     var result = heroStatisticsService.HeroStats
         .GroupBy(h => h.HeroId)
-        .Select(h => new HeroSummary
+        .Select(h => new Hero
         {
             HeroId = h.Key,
             Name = heroStatisticsService.HeroesNames?[h.Key],
@@ -47,7 +47,6 @@ if (heroStatisticsService.HeroStats != null)
     var totalMatches = result.Sum(h => h.MatchCount);
     foreach (var hero in result)
     {
-        Console.WriteLine(
-            $"{hero.Name} - {100.0 * hero.WinCount / hero.MatchCount:F2}% winrate, {100.0 * hero.MatchCount / totalMatches:F2}% pickrate");
+        Console.WriteLine(heroInfoFormatter.Format(hero,totalMatches));
     }
 }
