@@ -6,7 +6,7 @@ namespace Services.Contracts.Stratz;
 
 public interface IStratzHeroParser
 {
-    public List<Hero> ParseHeroStats(string json, Dictionary<int, string> names);
+    public List<HeroStat> ParseHeroStats(string json);
 
     public Dictionary<int, string> ParseHeroesNames(string json);
 }

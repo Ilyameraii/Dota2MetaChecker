@@ -1,5 +1,4 @@
 using System.Text.Json.Nodes;
-using Dota2Models.Stratz;
 using Entities.Classes;
 using Entities.Enums;
 using Services.Contracts.Stratz;
@@ -26,7 +25,7 @@ public class StratzHeroParser : IStratzHeroParser
         ["POSITION_5"] = HeroRole.HardSupport,
     };
 
-    public List<Hero> ParseHeroStats(string json, Dictionary<int, string> names)
+    public List<HeroStat> ParseHeroStats(string json)
     {
         var root = JsonNode.Parse(json)
                    ?? throw new InvalidOperationException("Invalid JSON");
@@ -34,7 +33,7 @@ public class StratzHeroParser : IStratzHeroParser
         var statsArray = root["data"]?["heroStats"]?["stats"]?.AsArray()
                          ?? throw new InvalidOperationException("Path data.heroStats.stats not found");
 
-        var heroes = new List<Hero>();
+        var heroes = new List<HeroStat>();
 
         foreach (var item in statsArray)
         {
@@ -56,10 +55,9 @@ public class StratzHeroParser : IStratzHeroParser
                 throw new InvalidOperationException($"Unknown role: {roleStr}");
             }
 
-            heroes.Add(new Hero
+            heroes.Add(new HeroStat
             {
                 HeroId = heroId,
-                Name = names[heroId],
                 Rank = rank,
                 Role = role,
                 WinCount = winCount,
