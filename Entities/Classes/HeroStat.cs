@@ -3,6 +3,9 @@ using Entities.Enums;
 
 namespace Entities.Classes;
 
+/// <summary>
+/// Модель для парсинга данных с STRATZ Api
+/// </summary>
 public class HeroStat
 {
     // Уникальный ID героя из API (обычно int)
@@ -17,8 +20,7 @@ public class HeroStat
     public HeroRole Role { get; set; }
 
     // Статистика
-    public int WinCount { get; set; }   // Например, 52.4 (проценты)
-    public int MatchCount { get; set; }  // Например, 15.2 (проценты)
+    public int WinCount { get; set; }  
+    public int MatchCount { get; set; } 
     
-    public DateTime TimeOfLastUpdate { get; set; }
 }

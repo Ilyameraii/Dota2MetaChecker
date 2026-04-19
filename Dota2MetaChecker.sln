@@ -10,6 +10,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entiti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dota2Models", "..\StratzApi\Dota2Models\Dota2Models.csproj", "{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{C5F16C80-9F9B-4E90-B36A-250D7476AAB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository.Contracts", "Repository.Contracts\Repository.Contracts.csproj", "{A24FACFB-1D11-475C-B8C6-379D9BA405A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Context", "Context\Context.csproj", "{823CE536-B4F8-4646-8922-47F10289CA7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +42,17 @@ Global
 		{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{898509E5-FCAE-4EC6-A4B6-89DB6BF96E08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5F16C80-9F9B-4E90-B36A-250D7476AAB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5F16C80-9F9B-4E90-B36A-250D7476AAB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5F16C80-9F9B-4E90-B36A-250D7476AAB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5F16C80-9F9B-4E90-B36A-250D7476AAB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A24FACFB-1D11-475C-B8C6-379D9BA405A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A24FACFB-1D11-475C-B8C6-379D9BA405A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A24FACFB-1D11-475C-B8C6-379D9BA405A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A24FACFB-1D11-475C-B8C6-379D9BA405A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{823CE536-B4F8-4646-8922-47F10289CA7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{823CE536-B4F8-4646-8922-47F10289CA7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{823CE536-B4F8-4646-8922-47F10289CA7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{823CE536-B4F8-4646-8922-47F10289CA7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

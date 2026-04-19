@@ -8,11 +8,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Context\Context.csproj" />
+      <ProjectReference Include="..\Repository\Repository.csproj" />
       <ProjectReference Include="..\Services.Contracts\Services.Contracts.csproj" />
       <ProjectReference Include="..\Services\Services.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.6">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="11.0.0-preview.2.26159.112" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="11.0.0-preview.2.26159.112" />
     </ItemGroup>

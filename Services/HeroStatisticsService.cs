@@ -1,11 +1,12 @@
 using Entities.Classes;
+using Repository.Contracts;
 using Services.Contracts.Stratz;
 
 namespace Services;
 
-public class HeroStatisticsService(IStratzApiService stratzApiService, IStratzHeroParser stratzHeroParser)
+public class HeroStatisticsService(IStratzApiService stratzApiService, IStratzHeroParser stratzHeroParser, IMetaStorage metaStorage)
 {
-    public DateTime TimeOfLastUpdate { get; private set; }
+    public DateTime UpdateTime { get; private set; }
     public List<HeroStat>? HeroStats { get; private set; }
     public Dictionary<int, string>? HeroesNames { get; private set; }
  
@@ -13,17 +14,11 @@ public class HeroStatisticsService(IStratzApiService stratzApiService, IStratzHe
     {
         HeroStats = stratzHeroParser.ParseHeroStats(await stratzApiService.GetHeroesStats());
         HeroesNames = stratzHeroParser.ParseHeroesNames(await stratzApiService.GetHeroesNames()); 
-        
-        TimeOfLastUpdate = DateTime.UtcNow;
-        
-        foreach (var heroStat in HeroStats)
-        {
-            heroStat.TimeOfLastUpdate = TimeOfLastUpdate;
-        }
+        UpdateTime = DateTime.UtcNow;
     }
 
     public async Task SaveDataAsync()
     {
-        
+        await metaStorage.SaveDataAsync(HeroStats, UpdateTime);
     }
 }

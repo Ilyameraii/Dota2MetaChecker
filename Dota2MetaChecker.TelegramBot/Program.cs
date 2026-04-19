@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Context.Data;
 using Entities.Classes;
+using Entities.Enums;
 using Services.Stratz;
 using Microsoft.Extensions.Configuration;
+using Repository;
 using Services;
 
 string? token;
@@ -24,16 +27,20 @@ catch (Exception ex)
 
 var heroStatisticsService = new HeroStatisticsService(
     new StratzApiService(token),
-    new StratzHeroParser()
+    new StratzHeroParser(),
+    new DatabaseStorage(new DatabaseContext())
 );
 var heroInfoFormatter = new HeroInfoFormatter();
-if (heroStatisticsService.TimeOfLastUpdate < DateTime.UtcNow - TimeSpan.FromHours(1))
+if (heroStatisticsService.UpdateTime < DateTime.UtcNow - TimeSpan.FromHours(1))
+{
     await heroStatisticsService.UpdateDataAsync();
-
+    await heroStatisticsService.SaveDataAsync();
+}
 if (heroStatisticsService.HeroStats != null)
 {
     var result = heroStatisticsService.HeroStats
-        .GroupBy(h => h.HeroId)
+        .Where(s=>s.Rank==HeroRank.DivineImmortal)
+        .GroupBy(s => s.HeroId)
         .Select(h => new Hero
         {
             HeroId = h.Key,
