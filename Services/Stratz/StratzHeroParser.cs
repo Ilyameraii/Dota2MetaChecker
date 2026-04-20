@@ -7,22 +7,22 @@ namespace Services.Stratz;
 
 public class StratzHeroParser : IStratzHeroParser
 {
-    private static readonly Dictionary<string, HeroRank> RankMap = new()
+    private static readonly Dictionary<string, Rank> RankMap = new()
     {
-        ["UNCALIBRATED"] = HeroRank.Uncalibrated,
-        ["HERALD_GUARDIAN"] = HeroRank.HeraldGuardian,
-        ["CRUSADER_ARCHON"] = HeroRank.CrusaderArchon,
-        ["LEGEND_ANCIENT"] = HeroRank.LegendAncient,
-        ["DIVINE_IMMORTAL"] = HeroRank.DivineImmortal,
+        ["UNCALIBRATED"] = Rank.Uncalibrated,
+        ["HERALD_GUARDIAN"] = Rank.HeraldGuardian,
+        ["CRUSADER_ARCHON"] = Rank.CrusaderArchon,
+        ["LEGEND_ANCIENT"] = Rank.LegendAncient,
+        ["DIVINE_IMMORTAL"] = Rank.DivineImmortal,
     };
 
-    private static readonly Dictionary<string, HeroRole> RoleMap = new()
+    private static readonly Dictionary<string, Role> RoleMap = new()
     {
-        ["POSITION_1"] = HeroRole.Safelane,
-        ["POSITION_2"] = HeroRole.Midlane,
-        ["POSITION_3"] = HeroRole.Offlane,
-        ["POSITION_4"] = HeroRole.Support,
-        ["POSITION_5"] = HeroRole.HardSupport,
+        ["POSITION_1"] = Role.Safelane,
+        ["POSITION_2"] = Role.Midlane,
+        ["POSITION_3"] = Role.Offlane,
+        ["POSITION_4"] = Role.Support,
+        ["POSITION_5"] = Role.HardSupport,
     };
 
     public List<HeroStat> ParseHeroStats(string json)

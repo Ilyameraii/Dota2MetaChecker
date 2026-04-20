@@ -6,31 +6,47 @@ using HeroStat = Entities.Classes.HeroStat;
 
 namespace Repository;
 
+/// <summary>
+/// Класс для работы с базой данных
+/// </summary>
+/// <param name="context">Контекст базы данных</param>
 public class DatabaseStorage(DatabaseContext context) : IMetaStorage
 {
-    public async Task SaveDataAsync(IReadOnlyList<HeroStat> heroesData, DateTime dateTime)
+    /// <summary>
+    /// Сохранение статистики в БД
+    /// </summary>
+    /// <param name="heroStats">Статистика героев</param>
+    /// <param name="dateTime">Время получения статистики</param>
+    public async Task SaveDataAsync(IReadOnlyList<HeroStat> heroStats, DateTime dateTime)
     {
         var metaUpdate = new MetaUpdate
         {
             DateTime = dateTime,
         };
         
-        foreach (var hero in heroesData)
+        foreach (var hero in heroStats)
         {
             hero.MetaUpdate = metaUpdate;
         }
         
         await context.MetaUpdates.AddAsync(metaUpdate);
-        await context.HeroesStats.AddRangeAsync(heroesData);
+        await context.HeroesStats.AddRangeAsync(heroStats);
         await context.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Получение статистики персонажей по идентификатору обновления
+    /// </summary>
+    /// <param name="metaUpdateId">Идентификатор обновления</param>
     public async Task<IReadOnlyList<HeroStat>> GetHeroStatsByMetaUpdateIdAsync(int metaUpdateId)
     {
         return await context.HeroesStats.AsNoTracking().Where(h => h.MetaUpdateId == metaUpdateId).ToListAsync();
     }
 
-    public async Task<(IReadOnlyList<HeroStat> heroesStats, DateTime? dateTime)> GetLastMetaUpdateAsync()
+    /// <summary>
+    /// Получение последнего обновления статистики
+    /// </summary>
+    public async Task<(IReadOnlyList<HeroStat> heroStats, DateTime? dateTime)> GetLastMetaUpdateAsync()
     {
         // Находим последнее обновление и сразу загружаем связанные данные
         var lastUpdate = await context.MetaUpdates

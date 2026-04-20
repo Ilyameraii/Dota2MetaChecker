@@ -34,6 +34,6 @@ public class HeroStatisticsService(
         HeroesNames = stratzHeroParser.ParseHeroesNames(await stratzApiService.GetHeroesNames());
         var data = await metaStorage.GetLastMetaUpdateAsync();
         UpdateTime = data.dateTime;
-        HeroesStats = (List<HeroStat>?)data.heroesStats;
+        HeroesStats = (List<HeroStat>?)data.heroStats;
     }
 }
