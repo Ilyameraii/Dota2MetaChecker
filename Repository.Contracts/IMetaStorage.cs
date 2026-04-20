@@ -4,5 +4,9 @@ namespace Repository.Contracts;
 
 public interface IMetaStorage
 {
-    Task SaveDataAsync(List<HeroStat>? heroStats, DateTime dateTime);
+    Task SaveDataAsync(IReadOnlyList<HeroStat> heroStats, DateTime dateTime);
+    
+    Task<IReadOnlyList<HeroStat>> GetHeroStatsByMetaUpdateIdAsync(int metaUpdateId);
+
+    Task<(IReadOnlyList<HeroStat> heroesStats, DateTime? dateTime)> GetLastMetaUpdateAsync();
 }

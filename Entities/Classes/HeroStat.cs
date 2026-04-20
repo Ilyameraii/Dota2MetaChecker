@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Entities.Enums;
 
@@ -8,19 +9,21 @@ namespace Entities.Classes;
 /// </summary>
 public class HeroStat
 {
-    // Уникальный ID героя из API (обычно int)
+    // ⚠️ Для EF Core: первичный ключ (если нужен)
+    [Key]
+    public int Id { get; set; } 
+
+    // Данные из API / для ответа
     public int HeroId { get; set; }
-
-
-    // Конкретный ранг, для которого приведена статистика
-    // Используем обычный Enum, так как у одной записи один ранг
-    public HeroRank Rank { get; set; } 
-
-    // Конкретная роль
+    public HeroRank Rank { get; set; }
     public HeroRole Role { get; set; }
+    public int WinCount { get; set; }
+    public int MatchCount { get; set; }
 
-    // Статистика
-    public int WinCount { get; set; }  
-    public int MatchCount { get; set; } 
+    // ⚠️ Только для БД: внешний ключ и навигация
+    [JsonIgnore] // ← не сериализуется в JSON-ответ
+    public int MetaUpdateId { get; set; }
     
+    [JsonIgnore]
+    public virtual MetaUpdate MetaUpdate { get; set; } = null!;
 }

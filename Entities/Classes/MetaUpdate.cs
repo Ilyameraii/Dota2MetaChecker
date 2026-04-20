@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Entities.Classes;
 
-namespace Context.Models;
-
-public partial class MetaUpdate
+public class MetaUpdate
 {
     public int Id { get; set; }
 

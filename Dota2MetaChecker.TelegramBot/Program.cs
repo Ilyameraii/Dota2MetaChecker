@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Context.Data;
+﻿using Context;
 using Entities.Classes;
 using Entities.Enums;
 using Services.Stratz;
@@ -17,7 +14,7 @@ try
         .AddJsonFile("appsettings.json")
         .Build();
 
-    token = config["StratzApi:Token2"];
+    token = config["StratzApi:Token"];
 }
 catch (Exception ex)
 {
@@ -31,15 +28,12 @@ var heroStatisticsService = new HeroStatisticsService(
     new DatabaseStorage(new DatabaseContext())
 );
 var heroInfoFormatter = new HeroInfoFormatter();
-if (heroStatisticsService.UpdateTime < DateTime.UtcNow - TimeSpan.FromHours(1))
+await heroStatisticsService.UpdateDataAsync();
+await heroStatisticsService.SaveDataAsync();
+if (heroStatisticsService.HeroesStats != null)
 {
-    await heroStatisticsService.UpdateDataAsync();
-    await heroStatisticsService.SaveDataAsync();
-}
-if (heroStatisticsService.HeroStats != null)
-{
-    var result = heroStatisticsService.HeroStats
-        .Where(s=>s.Rank==HeroRank.DivineImmortal)
+    var result = heroStatisticsService.HeroesStats
+        .Where(s => s is { Rank: HeroRank.DivineImmortal, Role: HeroRole.Safelane })
         .GroupBy(s => s.HeroId)
         .Select(h => new Hero
         {
@@ -48,12 +42,12 @@ if (heroStatisticsService.HeroStats != null)
             WinCount = h.Sum(x => x.WinCount),
             MatchCount = h.Sum(x => x.MatchCount)
         })
-        .OrderBy(h => h.Rating)
+        .OrderBy(h => h.HeroId)
         .ToList();
 
     var totalMatches = result.Sum(h => h.MatchCount);
     foreach (var hero in result)
     {
-        Console.WriteLine(heroInfoFormatter.Format(hero,totalMatches));
+        Console.WriteLine(heroInfoFormatter.Format(hero, totalMatches));
     }
 }

@@ -1,5 +1,6 @@
-using Context.Data;
-using Context.Models;
+using Context;
+using Entities.Classes;
+using Microsoft.EntityFrameworkCore;
 using Repository.Contracts;
 using HeroStat = Entities.Classes.HeroStat;
 
@@ -7,24 +8,45 @@ namespace Repository;
 
 public class DatabaseStorage(DatabaseContext context) : IMetaStorage
 {
-
-    public async Task SaveDataAsync(List<HeroStat> heroesData, DateTime dateTime)
+    public async Task SaveDataAsync(IReadOnlyList<HeroStat> heroesData, DateTime dateTime)
     {
         var metaUpdate = new MetaUpdate
         {
             DateTime = dateTime,
         };
-        var heroStats = heroesData.Select(s => new Context.Models.HeroStat()
+        
+        foreach (var hero in heroesData)
         {
-            HeroId = s.HeroId,
-            HeroRank =  s.Rank.ToString(),
-            HeroRole =  s.Role.ToString(),
-            WinCount = s.WinCount,
-            MatchCount = s.MatchCount,
-            MetaUpdate = metaUpdate
-        }).ToList();
-        await context.MetaUpdates.AddAsync(metaUpdate);    
-        await context.HeroStats.AddRangeAsync(heroStats); 
+            hero.MetaUpdate = metaUpdate;
+        }
+        
+        await context.MetaUpdates.AddAsync(metaUpdate);
+        await context.HeroesStats.AddRangeAsync(heroesData);
         await context.SaveChangesAsync();
+    }
+
+    public async Task<IReadOnlyList<HeroStat>> GetHeroStatsByMetaUpdateIdAsync(int metaUpdateId)
+    {
+        return await context.HeroesStats.AsNoTracking().Where(h => h.MetaUpdateId == metaUpdateId).ToListAsync();
+    }
+
+    public async Task<(IReadOnlyList<HeroStat> heroesStats, DateTime? dateTime)> GetLastMetaUpdateAsync()
+    {
+        // Находим последнее обновление и сразу загружаем связанные данные
+        var lastUpdate = await context.MetaUpdates
+            .AsNoTracking()
+            .OrderByDescending(m => m.Id)
+            .Select(m => new
+            {
+                m.Id,
+                m.DateTime,
+                m.HeroStats // навигационное свойство
+            })
+            .FirstOrDefaultAsync();
+
+        if (lastUpdate == null)
+            return (Array.Empty<HeroStat>(), null);
+
+        return (lastUpdate.HeroStats.ToList(), lastUpdate.DateTime);
     }
 }
