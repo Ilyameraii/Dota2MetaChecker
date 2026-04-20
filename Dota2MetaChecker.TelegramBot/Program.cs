@@ -42,7 +42,7 @@ if (heroStatisticsService.HeroesStats != null)
             WinCount = h.Sum(x => x.WinCount),
             MatchCount = h.Sum(x => x.MatchCount)
         })
-        .OrderBy(h => h.HeroId)
+        .OrderBy(h => h.Rating)
         .ToList();
 
     var totalMatches = result.Sum(h => h.MatchCount);
