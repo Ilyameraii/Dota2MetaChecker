@@ -13,4 +13,8 @@
       <ProjectReference Include="..\Services.Contracts\Services.Contracts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Stratz\" />
+    </ItemGroup>
+
 </Project>

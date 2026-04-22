@@ -1,0 +1,11 @@
+using Entities.Classes;
+
+namespace Services.Contracts.Stratz;
+
+public interface IHeroStatsAggregator
+{
+    /// <summary>
+    /// Агрегирует статистику по героям: группирует по HeroId, суммирует победы и матчи
+    /// </summary>
+    IEnumerable<Hero> AggregateByHero(IEnumerable<HeroStat> stats, IReadOnlyDictionary<int, string> heroNames);
+}

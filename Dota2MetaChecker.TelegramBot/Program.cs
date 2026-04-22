@@ -5,6 +5,7 @@ using Services.Stratz;
 using Microsoft.Extensions.Configuration;
 using Repository;
 using Services;
+using Services.Extensions;
 
 var config = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -13,7 +14,7 @@ var config = new ConfigurationBuilder()
 
 var stratzToken = config["StratzApi:Token"];
 
-var heroStatisticsService = new HeroStatisticsService(
+var heroesDataHolder = new HeroesDataHolder(
     new StratzApiService(stratzToken),
     new StratzHeroParser(),
     new DatabaseStorage(new DatabaseContext())
@@ -21,27 +22,27 @@ var heroStatisticsService = new HeroStatisticsService(
 
 var heroInfoFormatter = new HeroInfoFormatter();
 
-await heroStatisticsService.UpdateDataAsync();
-await heroStatisticsService.SaveDataAsync();
+var heroStasProcessor = new HeroStatsProcessor(
+    new HeroStatsFilterService(),
+    new HeroStatsAggregator()
+);
 
-if (heroStatisticsService.HeroesStats != null)
+await heroesDataHolder.UpdateDataAsync();
+await heroesDataHolder.SaveDataAsync();
+
+var selectedRanks = RankFlags.DivineImmortal | RankFlags.LegendAncient;
+var selectedRoles = RoleFlags.Safelane | RoleFlags.Midlane;
+
+var heroes = heroStasProcessor.GetProcessedHeroStats(
+    heroesDataHolder.HeroesStats,
+    heroesDataHolder.HeroesNames,
+    selectedRanks,
+    selectedRoles,
+    h => h.OrderByRating()
+);
+
+var totalMatches = heroes.Sum(h => h.MatchCount);
+foreach (var hero in heroes)
 {
-    var result = heroStatisticsService.HeroesStats
-        .Where(s => s is { Rank: Rank.DivineImmortal, Role: Role.Safelane })
-        .GroupBy(s => s.HeroId)
-        .Select(h => new Hero
-        {
-            Id = h.Key,
-            Name = heroStatisticsService.HeroesNames?[h.Key],
-            WinCount = h.Sum(x => x.WinCount),
-            MatchCount = h.Sum(x => x.MatchCount)
-        })
-        .OrderBy(h => h.Rating)
-        .ToList();
-
-    var totalMatches = result.Sum(h => h.MatchCount);
-    foreach (var hero in result)
-    {
-        Console.WriteLine(heroInfoFormatter.Format(hero, totalMatches));
-    }
+    Console.WriteLine(heroInfoFormatter.Format(hero, totalMatches));
 }

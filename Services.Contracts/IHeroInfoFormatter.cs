@@ -1,6 +1,6 @@
 using Entities.Classes;
 
-namespace Services.Contracts;
+namespace Services.Contracts.Stratz;
 
 public interface IHeroInfoFormatter
 {

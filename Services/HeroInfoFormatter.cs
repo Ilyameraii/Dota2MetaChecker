@@ -1,5 +1,6 @@
 using Entities.Classes;
 using Services.Contracts;
+using Services.Contracts.Stratz;
 
 namespace Services;
 
