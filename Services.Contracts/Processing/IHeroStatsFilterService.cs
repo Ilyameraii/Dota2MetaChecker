@@ -1,5 +1,6 @@
 using Entities.Classes;
 using Entities.Enums;
+using Entities.Models;
 
 namespace Services.Contracts.Processing;
 

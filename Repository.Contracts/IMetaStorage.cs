@@ -1,4 +1,5 @@
 using Entities.Classes;
+using Entities.Models;
 
 namespace Repository.Contracts;
 

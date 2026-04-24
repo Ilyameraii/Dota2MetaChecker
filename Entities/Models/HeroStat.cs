@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Entities.Classes;
 using Entities.Enums;
 
-namespace Entities.Classes;
+namespace Entities.Models;
 
 /// <summary>
 /// Модель для парсинга данных с STRATZ API

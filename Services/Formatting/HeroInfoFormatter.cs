@@ -1,4 +1,5 @@
 using Entities.Classes;
+using Entities.Models;
 using Services.Contracts.Formatting;
 
 namespace Services.Formatting;

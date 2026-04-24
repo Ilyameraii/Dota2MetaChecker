@@ -2,7 +2,7 @@ using Context;
 using Entities.Classes;
 using Microsoft.EntityFrameworkCore;
 using Repository.Contracts;
-using HeroStat = Entities.Classes.HeroStat;
+using HeroStat = Entities.Models.HeroStat;
 
 namespace Repository;
 

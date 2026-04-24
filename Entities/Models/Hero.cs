@@ -1,4 +1,4 @@
-namespace Entities.Classes;
+namespace Entities.Models;
 
 /// <summary>
 /// Модель для отображения данных
