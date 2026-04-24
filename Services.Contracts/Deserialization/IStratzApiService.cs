@@ -1,8 +1,4 @@
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
-
-namespace Services.Contracts.Stratz;
+namespace Services.Contracts.Deserialization;
 
 public interface IStratzApiService
 {

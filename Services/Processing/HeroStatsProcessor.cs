@@ -1,28 +1,27 @@
 using Entities.Classes;
-using Entities.Enums;
-using Services.Contracts.Stratz;
+using Services.Contracts.Models;
+using Services.Contracts.Processing;
 
-namespace Services;
+namespace Services.Processing;
 
 public class HeroStatsProcessor(
     IHeroStatsFilterService filterService,
     IHeroStatsAggregator aggregator)
     : IHeroStatsProcessor
 {
-    public List<Hero> GetProcessedHeroStats(IReadOnlyList<HeroStat> sourceStats,
+    public List<Hero> GetProcessedHeroStats(
+        IReadOnlyList<HeroStat> sourceStats,
         IReadOnlyDictionary<int, string> heroNames,
-        RankFlags ranks = RankFlags.None,
-        RoleFlags roles = RoleFlags.None,
-        Func<IEnumerable<Hero>, IOrderedEnumerable<Hero>>? sortBy = null)
+        HeroProcessingOptions query)
     {
         // 1. Фильтрация
-        var filtered = filterService.ApplyFilters(sourceStats, ranks, roles);
+        var filtered = filterService.ApplyFilters(sourceStats, query.Ranks, query.Roles);
         
         // 2. Агрегация
         var aggregated = aggregator.AggregateByHero(filtered, heroNames);
         
         // 3. Сортировка (если передана)
-        var sorted = sortBy != null ? sortBy(aggregated) : aggregated;
+        var sorted = query.SortBy != null ? query.SortBy(aggregated) : aggregated;
         
         return sorted.ToList();
     }

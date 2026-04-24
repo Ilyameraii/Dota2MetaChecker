@@ -1,6 +1,6 @@
 using Entities.Classes;
 
-namespace Services.Contracts.Stratz;
+namespace Services.Contracts.Processing;
 
 public interface IHeroStatsAggregator
 {

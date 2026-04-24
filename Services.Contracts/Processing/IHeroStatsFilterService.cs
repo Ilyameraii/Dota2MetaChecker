@@ -1,7 +1,7 @@
 using Entities.Classes;
 using Entities.Enums;
 
-namespace Services.Contracts.Stratz;
+namespace Services.Contracts.Processing;
 
 public interface IHeroStatsFilterService
 {

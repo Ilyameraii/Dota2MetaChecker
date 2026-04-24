@@ -1,9 +1,9 @@
 using System.Text.Json.Nodes;
 using Entities.Classes;
 using Entities.Enums;
-using Services.Contracts.Stratz;
+using Services.Contracts.Deserialization;
 
-namespace Services.Stratz;
+namespace Services.Deserialization;
 
 public class StratzHeroParser : IStratzHeroParser
 {

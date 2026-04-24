@@ -1,48 +1,60 @@
 ﻿using Context;
-using Entities.Classes;
 using Entities.Enums;
-using Services.Stratz;
 using Microsoft.Extensions.Configuration;
 using Repository;
-using Services;
+using Services.Contracts.Models;
+using Services.Data_sync;
+using Services.Deserialization;
 using Services.Extensions;
+using Services.Formatting;
+using Services.Processing;
 
 var config = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json")
     .Build();
 
-var stratzToken = config["StratzApi:Token"];
+var token = config["StratzApi:Token"];
 
-var heroesDataHolder = new HeroesDataHolder(
-    new StratzApiService(stratzToken),
+var cache = new HeroesDataCache();
+
+var service = new HeroesDataService(
+    new StratzApiService(token),
     new StratzHeroParser(),
-    new DatabaseStorage(new DatabaseContext())
+    new DatabaseStorage(new DatabaseContext()),
+    cache
 );
 
-var heroInfoFormatter = new HeroInfoFormatter();
-
-var heroStasProcessor = new HeroStatsProcessor(
+var processor = new HeroStatsProcessor(
     new HeroStatsFilterService(),
-    new HeroStatsAggregator()
-);
+    new HeroStatsAggregator());
 
-await heroesDataHolder.UpdateDataAsync();
-await heroesDataHolder.SaveDataAsync();
+var formatter = new HeroInfoFormatter();
 
-var selectedRanks = RankFlags.DivineImmortal | RankFlags.LegendAncient;
-var selectedRoles = RoleFlags.Safelane | RoleFlags.Midlane;
-
-var heroes = heroStasProcessor.GetProcessedHeroStats(
-    heroesDataHolder.HeroesStats,
-    heroesDataHolder.HeroesNames,
-    selectedRanks,
-    selectedRoles,
-    h => h.OrderByRating()
-);
-
-var totalMatches = heroes.Sum(h => h.MatchCount);
-foreach (var hero in heroes)
+try
 {
-    Console.WriteLine(heroInfoFormatter.Format(hero, totalMatches));
+    await service.UpdateDataAsync();
+}
+catch(Exception ex)
+{
+    Console.WriteLine(ex.Message);
+}
+
+if (cache.IsLoaded)
+{
+    var heroes = processor.GetProcessedHeroStats(
+        cache.HeroesStats!,
+        cache.HeroesNames!,
+        new HeroProcessingOptions
+        {
+            Ranks = RankFlags.DivineImmortal | RankFlags.LegendAncient,
+            Roles = RoleFlags.Safelane,
+            SortBy = h=>h.OrderByWinRate(true),
+        });
+
+    var totalMatchCount = heroes.Sum(h => h.MatchCount);
+    foreach (var hero in heroes)
+    {
+        Console.WriteLine(formatter.Format(hero,totalMatchCount));
+    }
 }

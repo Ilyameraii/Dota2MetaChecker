@@ -2,9 +2,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Dota2Models.Stratz;
-using Services.Contracts.Stratz;
+using Services.Contracts.Deserialization;
 
-namespace Services.Stratz;
+namespace Services.Deserialization;
 
 public class StratzApiService: IStratzApiService
 {

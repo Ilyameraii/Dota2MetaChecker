@@ -25,6 +25,8 @@ public class Hero
     /// </summary>
     public int MatchCount { get; set; }
     
+    public float WinRate => MatchCount > 0 ? (float)WinCount / MatchCount : 0;
+    
     /// <summary>
     /// Рейтинг персонажа (разница побед и поражений)
     /// </summary>

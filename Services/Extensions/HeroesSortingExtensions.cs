@@ -2,7 +2,7 @@ using Entities.Classes;
 
 namespace Services.Extensions;
 
-public static class HeroStatsSortingExtensions
+public static class HeroesSortingExtensions
 {
     public static IOrderedEnumerable<Hero> OrderByWinRate(this IEnumerable<Hero> source, bool descending = false) =>
         descending 

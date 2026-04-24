@@ -1,8 +1,8 @@
 using Entities.Classes;
 using Entities.Enums;
-using Services.Contracts.Stratz;
+using Services.Contracts.Processing;
 
-namespace Services.Stratz;
+namespace Services.Processing;
 
 public class HeroStatsFilterService: IHeroStatsFilterService
 {
@@ -12,7 +12,7 @@ public class HeroStatsFilterService: IHeroStatsFilterService
         
         if (ranks != RankFlags.None)
         {
-            result = result.Where(h => ranks.HasFlag((RankFlags)h.Rank));
+            result = result.Where(h => ranks.HasFlag((RankFlags)h.Rank ));
         }
         
         // Фильтр по ролям: аналогично

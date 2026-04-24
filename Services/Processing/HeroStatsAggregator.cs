@@ -1,9 +1,8 @@
 using Entities.Classes;
-using Services.Contracts.Stratz;
+using Services.Contracts.Processing;
 
-namespace Services.Stratz;
+namespace Services.Processing;
 
-// Services.Stratz/HeroStatsAggregator.cs
 public class HeroStatsAggregator : IHeroStatsAggregator
 {
     public IEnumerable<Hero> AggregateByHero(IEnumerable<HeroStat> stats, IReadOnlyDictionary<int, string> heroNames)
@@ -15,8 +14,7 @@ public class HeroStatsAggregator : IHeroStatsAggregator
                 Id = g.Key,
                 Name = heroNames.TryGetValue(g.Key, out var name) ? name : $"Hero #{g.Key}",
                 WinCount = g.Sum(x => x.WinCount),
-                MatchCount = g.Sum(x => x.MatchCount)
-                // Можно добавить вычисляемые поля: WinRate = (double)WinCount / MatchCount
+                MatchCount = g.Sum(x => x.MatchCount)   
             });
     }
 }
