@@ -9,17 +9,10 @@ using Services.Extensions;
 using Services.Formatting;
 using Services.Processing;
 
-var config = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json")
-    .Build();
-
-var token = config["StratzApi:Token"];
-
 var cache = new HeroesDataCache();
 
 var service = new HeroesDataService(
-    new StratzApiService(token),
+    new StratzApiService(await GetOrCreateToken()),
     new StratzHeroParser(),
     new DatabaseStorage(new DatabaseContext()),
     cache
@@ -57,4 +50,35 @@ if (cache.IsLoaded)
     {
         Console.WriteLine(formatter.Format(hero,totalMatchCount));
     }
+}
+
+async Task<string> GetOrCreateToken()
+{
+    var configPath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
+    
+    if (!File.Exists(configPath))
+    {
+        Console.WriteLine("Свой токен можно найти на сайте: https://stratz.com/api");
+        Console.Write("Введите токен STRATZ API: ");
+        var inputToken = Console.ReadLine()?.Trim();
+        
+        // raw string literal с интерполяцией в двойные фигурные скобки
+        var json = $$"""
+                     {
+                       "StratzApi": {
+                         "Token": "{{inputToken}}"
+                       }
+                     }
+                     """;
+        
+        await File.WriteAllTextAsync(configPath, json);
+        Console.WriteLine("Токен сохранён в appsettings.json");
+    }
+    
+    var config = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json")
+        .Build();
+        
+    return config["StratzApi:Token"]!;
 }

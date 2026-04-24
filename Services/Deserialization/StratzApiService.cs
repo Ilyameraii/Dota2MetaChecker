@@ -1,8 +1,8 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using Dota2Models.Stratz;
 using Services.Contracts.Deserialization;
+using STRATZ;
 
 namespace Services.Deserialization;
 
