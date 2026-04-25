@@ -5,11 +5,17 @@ using Services.Contracts.Processing;
 
 namespace Services.Processing;
 
+/// <summary>
+/// Сервис для обработки статистики персонажей: фильтрация, агрегация, сортировка
+/// </summary>
 public class HeroStatsProcessor(
     IHeroStatsFilterService filterService,
     IHeroStatsAggregator aggregator)
     : IHeroStatsProcessor
 {
+    /// <summary>
+    /// Выполняет полный пайплайн обработки статистики персонажей
+    /// </summary>
     public List<Hero> GetProcessedHeroStats(
         IReadOnlyList<HeroStat> sourceStats,
         IReadOnlyDictionary<int, string> heroNames,

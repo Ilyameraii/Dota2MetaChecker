@@ -4,14 +4,23 @@ using Services.Contracts.Formatting;
 
 namespace Services.Formatting;
 
+/// <summary>
+/// Форматировщик информации о персонажах для отображения
+/// </summary>
 public class HeroInfoFormatter : IHeroInfoFormatter
 {
+    /// <summary>
+    /// Форматирует информацию о персонаже (имя и винрейт)
+    /// </summary>
     public string Format(Hero hero)
     {
         return
             $"{hero.Name} - {hero.WinRate}% win rate";
     }
     
+    /// <summary>
+    /// Форматирует информацию о персонаже (имя, винрейт и пикрейт)
+    /// </summary>
     public string Format(Hero hero, int totalMatchCount)
     {
         return

@@ -6,6 +6,9 @@ using Services.Contracts.Deserialization;
 
 namespace Services.Deserialization;
 
+/// <summary>
+/// Парсер для преобразования JSON-ответа STRATZ API в модели предметной области
+/// </summary>
 public class StratzHeroParser : IStratzHeroParser
 {
     private static readonly Dictionary<string, Rank> RankMap = new()
@@ -26,6 +29,9 @@ public class StratzHeroParser : IStratzHeroParser
         ["POSITION_5"] = Role.HardSupport,
     };
 
+    /// <summary>
+    /// Парсит JSON со статистикой персонажей и возвращает список HeroStat
+    /// </summary>
     public List<HeroStat> ParseHeroStats(string json)
     {
         var root = JsonNode.Parse(json)
@@ -70,6 +76,9 @@ public class StratzHeroParser : IStratzHeroParser
         return heroes;
     }
 
+    /// <summary>
+    /// Парсит JSON с именами персонажей и возвращает словарь id -> name
+    /// </summary>
     public Dictionary<int, string> ParseHeroesNames(string json)
     {
         var root = JsonNode.Parse(json)

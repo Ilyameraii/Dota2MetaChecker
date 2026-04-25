@@ -40,9 +40,9 @@ if (cache.IsLoaded)
         cache.HeroesNames!,
         new HeroProcessingOptions
         {
-            Ranks = RankFlags.DivineImmortal | RankFlags.LegendAncient,
+            Ranks = RankFlags.DivineImmortal ,
             Roles = RoleFlags.Safelane,
-            SortBy = h=>h.OrderByWinRate(true),
+            SortBy = h=>h.OrderByRating(true),
         });
 
     var totalMatchCount = heroes.Sum(h => h.MatchCount);

@@ -1,8 +1,8 @@
 namespace Entities.Models;
 
 /// <summary>
-/// Модель для отображения данных
-/// </summary>
+    /// Модель для отображения данных персонажа
+    /// </summary>
 public class Hero
 {
     /// <summary>
@@ -24,7 +24,10 @@ public class Hero
     /// Количество матчей на персонаже
     /// </summary>
     public int MatchCount { get; set; }
-    
+
+    /// <summary>
+    /// Винрейт персонажа (отношение побед к матчам)
+    /// </summary>
     public float WinRate => MatchCount > 0 ? (float)WinCount / MatchCount : 0;
     
     /// <summary>

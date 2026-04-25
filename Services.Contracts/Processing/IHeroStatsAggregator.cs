@@ -3,10 +3,13 @@ using Entities.Models;
 
 namespace Services.Contracts.Processing;
 
+/// <summary>
+/// Сервис для агрегации статистики персонажей по идентификатору персонажа
+/// </summary>
 public interface IHeroStatsAggregator
 {
     /// <summary>
-    /// Агрегирует статистику по героям: группирует по HeroId, суммирует победы и матчи
+    /// Агрегирует статистику по героям
     /// </summary>
     IEnumerable<Hero> AggregateByHero(IEnumerable<HeroStat> stats, IReadOnlyDictionary<int, string> heroNames);
 }

@@ -6,11 +6,18 @@ using STRATZ;
 
 namespace Services.Deserialization;
 
+/// <summary>
+/// Сервис для взаимодействия с STRATZ GraphQL API
+/// </summary>
 public class StratzApiService: IStratzApiService
 {
     private const string GraphQlEndpoint = "https://api.stratz.com/graphql";
     private readonly HttpClient httpClient;
 
+    /// <summary>
+    /// Конструктор
+    /// </summary>
+    /// <param name="apiToken">API токен для аутентификации</param>
     public StratzApiService(string? apiToken = null)
     {
         httpClient = new HttpClient();
@@ -23,6 +30,9 @@ public class StratzApiService: IStratzApiService
         }
     }
 
+    /// <summary>
+    /// Формирует GraphQL запрос для получения имён персонажей
+    /// </summary>
     private string QueryOfHeroesNames()
     {
         var dotaQueryQueryBuilder = new DotaQueryQueryBuilder()
@@ -35,6 +45,9 @@ public class StratzApiService: IStratzApiService
         return dotaQueryQueryBuilder.Build();
     }
     
+    /// <summary>
+    /// Формирует GraphQL запрос для получения статистики персонажей
+    /// </summary>
     private string QueryOfHeroesStats()
     {
         var dotaQueryQueryBuilder = new DotaQueryQueryBuilder()

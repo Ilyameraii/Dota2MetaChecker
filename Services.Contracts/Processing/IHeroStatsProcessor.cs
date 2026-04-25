@@ -4,6 +4,9 @@ using Services.Contracts.Models;
 
 namespace Services.Contracts.Processing;
 
+/// <summary>
+/// Процессор для обработки статистики персонажей
+/// </summary>
 public interface IHeroStatsProcessor
 {
     /// <summary>

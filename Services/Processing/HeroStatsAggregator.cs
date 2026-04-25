@@ -4,8 +4,14 @@ using Services.Contracts.Processing;
 
 namespace Services.Processing;
 
+/// <summary>
+/// Сервис для агрегации статистики персонажей по идентификатору персонажа
+/// </summary>
 public class HeroStatsAggregator : IHeroStatsAggregator
 {
+    /// <summary>
+    /// Агрегирует статистику: группирует по HeroId, суммирует победы и матчи
+    /// </summary>
     public IEnumerable<Hero> AggregateByHero(IEnumerable<HeroStat> stats, IReadOnlyDictionary<int, string> heroNames)
     {
         return stats
