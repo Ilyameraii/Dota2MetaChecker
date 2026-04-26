@@ -27,8 +27,8 @@ public class HeroStatsProcessor(
         // 2. Агрегация
         var aggregated = aggregator.AggregateByHero(filtered, heroNames);
         
-        // 3. Сортировка (если передана)
-        var sorted = query.SortBy != null ? query.SortBy(aggregated) : aggregated;
+        // 3. Сортировка
+        var sorted = query.GetSortFunction()(aggregated);
         
         return sorted.ToList();
     }

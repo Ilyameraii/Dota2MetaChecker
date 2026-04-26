@@ -19,15 +19,42 @@ public class HeroStatsFilterService: IHeroStatsFilterService
         
         if (ranks != RankFlags.None)
         {
-            result = result.Where(h => ranks.HasFlag((RankFlags)h.Rank ));
+            result = result.Where(h => HasRankFlag(h.Rank, ranks));
         }
         
-        // Фильтр по ролям: аналогично
         if (roles != RoleFlags.None)
         {
-            result = result.Where(h => roles.HasFlag((RoleFlags)h.Role));
+            result = result.Where(h => HasRoleFlag(h.Role, roles));
         }
 
         return result;
+    }
+
+    private static bool HasRankFlag(Rank rank, RankFlags flags)
+    {
+        var rankFlag = rank switch
+        {
+            Rank.Uncalibrated => RankFlags.Uncalibrated,
+            Rank.HeraldGuardian => RankFlags.HeraldGuardian,
+            Rank.CrusaderArchon => RankFlags.CrusaderArchon,
+            Rank.LegendAncient => RankFlags.LegendAncient,
+            Rank.DivineImmortal => RankFlags.DivineImmortal,
+            _ => RankFlags.None
+        };
+        return flags.HasFlag(rankFlag);
+    }
+
+    private static bool HasRoleFlag(Role role, RoleFlags flags)
+    {
+        var roleFlag = role switch
+        {
+            Role.Safelane => RoleFlags.Safelane,
+            Role.Midlane => RoleFlags.Midlane,
+            Role.Offlane => RoleFlags.Offlane,
+            Role.Support => RoleFlags.Support,
+            Role.HardSupport => RoleFlags.HardSupport,
+            _ => RoleFlags.None
+        };
+        return flags.HasFlag(roleFlag);
     }
 }
