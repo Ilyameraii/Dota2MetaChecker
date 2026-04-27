@@ -1,6 +1,5 @@
-using Entities.Enums;
-using Entities.Models;
-using Infrastructure.Extensions;
+using Services.Contracts.Enums;
+using Services.Contracts.Extensions;
 
 namespace Services.Contracts.Models;
 

@@ -1,7 +1,5 @@
-using Entities.Classes;
-using Entities.Enums;
 using Entities.Models;
-using Services.Contracts.Models;
+using Services.Models;
 
 namespace Services.Data_sync;
 
@@ -14,12 +12,12 @@ public class HeroesDataCache
     /// Статистика персонажей
     /// </summary>
     public List<HeroStat>? HeroesStats { get; set; }
-    
+
     /// <summary>
     /// Словарь соответствия идентификаторов и имен персонажей
     /// </summary>
     public Dictionary<int, string>? HeroesNames { get; set; }
-    
+
     /// <summary>
     /// Время последнего обновления
     /// </summary>
@@ -28,7 +26,7 @@ public class HeroesDataCache
     /// <summary>
     /// Настройки пользователей (номер страницы и параметры обработки)
     /// </summary>
-    public Dictionary<long, UserPreferences> UserPreferences { get; set; } = new();
+    public Dictionary<long, UserPreferences> UserPreferences { get; } = new();
 
     /// <summary>
     /// Проверка загрузки данных
@@ -41,18 +39,3 @@ public class HeroesDataCache
     public bool IsStale => !UpdateTime.HasValue || DateTime.UtcNow - UpdateTime.Value > TimeSpan.FromHours(1);
 }
 
-/// <summary>
-/// Настройки пользователя для отображения списка героев
-/// </summary>
-public class UserPreferences
-{
-    /// <summary>
-    /// Номер текущей страницы
-    /// </summary>
-    public int PageNumber { get; set; } = 0;
-
-    /// <summary>
-    /// Параметры обработки (сортировка и фильтрация)
-    /// </summary>
-    public HeroProcessingOptions ProcessingOptions { get; set; } = new();
-}

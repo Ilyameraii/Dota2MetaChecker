@@ -1,9 +1,7 @@
 ﻿using Context;
 using Dota2MetaChecker.TelegramBot;
-using Entities.Enums;
 using Microsoft.Extensions.Configuration;
 using Repository;
-using Services.Contracts.Models;
 using Services.Data_sync;
 using Services.Deserialization;
 using Services.Formatting;
@@ -25,36 +23,6 @@ var heroStatsProcessor = new HeroStatsProcessor(
     new HeroStatsAggregator());
 
 var heroFormatter = new HeroInfoFormatter();
-
-try
-{
-    await heroesDataService.UpdateDataAsync();
-    await heroesDataService.SaveDataAsync();
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Ошибка загрузки данных: {ex.Message}");
-}
-
-if (cache.IsLoaded)
-{
-    var heroes = heroStatsProcessor.GetProcessedHeroStats(
-        cache.HeroesStats!,
-        cache.HeroesNames!,
-        new HeroProcessingOptions
-        {
-            Ranks = RankFlags.DivineImmortal,
-            Roles = RoleFlags.Safelane,
-            SortBy = SortType.Rating,
-            IsDescending = true
-        });
-
-    var totalMatchCount = heroes.Sum(h => h.MatchCount);
-    foreach (var hero in heroes)
-    {
-        Console.WriteLine(heroFormatter.Format(hero, totalMatchCount));
-    }
-}
 
 var bot = new Dota2MetaBot(
     new TelegramBotClient(config.TelegramToken),

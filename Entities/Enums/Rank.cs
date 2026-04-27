@@ -26,7 +26,7 @@ public enum Rank
     LegendAncient,
     
     /// <summary>
-    /// Статистика со званий
+    /// Статистика со званий Божество-Титан
     /// </summary>
     DivineImmortal,
 }

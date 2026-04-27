@@ -1,4 +1,3 @@
-using Entities.Classes;
 using Entities.Models;
 using Repository.Contracts;
 using Services.Contracts.Data_sync;

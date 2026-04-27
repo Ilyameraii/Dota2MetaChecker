@@ -1,5 +1,5 @@
 using Context;
-using Entities.Classes;
+using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Contracts;
 using HeroStat = Entities.Models.HeroStat;

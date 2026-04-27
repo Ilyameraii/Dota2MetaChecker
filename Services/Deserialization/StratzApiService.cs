@@ -83,6 +83,9 @@ public class StratzApiService: IStratzApiService
         return dotaQueryQueryBuilder.Build();
     }
 
+    /// <summary>
+    /// Получает статистику персонажей из STRATZ API
+    /// </summary>
     public async Task<string> GetHeroesStats()
     {
         string query = QueryOfHeroesStats();
@@ -98,6 +101,9 @@ public class StratzApiService: IStratzApiService
         return await response.Content.ReadAsStringAsync();
     }
     
+    /// <summary>
+    /// Получает список имён персонажей из STRATZ API
+    /// </summary>
     public async Task<string> GetHeroesNames()
     {
         string query = QueryOfHeroesNames();

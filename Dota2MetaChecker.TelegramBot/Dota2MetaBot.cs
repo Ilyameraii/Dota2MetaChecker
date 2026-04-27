@@ -1,10 +1,12 @@
 using System.Text;
 using Entities.Enums;
 using Services.Contracts.Data_sync;
+using Services.Contracts.Enums;
 using Services.Contracts.Formatting;
 using Services.Contracts.Models;
 using Services.Contracts.Processing;
 using Services.Data_sync;
+using Services.Models;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;

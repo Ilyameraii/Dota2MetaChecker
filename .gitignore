@@ -6,3 +6,5 @@ riderModule.iml
 .idea/
 .vs/
 appsettings.json
+.opencode/
+opencode.json

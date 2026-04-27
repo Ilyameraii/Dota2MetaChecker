@@ -1,6 +1,4 @@
-﻿using Entities.Models;
-
-namespace Entities.Classes;
+﻿namespace Entities.Models;
 
 /// <summary>
 /// Модель обновления статистики

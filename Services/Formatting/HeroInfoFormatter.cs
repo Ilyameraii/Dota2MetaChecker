@@ -1,6 +1,5 @@
-using Entities.Classes;
-using Entities.Models;
 using Services.Contracts.Formatting;
+using Services.Contracts.Models;
 
 namespace Services.Formatting;
 

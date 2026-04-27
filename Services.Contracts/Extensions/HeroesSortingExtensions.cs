@@ -1,6 +1,6 @@
-using Entities.Models;
+using Services.Contracts.Models;
 
-namespace Infrastructure.Extensions;
+namespace Services.Contracts.Extensions;
 
 /// <summary>
 /// Методы расширения для сортировки коллекции персонажей
