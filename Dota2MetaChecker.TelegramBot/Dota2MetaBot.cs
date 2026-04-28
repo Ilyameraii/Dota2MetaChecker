@@ -93,7 +93,6 @@ public class Dota2MetaBot(
         {
             await botClient.SendMessage(chatId, "Загрузка данных...");
             await heroesDataService.UpdateDataAsync();
-            await heroesDataService.SaveDataAsync();
         }
 
         EnsureUserPreferences(userId);
