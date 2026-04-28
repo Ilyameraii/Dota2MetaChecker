@@ -9,3 +9,5 @@ appsettings.json
 .opencode/
 opencode.json
 publish/
+.opencode/
+opencode.json
