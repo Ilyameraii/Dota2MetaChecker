@@ -24,4 +24,16 @@
       <PackageReference Include="Telegram.Bot" Version="22.9.6.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="publish\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="publish\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="publish\**" />
+    </ItemGroup>
+
 </Project>

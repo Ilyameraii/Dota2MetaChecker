@@ -276,14 +276,14 @@ public class Dota2MetaBot(
                 "role:" + Role.Safelane),
             InlineKeyboardButton.WithCallbackData(
                 GetRoleButtonText(RoleFlags.Midlane, options.Roles),
-                "role:" + Role.Midlane)
+                "role:" + Role.Midlane),
+            InlineKeyboardButton.WithCallbackData(
+            GetRoleButtonText(RoleFlags.Offlane, options.Roles),
+            "role:" + Role.Offlane)
         };
 
         var roleButtonsRow2 = new[]
         {
-            InlineKeyboardButton.WithCallbackData(
-                GetRoleButtonText(RoleFlags.Offlane, options.Roles),
-                "role:" + Role.Offlane),
             InlineKeyboardButton.WithCallbackData(
                 GetRoleButtonText(RoleFlags.Support, options.Roles),
                 "role:" + Role.Support),
@@ -364,10 +364,10 @@ public class Dota2MetaBot(
     {
         var baseText = flag switch
         {
-            RankFlags.HeraldGuardian => "Рекрут + Страж",
-            RankFlags.CrusaderArchon => "Рыцарь + Герой",
-            RankFlags.LegendAncient => "Легенда + Властелин",
-            RankFlags.DivineImmortal => "Божество + Титан",
+            RankFlags.HeraldGuardian => "Рекрут-Страж",
+            RankFlags.CrusaderArchon => "Рыцарь-Герой",
+            RankFlags.LegendAncient => "Легенда-Властелин",
+            RankFlags.DivineImmortal => "Божество-Титан",
             _ => "?"
         };
         return selectedFlags.HasFlag(flag) ? baseText + "✅" : baseText;
