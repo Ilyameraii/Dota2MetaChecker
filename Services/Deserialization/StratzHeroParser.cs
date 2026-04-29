@@ -6,7 +6,7 @@ using Services.Contracts.Deserialization;
 namespace Services.Deserialization;
 
 /// <summary>
-/// Парсер для преобразования JSON-ответа STRATZ API в модели предметной области
+///     Парсер для преобразования JSON-ответа STRATZ API в модели предметной области
 /// </summary>
 public class StratzHeroParser : IStratzHeroParser
 {
@@ -16,7 +16,7 @@ public class StratzHeroParser : IStratzHeroParser
         ["HERALD_GUARDIAN"] = Rank.HeraldGuardian,
         ["CRUSADER_ARCHON"] = Rank.CrusaderArchon,
         ["LEGEND_ANCIENT"] = Rank.LegendAncient,
-        ["DIVINE_IMMORTAL"] = Rank.DivineImmortal,
+        ["DIVINE_IMMORTAL"] = Rank.DivineImmortal
     };
 
     private static readonly Dictionary<string, Role> RoleMap = new()
@@ -25,11 +25,11 @@ public class StratzHeroParser : IStratzHeroParser
         ["POSITION_2"] = Role.Midlane,
         ["POSITION_3"] = Role.Offlane,
         ["POSITION_4"] = Role.Support,
-        ["POSITION_5"] = Role.HardSupport,
+        ["POSITION_5"] = Role.HardSupport
     };
 
     /// <summary>
-    /// Парсит JSON со статистикой персонажей и возвращает список HeroStat
+    ///     Парсит JSON со статистикой персонажей и возвращает список HeroStat
     /// </summary>
     public List<HeroStat> ParseHeroStats(string json)
     {
@@ -52,14 +52,10 @@ public class StratzHeroParser : IStratzHeroParser
             var matchCount = item["matchCount"]!.GetValue<int>();
 
             if (!RankMap.TryGetValue(rankStr, out var rank))
-            {
                 throw new InvalidOperationException($"Unknown rank: {rankStr}");
-            }
 
             if (!RoleMap.TryGetValue(roleStr, out var role))
-            {
                 throw new InvalidOperationException($"Unknown role: {roleStr}");
-            }
 
             heroes.Add(new HeroStat
             {
@@ -67,7 +63,7 @@ public class StratzHeroParser : IStratzHeroParser
                 Rank = rank,
                 Role = role,
                 WinCount = winCount,
-                MatchCount = matchCount,
+                MatchCount = matchCount
                 // Name заполняется отдельно — в JSON его нет
             });
         }
@@ -76,7 +72,7 @@ public class StratzHeroParser : IStratzHeroParser
     }
 
     /// <summary>
-    /// Парсит JSON с именами персонажей и возвращает словарь id -> name
+    ///     Парсит JSON с именами персонажей и возвращает словарь id -> name
     /// </summary>
     public Dictionary<int, string> ParseHeroesNames(string json)
     {

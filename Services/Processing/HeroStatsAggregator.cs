@@ -5,12 +5,12 @@ using Services.Contracts.Processing;
 namespace Services.Processing;
 
 /// <summary>
-/// Сервис для агрегации статистики персонажей по идентификатору персонажа
+///     Сервис для агрегации статистики персонажей по идентификатору персонажа
 /// </summary>
 public class HeroStatsAggregator : IHeroStatsAggregator
 {
     /// <summary>
-    /// Агрегирует статистику: группирует по HeroId, суммирует победы и матчи
+    ///     Агрегирует статистику: группирует по HeroId, суммирует победы и матчи
     /// </summary>
     public IEnumerable<Hero> AggregateByHero(IEnumerable<HeroStat> stats, IReadOnlyDictionary<int, string> heroNames)
     {
@@ -21,7 +21,7 @@ public class HeroStatsAggregator : IHeroStatsAggregator
                 Id = g.Key,
                 Name = heroNames.TryGetValue(g.Key, out var name) ? name : $"Hero #{g.Key}",
                 WinCount = g.Sum(x => x.WinCount),
-                MatchCount = g.Sum(x => x.MatchCount)   
+                MatchCount = g.Sum(x => x.MatchCount)
             });
     }
 }

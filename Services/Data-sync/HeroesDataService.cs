@@ -6,7 +6,7 @@ using Services.Contracts.Deserialization;
 namespace Services.Data_sync;
 
 /// <summary>
-/// Сервис для управления данными персонажей: обновление, сохранение, загрузка
+///     Сервис для управления данными персонажей: обновление, сохранение, загрузка
 /// </summary>
 public class HeroesDataService(
     IStratzApiService stratzApiService,
@@ -15,7 +15,7 @@ public class HeroesDataService(
     HeroesDataCache cache) : IHeroesDataService
 {
     /// <summary>
-    /// Обновляет данные о персонажах из API
+    ///     Обновляет данные о персонажах из API
     /// </summary>
     public async Task UpdateDataAsync()
     {
@@ -27,7 +27,7 @@ public class HeroesDataService(
     }
 
     /// <summary>
-    /// Сохраняет текущие данные в базу данных
+    ///     Сохраняет текущие данные в базу данных
     /// </summary>
     public async Task SaveDataAsync()
     {
@@ -36,7 +36,7 @@ public class HeroesDataService(
     }
 
     /// <summary>
-    /// Загружает последние сохранённые данные из базы данных
+    ///     Загружает последние сохранённые данные из базы данных
     /// </summary>
     public async Task LoadLastDataAsync()
     {

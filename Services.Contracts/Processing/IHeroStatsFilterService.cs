@@ -1,15 +1,15 @@
-using Services.Contracts.Enums;
 using Entities.Models;
+using Services.Contracts.Enums;
 
 namespace Services.Contracts.Processing;
 
 /// <summary>
-/// Сервис для фильтрации статистики персонажей по рангам и ролям
+///     Сервис для фильтрации статистики персонажей по рангам и ролям
 /// </summary>
 public interface IHeroStatsFilterService
 {
     /// <summary>
-    /// Применяет фильтры к списку статистики персонажей
+    ///     Применяет фильтры к списку статистики персонажей
     /// </summary>
     public IEnumerable<HeroStat> ApplyFilters(IReadOnlyList<HeroStat> heroStats, RankFlags ranks = RankFlags.None,
         RoleFlags roles = RoleFlags.None);

@@ -5,7 +5,7 @@ using Services.Contracts.Processing;
 namespace Services.Processing;
 
 /// <summary>
-/// Сервис для обработки статистики персонажей: фильтрация, агрегация, сортировка
+///     Сервис для обработки статистики персонажей: фильтрация, агрегация, сортировка
 /// </summary>
 public class HeroStatsProcessor(
     IHeroStatsFilterService filterService,
@@ -13,7 +13,7 @@ public class HeroStatsProcessor(
     : IHeroStatsProcessor
 {
     /// <summary>
-    /// Выполняет полный пайплайн обработки статистики персонажей
+    ///     Выполняет полный пайплайн обработки статистики персонажей
     /// </summary>
     public List<Hero> GetProcessedHeroStats(
         IReadOnlyList<HeroStat> sourceStats,
@@ -22,13 +22,13 @@ public class HeroStatsProcessor(
     {
         // 1. Фильтрация
         var filtered = filterService.ApplyFilters(sourceStats, query.Ranks, query.Roles);
-        
+
         // 2. Агрегация
         var aggregated = aggregator.AggregateByHero(filtered, heroNames);
-        
+
         // 3. Сортировка
         var sorted = query.GetSortFunction()(aggregated);
-        
+
         return sorted.ToList();
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Repository;
 using Repository.Contracts;
 using Services.Contracts.Data_sync;
@@ -17,6 +18,9 @@ using Services.Processing;
 using Telegram.Bot;
 
 var builder = Host.CreateApplicationBuilder(args);
+
+//  Убираю логирование добавлений данных в БД
+builder.Logging.AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning);
 
 // 1. Настройка базы данных PostgreSQL
 builder.Services.AddDbContext<DatabaseContext>(options =>
@@ -42,7 +46,7 @@ builder.Services.AddSingleton<IHeroInfoFormatter, HeroInfoFormatter>();
 // Регистрация основных процессоров
 builder.Services.AddSingleton<IHeroStatsProcessor, HeroStatsProcessor>();
 builder.Services.AddSingleton<IHeroesDataService, HeroesDataService>();
-builder.Services.AddHostedService<HeroDataUpdateHostedService>();
+builder.Services.AddHostedService<HeroesDataSyncService>();
 
 // Регистрация самого бота
 builder.Services.AddSingleton<Dota2MetaBot>();
