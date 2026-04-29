@@ -11,7 +11,7 @@ namespace Services.Data_sync;
 public class HeroesDataService(
     IStratzApiService stratzApiService,
     IStratzHeroParser stratzHeroParser,
-    IMetaStorage metaStorage,
+    IDatabaseStorage databaseStorage,
     HeroesDataCache cache) : IHeroesDataService
 {
     /// <summary>
@@ -32,7 +32,7 @@ public class HeroesDataService(
     public async Task SaveDataAsync()
     {
         if (cache.UpdateTime != null && cache.HeroesStats != null)
-            await metaStorage.SaveDataAsync(cache.HeroesStats, cache.UpdateTime.Value);
+            await databaseStorage.SaveDataAsync(cache.HeroesStats, cache.UpdateTime.Value);
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ public class HeroesDataService(
     {
         cache.HeroesNames = stratzHeroParser.ParseHeroesNames(
             await stratzApiService.GetHeroesNames());
-        var data = await metaStorage.GetLastMetaUpdateAsync();
+        var data = await databaseStorage.GetLastMetaUpdateAsync();
         cache.UpdateTime = data.dateTime;
         cache.HeroesStats = (List<HeroStat>?)data.heroStats;
     }

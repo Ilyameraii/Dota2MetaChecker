@@ -10,7 +10,7 @@ namespace Repository;
 /// Класс для работы с базой данных
 /// </summary>
 /// <param name="context">Контекст базы данных</param>
-public class DatabaseStorage(DatabaseContext context) : IMetaStorage
+public class DatabaseStorage(DatabaseContext context) : IDatabaseStorage
 {
     /// <summary>
     /// Сохранение статистики в БД

@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Context;
 
 /// <summary>
-/// Контекст базы данных Entity Framework Core для работы с SQL Server
+/// Контекст базы данных Entity Framework Core для работы с Postgre SQL
 /// </summary>
-public class DatabaseContext : DbContext
+public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options)
 {
+    // DbSet-ы и OnModelCreating остаются без изменений
+    
     /// <summary>
     /// Набор данных для обновлений метаданных
     /// </summary>
@@ -29,10 +31,5 @@ public class DatabaseContext : DbContext
             .WithMany(mu => mu.HeroStats)
             .HasForeignKey(hs => hs.MetaUpdateId)
             .OnDelete(DeleteBehavior.Cascade);
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Server=localhost;Database=Dota2MetaChecker;TrustServerCertificate=True;Trusted_Connection=True;");
     }
 }

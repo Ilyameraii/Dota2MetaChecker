@@ -58,7 +58,7 @@ public class Dota2MetaBot(
     {
         Console.WriteLine("Ошибка: {0}", exception.Message);
         return Task.CompletedTask;
-    }
+    } 
 
     private async Task HandleUpdate(ITelegramBotClient bot, Update update, CancellationToken cancellationToken)
     {

@@ -5,7 +5,7 @@ namespace Repository.Contracts;
 /// <summary>
 /// Интерфейс, предоставляющий доступ к БД, храняющей статистику персонажей
 /// </summary>
-public interface IMetaStorage
+public interface IDatabaseStorage
 {
     /// <summary>
     /// Сохранение статистики в БД
