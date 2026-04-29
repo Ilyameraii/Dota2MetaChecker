@@ -8,26 +8,33 @@ using Xunit;
 
 namespace Services.Tests.Data_sync;
 
+/// <summary>
+/// Тесты для HeroDataUpdateHostedService.
+/// </summary>
 public class HeroDataUpdateHostedServiceTests
 {
-    private readonly Mock<IHeroesDataService> _mockDataService;
-    private readonly HeroDataUpdateHostedService _service;
+    private readonly Mock<IHeroesDataService> mockDataService;
+    private readonly HeroDataUpdateHostedService service;
 
+    /// <summary>
+    /// Инициализирует тесты.
+    /// </summary>
     public HeroDataUpdateHostedServiceTests()
     {
-        _mockDataService = new Mock<IHeroesDataService>();
-        _service = new HeroDataUpdateHostedService(_mockDataService.Object);
+        mockDataService = new Mock<IHeroesDataService>();
+        service = new HeroDataUpdateHostedService(mockDataService.Object);
     }
 
+    /// <summary>
+    /// Проверяет, что при сбое метод повторяет попытки 3 раза.
+    /// </summary>
     [Fact]
     public async Task RetryLogic_ShouldRetryThreeTimes_OnFailure()
     {
-        _mockDataService.Setup(s => s.UpdateDataAsync()).ThrowsAsync(new Exception("Test error"));
-        _mockDataService.Setup(s => s.SaveDataAsync()).ThrowsAsync(new Exception("Test error"));
+        mockDataService.Setup(s => s.UpdateDataAsync()).ThrowsAsync(new Exception("Test error"));
 
-        await _service.ExecuteUpdateWithRetryAsync(CancellationToken.None);
+        await service.ExecuteUpdateWithRetryAsync(CancellationToken.None);
 
-        _mockDataService.Verify(s => s.UpdateDataAsync(), Times.Exactly(3));
-
+        mockDataService.Verify(s => s.UpdateDataAsync(), Times.Exactly(3));
     }
 }

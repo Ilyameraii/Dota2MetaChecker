@@ -6,25 +6,35 @@ using System.Threading.Tasks;
 
 namespace Services.Data_sync;
 
+/// <summary>
+/// Фоновый сервис для автоматического обновления данных о героях Dota2 каждый час.
+/// </summary>
 public class HeroDataUpdateHostedService : IHostedService, IDisposable
 {
-    private readonly IHeroesDataService _heroesDataService;
-    private readonly PeriodicTimer _timer;
-    private readonly CancellationTokenSource _cancellationTokenSource;
+    private readonly IHeroesDataService heroesDataService;
+    private readonly PeriodicTimer timer;
+    private readonly CancellationTokenSource cancellationTokenSource;
     private const int RetryCount = 3;
     private static readonly TimeSpan RetryDelay = TimeSpan.FromMinutes(5);
     private static readonly TimeSpan UpdateInterval = TimeSpan.FromHours(1);
 
+    /// <summary>
+    /// Инициализирует новый экземпляр сервиса обновления данных.
+    /// </summary>
+    /// <param name="heroesDataService">Сервис данных о героях.</param>
     public HeroDataUpdateHostedService(IHeroesDataService heroesDataService)
     {
-        _heroesDataService = heroesDataService;
-        _timer = new PeriodicTimer(UpdateInterval);
-        _cancellationTokenSource = new CancellationTokenSource();
+        this.heroesDataService = heroesDataService;
+        timer = new PeriodicTimer(UpdateInterval);
+        cancellationTokenSource = new CancellationTokenSource();
     }
 
+    /// <summary>
+    /// Запускает выполнение фонового сервиса.
+    /// </summary>
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        _ = RunUpdateLoopAsync(_cancellationTokenSource.Token);
+        _ = RunUpdateLoopAsync(cancellationTokenSource.Token);
         return Task.CompletedTask;
     }
 
@@ -32,7 +42,7 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
     {
         try
         {
-            while (await _timer.WaitForNextTickAsync(cancellationToken))
+            while (await timer.WaitForNextTickAsync(cancellationToken))
             {
                 await ExecuteUpdateWithRetryAsync(cancellationToken);
             }
@@ -45,12 +55,12 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
 
     internal async Task ExecuteUpdateWithRetryAsync(CancellationToken cancellationToken)
     {
-        for (int attempt = 1; attempt <= RetryCount; attempt++)
+        for (var attempt = 1; attempt <= RetryCount; attempt++)
         {
             try
             {
-                await _heroesDataService.UpdateDataAsync();
-                await _heroesDataService.SaveDataAsync();
+                await heroesDataService.UpdateDataAsync();
+                await heroesDataService.SaveDataAsync();
                 return;
             }
             catch (Exception ex)
@@ -65,16 +75,22 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
         Console.WriteLine($"All {RetryCount} update attempts failed. Waiting for next scheduled update.");
     }
 
+    /// <summary>
+    /// Останавливает выполнение фонового сервиса.
+    /// </summary>
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-        _cancellationTokenSource.Cancel();
-        _timer.Dispose();
+        cancellationTokenSource.Cancel();
+        timer.Dispose();
         await Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Освобождает ресурсы, используемые сервисом.
+    /// </summary>
     public void Dispose()
     {
-        _cancellationTokenSource?.Dispose();
-        _timer?.Dispose();
+        cancellationTokenSource?.Dispose();
+        timer?.Dispose();
     }
 }
