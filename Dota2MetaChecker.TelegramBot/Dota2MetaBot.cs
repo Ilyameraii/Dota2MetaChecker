@@ -20,7 +20,6 @@ namespace Dota2MetaChecker.TelegramBot;
 /// </summary>
 public class Dota2MetaBot(
     ITelegramBotClient botClient,
-    IHeroesDataService heroesDataService,
     IHeroInfoFormatter heroFormatter,
     IHeroStatsProcessor heroStatsProcessor,
     HeroesDataCache heroesCache)

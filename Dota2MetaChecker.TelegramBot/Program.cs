@@ -30,11 +30,11 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 builder.Services.AddSingleton<HeroesDataCache>();
 
 // Регистрация API клиента через HttpClient 
-builder.Services.AddSingleton<ITelegramBotClient>(sp =>
+builder.Services.AddSingleton<ITelegramBotClient>(_ =>
     new TelegramBotClient(builder.Configuration["Telegram:Token"] ?? throw new Exception("Token not found")));
 
 // Регистрация бизнес-логики
-builder.Services.AddSingleton<IStratzApiService>(sp =>
+builder.Services.AddSingleton<IStratzApiService>(_ =>
     new StratzApiService(builder.Configuration["StratzApi:Token"] ?? string.Empty));
 
 builder.Services.AddSingleton<IStratzHeroParser, StratzHeroParser>();
