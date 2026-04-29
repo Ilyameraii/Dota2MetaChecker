@@ -14,9 +14,9 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
     private readonly IHeroesDataService heroesDataService;
     private readonly PeriodicTimer timer;
     private readonly CancellationTokenSource cancellationTokenSource;
-    private const int RetryCount = 3;
-    private static readonly TimeSpan RetryDelay = TimeSpan.FromMinutes(5);
-    private static readonly TimeSpan UpdateInterval = TimeSpan.FromHours(1);
+    private const int retryCount = 3;
+    private static readonly TimeSpan retryDelay = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan updateInterval = TimeSpan.FromHours(1);
 
     /// <summary>
     /// Инициализирует новый экземпляр сервиса обновления данных.
@@ -25,7 +25,7 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
     public HeroDataUpdateHostedService(IHeroesDataService heroesDataService)
     {
         this.heroesDataService = heroesDataService;
-        timer = new PeriodicTimer(UpdateInterval);
+        timer = new PeriodicTimer(updateInterval);
         cancellationTokenSource = new CancellationTokenSource();
     }
 
@@ -55,7 +55,7 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
 
     internal async Task ExecuteUpdateWithRetryAsync(CancellationToken cancellationToken)
     {
-        for (var attempt = 1; attempt <= RetryCount; attempt++)
+        for (var attempt = 1; attempt <= retryCount; attempt++)
         {
             try
             {
@@ -65,14 +65,14 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Update failed (attempt {attempt}/{RetryCount}): {ex.Message}");
-                if (attempt < RetryCount)
+                Console.WriteLine($"Update failed (attempt {attempt}/{retryCount}): {ex.Message}");
+                if (attempt < retryCount)
                 {
-                    await Task.Delay(RetryDelay, cancellationToken);
+                    await Task.Delay(retryDelay, cancellationToken);
                 }
             }
         }
-        Console.WriteLine($"All {RetryCount} update attempts failed. Waiting for next scheduled update.");
+        Console.WriteLine($"All {retryCount} update attempts failed. Waiting for next scheduled update.");
     }
 
     /// <summary>
