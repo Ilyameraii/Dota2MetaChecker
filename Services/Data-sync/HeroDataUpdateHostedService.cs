@@ -30,9 +30,16 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
 
     private async Task RunUpdateLoopAsync(CancellationToken cancellationToken)
     {
-        while (await _timer.WaitForNextTickAsync(cancellationToken))
+        try
         {
-            await ExecuteUpdateWithRetryAsync(cancellationToken);
+            while (await _timer.WaitForNextTickAsync(cancellationToken))
+            {
+                await ExecuteUpdateWithRetryAsync(cancellationToken);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected when cancellation is requested
         }
     }
 

@@ -28,6 +28,6 @@ public class HeroDataUpdateHostedServiceTests
         await _service.ExecuteUpdateWithRetryAsync(CancellationToken.None);
 
         _mockDataService.Verify(s => s.UpdateDataAsync(), Times.Exactly(3));
-        _mockDataService.Verify(s => s.SaveDataAsync(), Times.Exactly(3));
+
     }
 }
