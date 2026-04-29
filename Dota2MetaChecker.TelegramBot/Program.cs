@@ -49,7 +49,10 @@ builder.Services.AddSingleton<Dota2MetaBot>();
 
 using var host = builder.Build();
 
-// 3. Запуск логики
+// 3. Запуск хоста (стартует все IHostedService, включая HeroDataUpdateHostedService)
+await host.StartAsync();
+
+// 4. Запуск бота
 var bot = host.Services.GetRequiredService<Dota2MetaBot>();
 var cts = new CancellationTokenSource();
 
@@ -68,4 +71,8 @@ try
 catch (OperationCanceledException)
 {
     Console.WriteLine("Бот остановлен.");
+}
+finally
+{
+    await host.StopAsync();
 }
