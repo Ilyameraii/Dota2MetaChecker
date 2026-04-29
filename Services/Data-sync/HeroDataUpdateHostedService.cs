@@ -49,7 +49,10 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
     {
         try
         {
-            // Сразу обновляем данные при запуске
+            // Сначала загружаем последние данные из БД
+            await heroesDataService.LoadLastDataAsync();
+
+            // Затем сразу обновляем данные при запуске
             await ExecuteUpdateWithRetryAsync(cancellationToken);
 
             // Затем запускаем цикл ожидания таймера для последующих обновлений
