@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Services.Contracts.Data_sync;
 using System;
 using System.Threading;
@@ -14,6 +15,8 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
     private readonly IHeroesDataService heroesDataService;
     private readonly PeriodicTimer timer;
     private readonly CancellationTokenSource cancellationTokenSource;
+    private readonly ILogger<HeroDataUpdateHostedService> logger;
+    private Task? backgroundTask;
     private const int retryCount = 3;
     private static readonly TimeSpan retryDelay = TimeSpan.FromMinutes(5);
     private static readonly TimeSpan updateInterval = TimeSpan.FromHours(1);
@@ -22,11 +25,13 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
     /// Инициализирует новый экземпляр сервиса обновления данных.
     /// </summary>
     /// <param name="heroesDataService">Сервис данных о героях.</param>
-    public HeroDataUpdateHostedService(IHeroesDataService heroesDataService)
+    /// <param name="logger">Логгер.</param>
+    public HeroDataUpdateHostedService(IHeroesDataService heroesDataService, ILogger<HeroDataUpdateHostedService> logger)
     {
         this.heroesDataService = heroesDataService;
         timer = new PeriodicTimer(updateInterval);
         cancellationTokenSource = new CancellationTokenSource();
+        this.logger = logger;
     }
 
     /// <summary>
@@ -34,7 +39,7 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
     /// </summary>
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        _ = RunUpdateLoopAsync(cancellationTokenSource.Token);
+        backgroundTask = RunUpdateLoopAsync(cancellationTokenSource.Token);
         return Task.CompletedTask;
     }
 
@@ -51,6 +56,10 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
         {
             // Expected when cancellation is requested
         }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Неожиданная ошибка в цикле обновления");
+        }
     }
 
     internal async Task ExecuteUpdateWithRetryAsync(CancellationToken cancellationToken)
@@ -65,14 +74,14 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Update failed (attempt {attempt}/{retryCount}): {ex.Message}");
+                logger.LogError(ex, "Ошибка обновления (попытка {Attempt}/{RetryCount})", attempt, retryCount);
                 if (attempt < retryCount)
                 {
                     await Task.Delay(retryDelay, cancellationToken);
                 }
             }
         }
-        Console.WriteLine($"All {retryCount} update attempts failed. Waiting for next scheduled update.");
+        logger.LogWarning("Все {RetryCount} попыток обновления не удались. Ожидание следующего обновления.", retryCount);
     }
 
     /// <summary>
@@ -81,8 +90,11 @@ public class HeroDataUpdateHostedService : IHostedService, IDisposable
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         cancellationTokenSource.Cancel();
+        if (backgroundTask != null)
+        {
+            await backgroundTask;
+        }
         timer.Dispose();
-        await Task.CompletedTask;
     }
 
     /// <summary>
