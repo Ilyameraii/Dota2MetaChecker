@@ -33,5 +33,18 @@ public class Hero
     /// <summary>
     ///     Рейтинг персонажа
     /// </summary>
-    public int Rating => WinCount * 2 - MatchCount;
+    public double Rating => CalculateRating(WinCount, MatchCount);
+    
+    // Рассчитывает статистический рейтинг эффективности героя на основе нижней границы интервала Вильсона (Wilson Score Interval).
+    private double CalculateRating(int wins, int totalMatches)
+    {
+        double p = (double)wins / totalMatches;
+        int n = totalMatches;
+        double z = 1.96; // 95% confidence
+
+        // 2. Расчет нижней границы интервала Вильсона
+        double score = (p + (Math.Pow(z, 2) / (2 * n)) - z * Math.Sqrt((p * (1 - p) / n) + (Math.Pow(z, 2) / (4 * Math.Pow(n, 2))))) / (1 + (Math.Pow(z, 2) / n));
+    
+        return score;
+    }
 }

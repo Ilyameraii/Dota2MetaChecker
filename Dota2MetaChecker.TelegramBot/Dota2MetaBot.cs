@@ -80,14 +80,14 @@ public class Dota2MetaBot(
     {
         if (!heroesCache.IsLoaded)
         {
-            await botClient.SendMessage(chatId, "Данные ещё загружаются, попробуйте через минуту.");
+            await botClient.SendMessage(chatId, "Данные ещё загружаются, попробуйте через минуту.",ParseMode.Html);
             return;
         }
 
         EnsureUserPreferences(userId);
 
         var (messageText, keyboard) = BuildHeroesListMessage(userId);
-        await botClient.SendMessage(chatId, messageText, replyMarkup: keyboard);
+        await botClient.SendMessage(chatId, messageText, ParseMode.Html, replyMarkup: keyboard);
     }
 
     private async Task HandleCallbackQueryAsync(CallbackQuery callbackQuery)
@@ -149,6 +149,7 @@ public class Dota2MetaBot(
                 callbackQuery.Message!.Chat.Id,
                 callbackQuery.Message.MessageId,
                 messageText,
+                ParseMode.Html,
                 replyMarkup: keyboard);
         }
         catch
@@ -156,6 +157,7 @@ public class Dota2MetaBot(
             await botClient.SendMessage(
                 callbackQuery.Message!.Chat.Id,
                 messageText,
+                ParseMode.Html,
                 replyMarkup: keyboard);
         }
 
