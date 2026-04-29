@@ -1,5 +1,6 @@
+using Context;
 using Entities.Models;
-using Repository.Contracts;
+using Microsoft.EntityFrameworkCore;
 using Services.Contracts.Data_sync;
 using Services.Contracts.Deserialization;
 
@@ -9,41 +10,95 @@ namespace Services.Data_sync;
 ///     Сервис для управления данными персонажей: обновление, сохранение, загрузка
 /// </summary>
 public class HeroesDataService(
-    IStratzApiService stratzApiService,
-    IStratzHeroParser stratzHeroParser,
-    IDatabaseStorage databaseStorage,
+    IStratzApiService apiService,
+    IStratzHeroParser heroParser,
+    DatabaseContext context,
     HeroesDataCache cache) : IHeroesDataService
 {
     /// <summary>
     ///     Обновляет данные о персонажах из API
     /// </summary>
-    public async Task UpdateDataAsync()
+    public async Task UpdateNewStatsAsync()
     {
-        cache.HeroesStats = stratzHeroParser.ParseHeroStats(
-            await stratzApiService.GetHeroesStats());
-        cache.HeroesNames = stratzHeroParser.ParseHeroesNames(
-            await stratzApiService.GetHeroesNames());
+        cache.NewHeroesStats = heroParser.ParseHeroStats(
+            await apiService.GetHeroesStats());
+        cache.HeroesNames = heroParser.ParseHeroesNames(
+            await apiService.GetHeroesNames());
         cache.UpdateTime = DateTime.UtcNow;
     }
 
     /// <summary>
-    ///     Сохраняет текущие данные в базу данных
+    ///     Сохраняет статистику персонажей в БД
     /// </summary>
-    public async Task SaveDataAsync()
+    public async Task SaveNewStatsAsync()
     {
-        if (cache.UpdateTime != null && cache.HeroesStats != null)
-            await databaseStorage.SaveDataAsync(cache.HeroesStats, cache.UpdateTime.Value);
+        if (cache is { UpdateTime: not null, NewHeroesStats: not null })
+        {
+            var metaUpdate = new MetaUpdate
+            {
+                DateTime = cache.UpdateTime.Value,
+            };
+
+            var heroStats = cache.NewHeroesStats;
+
+            foreach (var hero in heroStats)
+            {
+                hero.MetaUpdate = metaUpdate;
+            }
+
+            await context.MetaUpdates.AddAsync(metaUpdate);
+            await context.HeroesStats.AddRangeAsync(heroStats);
+            await context.SaveChangesAsync();
+        }
     }
 
     /// <summary>
-    ///     Загружает последние сохранённые данные из базы данных
+    ///     Возвращает статистику персонажей по идентификатору обновления
     /// </summary>
-    public async Task LoadLastDataAsync()
+    /// <param name="metaUpdateId">Идентификатор обновления</param>
+    public async Task<IReadOnlyList<HeroStat>> GetHeroStatsByMetaUpdateIdAsync(int metaUpdateId)
     {
-        cache.HeroesNames = stratzHeroParser.ParseHeroesNames(
-            await stratzApiService.GetHeroesNames());
-        var data = await databaseStorage.GetLastMetaUpdateAsync();
-        cache.UpdateTime = data.dateTime;
-        cache.HeroesStats = (List<HeroStat>?)data.heroStats;
+        return await context.HeroesStats
+            .AsNoTracking()
+            .Where(h => h.MetaUpdateId == metaUpdateId)
+            .ToListAsync();
+    }
+
+    /// <summary>
+    ///     Загружает в кэш статистику недельной давности
+    /// </summary>
+    public async Task UpdateOldStatsAsync()
+    {
+        var lastUpdateId = await GetLastUpdateId();
+        var weekOldUpdateId = Math.Max(lastUpdateId - 7 * 24, 1);
+
+        cache.OldHeroesStats = await context.HeroesStats
+            .AsNoTracking()
+            .Where(h => h.MetaUpdateId == weekOldUpdateId)
+            .ToListAsync();
+    }
+
+    /// <summary>
+    ///     Удаляет обновления старше недели из БД
+    /// </summary>
+    public async Task RemoveNeedlessStatsAsync()
+    {
+        var lastUpdateId = await GetLastUpdateId();
+        var oldestNeededUpdateId = lastUpdateId - 7 * 24;
+
+        if (oldestNeededUpdateId > 1)
+        {
+            await context.MetaUpdates
+                .Where(m => m.Id < oldestNeededUpdateId)
+                .ExecuteDeleteAsync();
+        }
+    }
+
+    private async Task<int> GetLastUpdateId()
+    {
+        return await context.MetaUpdates
+            .OrderByDescending(m => m.Id)
+            .Select(m => m.Id)
+            .FirstOrDefaultAsync();
     }
 }

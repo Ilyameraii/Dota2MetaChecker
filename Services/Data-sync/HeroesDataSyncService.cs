@@ -19,9 +19,18 @@ public class HeroesDataSyncService(IHeroesDataService heroesDataService) : Backg
         {
             try
             {
-                await heroesDataService.UpdateDataAsync();
-                await heroesDataService.SaveDataAsync();
+                await heroesDataService.UpdateNewStatsAsync();
+                await heroesDataService.SaveNewStatsAsync();
+                
+                // Сначала читаем старое обновление, потом удаляем из бд как ненужное
+                await heroesDataService.UpdateOldStatsAsync();
+                await heroesDataService.RemoveNeedlessStatsAsync();
+                
                 Console.WriteLine("Данные обновлены: {0}", DateTime.Now);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
             }
             catch (Exception ex)
             {

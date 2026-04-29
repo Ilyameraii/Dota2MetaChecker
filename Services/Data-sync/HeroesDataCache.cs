@@ -9,19 +9,24 @@ namespace Services.Data_sync;
 public class HeroesDataCache
 {
     /// <summary>
-    ///     Статистика персонажей
+    ///     Время последнего обновления
     /// </summary>
-    public List<HeroStat>? HeroesStats { get; set; }
+    public DateTime? UpdateTime { get; set; }
+    
+    /// <summary>
+    ///     Новая статистика персонажей
+    /// </summary>
+    public IReadOnlyList<HeroStat>? NewHeroesStats { get; set; }
+    
+    /// <summary>
+    ///     Старая статистика персонажей
+    /// </summary>
+    public IReadOnlyList<HeroStat>? OldHeroesStats { get; set; }
 
     /// <summary>
     ///     Словарь соответствия идентификаторов и имен персонажей
     /// </summary>
     public Dictionary<int, string>? HeroesNames { get; set; }
-
-    /// <summary>
-    ///     Время последнего обновления
-    /// </summary>
-    public DateTime? UpdateTime { get; set; }
 
     /// <summary>
     ///     Настройки пользователей (номер страницы и параметры обработки)
@@ -31,10 +36,5 @@ public class HeroesDataCache
     /// <summary>
     ///     Проверка загрузки данных
     /// </summary>
-    public bool IsLoaded => HeroesStats != null && HeroesNames != null;
-
-    /// <summary>
-    ///     Проверка, устарели ли данные (больше чем 1 час)
-    /// </summary>
-    public bool IsStale => !UpdateTime.HasValue || DateTime.UtcNow - UpdateTime.Value > TimeSpan.FromHours(1);
+    public bool IsLoaded => NewHeroesStats != null && HeroesNames != null;
 }

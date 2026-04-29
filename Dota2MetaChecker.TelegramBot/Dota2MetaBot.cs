@@ -1,6 +1,4 @@
-using System.Text;
 using Entities.Enums;
-using Services.Contracts.Data_sync;
 using Services.Contracts.Enums;
 using Services.Contracts.Formatting;
 using Services.Contracts.Models;
@@ -88,7 +86,7 @@ public class Dota2MetaBot(
 
         EnsureUserPreferences(userId);
 
-        var messageText = BuildHeroesListMessage(userId, out var keyboard);
+        var (messageText, keyboard) = BuildHeroesListMessage(userId);
         await botClient.SendMessage(chatId, messageText, replyMarkup: keyboard);
     }
 
@@ -144,7 +142,7 @@ public class Dota2MetaBot(
             prefs.PageNumber = 0;
         }
 
-        var messageText = BuildHeroesListMessage(userId, out var keyboard);
+        var (messageText, keyboard) = BuildHeroesListMessage(userId);
         try
         {
             await botClient.EditMessageText(
@@ -198,39 +196,36 @@ public class Dota2MetaBot(
         return true;
     }
 
-    private string BuildHeroesListMessage(long userId, out InlineKeyboardMarkup keyboard)
+    private (string message, InlineKeyboardMarkup keyboard) BuildHeroesListMessage(long userId)
     {
         var prefs = heroesCache.UserPreferences[userId];
-        var options = new HeroProcessingOptions
-        {
-            Ranks = prefs.ProcessingOptions.Ranks,
-            Roles = prefs.ProcessingOptions.Roles,
-            SortBy = prefs.ProcessingOptions.SortBy,
-            IsDescending = prefs.ProcessingOptions.IsDescending
-        };
 
-        var heroes = heroStatsProcessor.GetProcessedHeroStats(
-            heroesCache.HeroesStats!,
+        var newStatsHeroes = heroStatsProcessor.GetProcessedHeroStats(
+            heroesCache.NewHeroesStats!,
             heroesCache.HeroesNames!,
-            options);
+            prefs.ProcessingOptions);
 
-        var totalMatchCount = heroes.Sum(h => h.MatchCount);
-        var totalPages = (heroes.Count - 1) / HeroesPerPage;
+        var oldStatsHeroes = heroStatsProcessor.GetProcessedHeroStats(
+            heroesCache.OldHeroesStats!,
+            heroesCache.HeroesNames!,
+            prefs.ProcessingOptions);
+
+        var newTotalMatchCount = newStatsHeroes.Sum(h => h.MatchCount);
+        var oldTotalMatchCount = oldStatsHeroes.Sum(h => h.MatchCount);
+
+        var totalPages = (newStatsHeroes.Count - 1) / HeroesPerPage;
         var pageIndex = Math.Min(prefs.PageNumber, totalPages);
 
-        var sb = new StringBuilder();
         var start = pageIndex * HeroesPerPage;
-        var end = Math.Min(start + HeroesPerPage, heroes.Count);
+        var end = Math.Min(start + HeroesPerPage, newStatsHeroes.Count);
 
-        for (var i = start; i < end; i++)
-        {
-            sb.AppendLine(i + 1 + ". " + heroFormatter.Format(heroes[i], totalMatchCount));
-            if (i < end - 1)
-                sb.AppendLine();
-        }
+        var lines = Enumerable.Range(start, end - start)
+            .Select(i => $"{i + 1}. {heroFormatter.Format(newStatsHeroes[i], newTotalMatchCount, oldStatsHeroes[i], oldTotalMatchCount)}");
 
-        keyboard = BuildKeyboard(pageIndex, totalPages, prefs);
-        return sb.ToString();
+        var message = string.Join("\n\n", lines);
+        var keyboard = BuildKeyboard(pageIndex, totalPages, prefs);
+
+        return (message, keyboard);
     }
 
     private InlineKeyboardMarkup BuildKeyboard(int pageIndex, int totalPages, UserPreferences prefs)

@@ -5,8 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Repository;
-using Repository.Contracts;
 using Services.Contracts.Data_sync;
 using Services.Contracts.Deserialization;
 using Services.Contracts.Formatting;
@@ -38,7 +36,6 @@ builder.Services.AddSingleton<IStratzApiService>(_ =>
     new StratzApiService(builder.Configuration["StratzApi:Token"] ?? string.Empty));
 
 builder.Services.AddSingleton<IStratzHeroParser, StratzHeroParser>();
-builder.Services.AddSingleton<IDatabaseStorage, DatabaseStorage>();
 builder.Services.AddSingleton<IHeroStatsFilterService, HeroStatsFilterService>();
 builder.Services.AddSingleton<IHeroStatsAggregator, HeroStatsAggregator>();
 builder.Services.AddSingleton<IHeroInfoFormatter, HeroInfoFormatter>();

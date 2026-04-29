@@ -8,12 +8,12 @@ namespace Services.Contracts.Formatting;
 public interface IHeroInfoFormatter
 {
     /// <summary>
-    ///     Форматирует информацию о персонаже (имя и винрейт)
-    /// </summary>
-    string Format(Hero hero);
-
-    /// <summary>
     ///     Форматирует информацию о персонаже (имя, винрейт и пикрейт)
     /// </summary>
     string Format(Hero hero, int totalMatchCount);
+
+    /// <summary>
+    ///     Форматирует информацию о персонаже (имя, винрейт и пикрейт) с показателем динамики изменения
+    /// </summary>
+    public string Format(Hero hero, int totalMatchCount, Hero oldHero, int oldTotalMatchCount);
 }
