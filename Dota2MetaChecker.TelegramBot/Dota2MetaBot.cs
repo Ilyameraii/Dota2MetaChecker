@@ -16,11 +16,10 @@ using Telegram.Bot.Types.ReplyMarkups;
 namespace Dota2MetaChecker.TelegramBot;
 
 /// <summary>
-/// Telegram бот для отображения статистики персонажей
+///     Telegram бот для отображения статистики персонажей
 /// </summary>
 public class Dota2MetaBot(
     ITelegramBotClient botClient,
-    IHeroesDataService heroesDataService,
     IHeroInfoFormatter heroFormatter,
     IHeroStatsProcessor heroStatsProcessor,
     HeroesDataCache heroesCache)
@@ -28,7 +27,7 @@ public class Dota2MetaBot(
     private const int HeroesPerPage = 5;
 
     /// <summary>
-    /// Запускает приём обновлений от Telegram
+    ///     Запускает приём обновлений от Telegram
     /// </summary>
     public async Task StartReceivingAsync(CancellationToken cancellationToken)
     {
@@ -65,13 +64,8 @@ public class Dota2MetaBot(
         try
         {
             if (update.Message is { } message)
-            {
                 await HandleMessageAsync(message);
-            }
-            else if (update.CallbackQuery is { } callbackQuery)
-            {
-                await HandleCallbackQueryAsync(callbackQuery);
-            }
+            else if (update.CallbackQuery is { } callbackQuery) await HandleCallbackQueryAsync(callbackQuery);
         }
         catch (Exception ex)
         {
@@ -81,18 +75,15 @@ public class Dota2MetaBot(
 
     private async Task HandleMessageAsync(Message message)
     {
-        if (message.Text == "/start")
-        {
-            await HandleStartCommandAsync(message.Chat.Id, message.From!.Id);
-        }
+        if (message.Text == "/start") await HandleStartCommandAsync(message.Chat.Id, message.From!.Id);
     }
 
     private async Task HandleStartCommandAsync(long chatId, long userId)
     {
-        if (!heroesCache.IsLoaded || heroesCache.IsStale)
+        if (!heroesCache.IsLoaded)
         {
-            await botClient.SendMessage(chatId, "Загрузка данных...");
-            await heroesDataService.UpdateDataAsync();
+            await botClient.SendMessage(chatId, "Данные ещё загружаются, попробуйте через минуту.");
+            return;
         }
 
         EnsureUserPreferences(userId);
@@ -139,7 +130,7 @@ public class Dota2MetaBot(
         {
             var sortStr = data.Substring(5);
             var newSortType = Enum.Parse<SortType>(sortStr);
-            
+
             if (prefs.ProcessingOptions.SortBy == newSortType)
             {
                 prefs.ProcessingOptions.IsDescending = !prefs.ProcessingOptions.IsDescending;
@@ -173,32 +164,36 @@ public class Dota2MetaBot(
         await botClient.AnswerCallbackQuery(callbackQuery.Id);
     }
 
-    private static RankFlags GetRankFlag(Rank rank) => rank switch
+    private static RankFlags GetRankFlag(Rank rank)
     {
-        Rank.Uncalibrated => RankFlags.Uncalibrated,
-        Rank.HeraldGuardian => RankFlags.HeraldGuardian,
-        Rank.CrusaderArchon => RankFlags.CrusaderArchon,
-        Rank.LegendAncient => RankFlags.LegendAncient,
-        Rank.DivineImmortal => RankFlags.DivineImmortal,
-        _ => RankFlags.None
-    };
+        return rank switch
+        {
+            Rank.Uncalibrated => RankFlags.Uncalibrated,
+            Rank.HeraldGuardian => RankFlags.HeraldGuardian,
+            Rank.CrusaderArchon => RankFlags.CrusaderArchon,
+            Rank.LegendAncient => RankFlags.LegendAncient,
+            Rank.DivineImmortal => RankFlags.DivineImmortal,
+            _ => RankFlags.None
+        };
+    }
 
-    private static RoleFlags GetRoleFlag(Role role) => role switch
+    private static RoleFlags GetRoleFlag(Role role)
     {
-        Role.Safelane => RoleFlags.Safelane,
-        Role.Midlane => RoleFlags.Midlane,
-        Role.Offlane => RoleFlags.Offlane,
-        Role.Support => RoleFlags.Support,
-        Role.HardSupport => RoleFlags.HardSupport,
-        _ => RoleFlags.None
-    };
+        return role switch
+        {
+            Role.Safelane => RoleFlags.Safelane,
+            Role.Midlane => RoleFlags.Midlane,
+            Role.Offlane => RoleFlags.Offlane,
+            Role.Support => RoleFlags.Support,
+            Role.HardSupport => RoleFlags.HardSupport,
+            _ => RoleFlags.None
+        };
+    }
 
     private bool EnsureUserPreferences(long userId)
     {
         if (!heroesCache.UserPreferences.ContainsKey(userId))
-        {
             heroesCache.UserPreferences[userId] = new UserPreferences();
-        }
 
         return true;
     }
@@ -229,7 +224,7 @@ public class Dota2MetaBot(
 
         for (var i = start; i < end; i++)
         {
-            sb.AppendLine(i+1 + ". " + heroFormatter.Format(heroes[i], totalMatchCount));
+            sb.AppendLine(i + 1 + ". " + heroFormatter.Format(heroes[i], totalMatchCount));
             if (i < end - 1)
                 sb.AppendLine();
         }
@@ -315,22 +310,13 @@ public class Dota2MetaBot(
         if (pageIndex > 0 || pageIndex < totalPages)
         {
             var navRow = new List<InlineKeyboardButton>();
-            if (pageIndex > 0)
-            {
-                navRow.Add(navButtons[0]);
-            }
+            if (pageIndex > 0) navRow.Add(navButtons[0]);
 
             navRow.Add(navButtons[1]);
 
-            if (pageIndex < totalPages)
-            {
-                navRow.Add(navButtons[2]);
-            }
+            if (pageIndex < totalPages) navRow.Add(navButtons[2]);
 
-            if (navRow.Count > 0)
-            {
-                rows.Add(navRow);
-            }
+            if (navRow.Count > 0) rows.Add(navRow);
         }
 
         rows.Add(rankButtonsRow1);
@@ -342,7 +328,8 @@ public class Dota2MetaBot(
         return new InlineKeyboardMarkup(rows);
     }
 
-    private static string GetSortButtonText(SortType sortType, SortType currentSort, bool isDescending, string activeArrow, string check)
+    private static string GetSortButtonText(SortType sortType, SortType currentSort, bool isDescending,
+        string activeArrow, string check)
     {
         var baseText = sortType switch
         {
@@ -352,10 +339,7 @@ public class Dota2MetaBot(
             _ => "?"
         };
 
-        if (currentSort == sortType)
-        {
-            return baseText + (isDescending ? "↓" : "↑") + check;
-        }
+        if (currentSort == sortType) return baseText + (isDescending ? "↓" : "↑") + check;
 
         return baseText + " ↓";
     }

@@ -3,25 +3,31 @@ using Services.Contracts.Models;
 namespace Services.Contracts.Extensions;
 
 /// <summary>
-/// Методы расширения для сортировки коллекции персонажей
+///     Методы расширения для сортировки коллекции персонажей
 /// </summary>
 public static class HeroesSortingExtensions
 {
     /// <summary>
-    /// Сортировка по винрейту
+    ///     Сортировка по винрейту
     /// </summary>
-    public static IOrderedEnumerable<Hero> OrderByWinRate(this IEnumerable<Hero> source, bool descending = false) =>
-        descending ? source.OrderByDescending(h => h.WinRate) : source.OrderBy(h => h.WinRate);
-    
-    /// <summary>
-    /// Сортировка по количеству матчей
-    /// </summary>
-    public static IOrderedEnumerable<Hero> OrderByMatchCount(this IEnumerable<Hero> source, bool descending = false) =>
-        descending ? source.OrderByDescending(h => h.MatchCount) : source.OrderBy(h => h.MatchCount);
+    public static IOrderedEnumerable<Hero> OrderByWinRate(this IEnumerable<Hero> source, bool descending = false)
+    {
+        return descending ? source.OrderByDescending(h => h.WinRate) : source.OrderBy(h => h.WinRate);
+    }
 
     /// <summary>
-    /// Сортировка по рейтингу
+    ///     Сортировка по количеству матчей
     /// </summary>
-    public static IOrderedEnumerable<Hero> OrderByRating(this IEnumerable<Hero> source, bool descending = false) =>
-        descending ? source.OrderByDescending(h => h.Rating) : source.OrderBy(h => h.Rating);
+    public static IOrderedEnumerable<Hero> OrderByMatchCount(this IEnumerable<Hero> source, bool descending = false)
+    {
+        return descending ? source.OrderByDescending(h => h.MatchCount) : source.OrderBy(h => h.MatchCount);
+    }
+
+    /// <summary>
+    ///     Сортировка по рейтингу
+    /// </summary>
+    public static IOrderedEnumerable<Hero> OrderByRating(this IEnumerable<Hero> source, bool descending = false)
+    {
+        return descending ? source.OrderByDescending(h => h.Rating) : source.OrderBy(h => h.Rating);
+    }
 }

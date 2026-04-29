@@ -6,16 +6,16 @@ using Services.Contracts.Deserialization;
 namespace Services.Data_sync;
 
 /// <summary>
-/// Сервис для управления данными персонажей: обновление, сохранение, загрузка
+///     Сервис для управления данными персонажей: обновление, сохранение, загрузка
 /// </summary>
 public class HeroesDataService(
     IStratzApiService stratzApiService,
     IStratzHeroParser stratzHeroParser,
-    IMetaStorage metaStorage,
+    IDatabaseStorage databaseStorage,
     HeroesDataCache cache) : IHeroesDataService
 {
     /// <summary>
-    /// Обновляет данные о персонажах из API
+    ///     Обновляет данные о персонажах из API
     /// </summary>
     public async Task UpdateDataAsync()
     {
@@ -27,22 +27,22 @@ public class HeroesDataService(
     }
 
     /// <summary>
-    /// Сохраняет текущие данные в базу данных
+    ///     Сохраняет текущие данные в базу данных
     /// </summary>
     public async Task SaveDataAsync()
     {
         if (cache.UpdateTime != null && cache.HeroesStats != null)
-            await metaStorage.SaveDataAsync(cache.HeroesStats, cache.UpdateTime.Value);
+            await databaseStorage.SaveDataAsync(cache.HeroesStats, cache.UpdateTime.Value);
     }
 
     /// <summary>
-    /// Загружает последние сохранённые данные из базы данных
+    ///     Загружает последние сохранённые данные из базы данных
     /// </summary>
     public async Task LoadLastDataAsync()
     {
         cache.HeroesNames = stratzHeroParser.ParseHeroesNames(
             await stratzApiService.GetHeroesNames());
-        var data = await metaStorage.GetLastMetaUpdateAsync();
+        var data = await databaseStorage.GetLastMetaUpdateAsync();
         cache.UpdateTime = data.dateTime;
         cache.HeroesStats = (List<HeroStat>?)data.heroStats;
     }

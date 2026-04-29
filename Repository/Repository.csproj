@@ -7,8 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Context\Context.csproj" />
-      <ProjectReference Include="..\Repository.Contracts\Repository.Contracts.csproj" />
+        <ProjectReference Include="..\Repository.Contracts\Repository.Contracts.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.7"/>
     </ItemGroup>
 
 </Project>

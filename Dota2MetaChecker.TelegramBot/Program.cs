@@ -1,44 +1,72 @@
 ﻿using Context;
 using Dota2MetaChecker.TelegramBot;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Repository;
+using Repository.Contracts;
+using Services.Contracts.Data_sync;
+using Services.Contracts.Deserialization;
+using Services.Contracts.Formatting;
+using Services.Contracts.Processing;
 using Services.Data_sync;
 using Services.Deserialization;
 using Services.Formatting;
 using Services.Processing;
 using Telegram.Bot;
 
-var config = await LoadConfigAsync();
+var builder = Host.CreateApplicationBuilder(args);
 
-var cache = new HeroesDataCache();
+//  Убираю логирование добавлений данных в БД
+builder.Logging.AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning);
 
-var heroesDataService = new HeroesDataService(
-    new StratzApiService(config.StratzToken),
-    new StratzHeroParser(),
-    new DatabaseStorage(new DatabaseContext()),
-    cache);
+// 1. Настройка базы данных PostgreSQL
+builder.Services.AddDbContext<DatabaseContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-var heroStatsProcessor = new HeroStatsProcessor(
-    new HeroStatsFilterService(),
-    new HeroStatsAggregator());
+// 2. Регистрация сервисов 
+builder.Services.AddSingleton<HeroesDataCache>();
 
-var heroFormatter = new HeroInfoFormatter();
+// Регистрация API клиента через HttpClient 
+builder.Services.AddSingleton<ITelegramBotClient>(_ =>
+    new TelegramBotClient(builder.Configuration["Telegram:Token"] ?? throw new Exception("Token not found")));
 
-var bot = new Dota2MetaBot(
-    new TelegramBotClient(config.TelegramToken),
-    heroesDataService,
-    heroFormatter,
-    heroStatsProcessor,
-    cache);
+// Регистрация бизнес-логики
+builder.Services.AddSingleton<IStratzApiService>(_ =>
+    new StratzApiService(builder.Configuration["StratzApi:Token"] ?? string.Empty));
 
-Console.WriteLine("Telegram бот запущен. Нажните Ctrl+C для выхода.");
+builder.Services.AddSingleton<IStratzHeroParser, StratzHeroParser>();
+builder.Services.AddSingleton<IDatabaseStorage, DatabaseStorage>();
+builder.Services.AddSingleton<IHeroStatsFilterService, HeroStatsFilterService>();
+builder.Services.AddSingleton<IHeroStatsAggregator, HeroStatsAggregator>();
+builder.Services.AddSingleton<IHeroInfoFormatter, HeroInfoFormatter>();
 
+// Регистрация основных процессоров
+builder.Services.AddSingleton<IHeroStatsProcessor, HeroStatsProcessor>();
+builder.Services.AddSingleton<IHeroesDataService, HeroesDataService>();
+builder.Services.AddHostedService<HeroesDataSyncService>();
+
+// Регистрация самого бота
+builder.Services.AddSingleton<Dota2MetaBot>();
+
+using var host = builder.Build();
+
+// 3. Запуск хоста (стартует все IHostedService, включая HeroDataUpdateHostedService)
+await host.StartAsync();
+
+// 4. Запуск бота
+var bot = host.Services.GetRequiredService<Dota2MetaBot>();
 var cts = new CancellationTokenSource();
+
 Console.CancelKeyPress += (_, e) =>
 {
     e.Cancel = true;
     cts.Cancel();
 };
+
+Console.WriteLine("Telegram бот запущен. Нажмите Ctrl+C для выхода.");
 
 try
 {
@@ -48,44 +76,7 @@ catch (OperationCanceledException)
 {
     Console.WriteLine("Бот остановлен.");
 }
-
-async Task<AppConfig> LoadConfigAsync()
+finally
 {
-    var configPath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
-
-    if (!File.Exists(configPath))
-    {
-        Console.WriteLine("Свой STRATZ токен можно найти на сайте: https://stratz.com/api");
-        Console.Write("Введите токен STRATZ API: ");
-        var stratzToken = Console.ReadLine()?.Trim() ?? string.Empty;
-
-        Console.WriteLine("Свой Telegram токен можно найти у @BotFather");
-        Console.Write("Введите токен Telegram бота: ");
-        var telegramToken = Console.ReadLine()?.Trim() ?? string.Empty;
-
-        var json = $$"""
-            {
-              "StratzApi": {
-                "Token": "{{stratzToken}}"
-              },
-              "Telegram": {
-                "Token": "{{telegramToken}}"
-              }
-            }
-            """;
-
-        await File.WriteAllTextAsync(configPath, json);
-        Console.WriteLine("Конфигурация сохранена в appsettings.json");
-    }
-
-    var configBuilder = new ConfigurationBuilder()
-        .SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json")
-        .Build();
-
-    return new AppConfig(
-        configBuilder["StratzApi:Token"] ?? string.Empty,
-        configBuilder["Telegram:Token"] ?? string.Empty);
+    await host.StopAsync();
 }
-
-record AppConfig(string StratzToken, string TelegramToken);
