@@ -80,7 +80,7 @@ public class Dota2MetaBot(
     {
         if (!heroesCache.IsLoaded)
         {
-            await botClient.SendMessage(chatId, "Данные ещё загружаются, попробуйте через минуту.",ParseMode.Html);
+            await botClient.SendMessage(chatId, "Данные ещё загружаются, попробуйте через минуту.", ParseMode.Html);
             return;
         }
 
@@ -222,7 +222,8 @@ public class Dota2MetaBot(
         var end = Math.Min(start + HeroesPerPage, newStatsHeroes.Count);
 
         var lines = Enumerable.Range(start, end - start)
-            .Select(i => $"{i + 1}. {heroFormatter.Format(newStatsHeroes[i], newTotalMatchCount, oldStatsHeroes[i], oldTotalMatchCount)}");
+            .Select(i =>
+                $"{i + 1}. {heroFormatter.Format(newStatsHeroes[i], newTotalMatchCount, oldStatsHeroes[i], oldTotalMatchCount)}");
 
         var message = string.Join("\n\n", lines);
         var keyboard = BuildKeyboard(pageIndex, totalPages, prefs);
@@ -237,70 +238,87 @@ public class Dota2MetaBot(
         var navButtons = new[]
         {
             new InlineKeyboardButton("◀ Назад", "page:prev"),
-            new InlineKeyboardButton(string.Format("{0}/{1}", pageIndex + 1, totalPages + 1), "noop"),
+            new InlineKeyboardButton($"{pageIndex + 1}/{totalPages + 1}", "noop"),
             new InlineKeyboardButton("Вперёд ▶", "page:next")
         };
-
-        var rankButtonsRow1 = new[]
-        {
-            new InlineKeyboardButton(
-                GetRankButtonText(RankFlags.HeraldGuardian, options.Ranks),
-                "rank:" + Rank.HeraldGuardian),
-            new InlineKeyboardButton(
-                GetRankButtonText(RankFlags.CrusaderArchon, options.Ranks),
-                "rank:" + Rank.CrusaderArchon)
-        }.WithStyle(KeyboardButtonStyle.Primary);
-
-        var rankButtonsRow2 = new[]
-        {
-            new InlineKeyboardButton(
-                GetRankButtonText(RankFlags.LegendAncient, options.Ranks),
-                "rank:" + Rank.LegendAncient),
-            new InlineKeyboardButton(
-                GetRankButtonText(RankFlags.DivineImmortal, options.Ranks),
-                "rank:" + Rank.DivineImmortal)
-        }.WithStyle(KeyboardButtonStyle.Primary);
-
-        var roleButtonsRow1 = new[]
-        {
-            new InlineKeyboardButton(
-                GetRoleButtonText(RoleFlags.Safelane, options.Roles),
-                "role:" + Role.Safelane),
-            new InlineKeyboardButton(
-                GetRoleButtonText(RoleFlags.Midlane, options.Roles),
-                "role:" + Role.Midlane),
-            new InlineKeyboardButton(
-            GetRoleButtonText(RoleFlags.Offlane, options.Roles),
-            "role:" + Role.Offlane)
-        }.WithStyle(KeyboardButtonStyle.Success);
-
-        var roleButtonsRow2 = new[]
-        {
-            new InlineKeyboardButton(
-                GetRoleButtonText(RoleFlags.Support, options.Roles),
-                "role:" + Role.Support),
-            new InlineKeyboardButton(
-                GetRoleButtonText(RoleFlags.HardSupport, options.Roles),
-                "role:" + Role.HardSupport)
-        }.WithStyle(KeyboardButtonStyle.Success);
-
-        var sortArrows = new[] { "↓", "↑" };
-        var activeArrow = options.IsDescending ? sortArrows[0] : sortArrows[1];
-        var check = "✅";
 
         var sortButtons = new[]
         {
             new InlineKeyboardButton(
-                GetSortButtonText(SortType.MatchCount, options.SortBy, options.IsDescending, activeArrow, check),
+                GetSortButtonText(SortType.MatchCount, options.SortBy, options.IsDescending),
                 "sort:" + SortType.MatchCount),
             new InlineKeyboardButton(
-                GetSortButtonText(SortType.WinRate, options.SortBy, options.IsDescending, activeArrow, check),
+                GetSortButtonText(SortType.WinRate, options.SortBy, options.IsDescending),
                 "sort:" + SortType.WinRate),
             new InlineKeyboardButton(
-                GetSortButtonText(SortType.Rating, options.SortBy, options.IsDescending, activeArrow, check),
+                GetSortButtonText(SortType.Rating, options.SortBy, options.IsDescending),
                 "sort:" + SortType.Rating)
         }.WithStyle(KeyboardButtonStyle.Danger);
 
+        // Пары "ранг - роль"
+        var pairedRows = new List<IEnumerable<InlineKeyboardButton>>
+        {
+            new[]
+            {
+                new InlineKeyboardButton(
+                    GetRankButtonText(RankFlags.HeraldGuardian, options.Ranks),
+                    "rank:" + Rank.HeraldGuardian),
+                new InlineKeyboardButton(
+                    GetRoleButtonText(RoleFlags.Safelane, options.Roles),
+                    "role:" + Role.Safelane)
+            },
+
+            new[]
+            {
+                new InlineKeyboardButton(
+                    GetRankButtonText(RankFlags.CrusaderArchon, options.Ranks),
+                    "rank:" + Rank.CrusaderArchon),
+                new InlineKeyboardButton(
+                    GetRoleButtonText(RoleFlags.Midlane, options.Roles),
+                    "role:" + Role.Midlane)
+            },
+
+            new[]
+            {
+                new InlineKeyboardButton(
+                    GetRankButtonText(RankFlags.LegendAncient, options.Ranks),
+                    "rank:" + Rank.LegendAncient),
+                new InlineKeyboardButton(
+                    GetRoleButtonText(RoleFlags.Offlane, options.Roles),
+                    "role:" + Role.Offlane)
+            },
+
+            new[]
+            {
+                new InlineKeyboardButton(
+                    GetRankButtonText(RankFlags.DivineImmortal, options.Ranks),
+                    "rank:" + Rank.DivineImmortal),
+                new InlineKeyboardButton(
+                    GetRoleButtonText(RoleFlags.Support, options.Roles),
+                    "role:" + Role.Support)
+            },
+
+            new[]
+            {
+                new InlineKeyboardButton(
+                    GetRankButtonText(RankFlags.Uncalibrated, options.Ranks),
+                    "rank:" + Rank.Uncalibrated),
+                new InlineKeyboardButton(
+                    GetRoleButtonText(RoleFlags.HardSupport, options.Roles),
+                    "role:" + Role.HardSupport)
+            }
+        };
+
+        // Применяем стили
+        pairedRows = pairedRows
+            .Select(row => row.Select(button => button).ToArray()) // фиксируем массив
+            .Select(row =>
+            {
+                row[0].Style = KeyboardButtonStyle.Primary; // ранг
+                row[1].Style = KeyboardButtonStyle.Success; // роль
+                return row.AsEnumerable();
+            })
+            .ToList();
 
         var rows = new List<IEnumerable<InlineKeyboardButton>>();
 
@@ -313,20 +331,16 @@ public class Dota2MetaBot(
 
             if (pageIndex < totalPages) navRow.Add(navButtons[2]);
 
-            if (navRow.Count > 0) rows.Add(navRow);
+            rows.Add(navRow);
         }
 
-        rows.Add(rankButtonsRow1);
-        rows.Add(rankButtonsRow2);
-        rows.Add(roleButtonsRow1);
-        rows.Add(roleButtonsRow2);
+        rows.AddRange(pairedRows);
         rows.Add(sortButtons);
 
         return new InlineKeyboardMarkup(rows);
     }
 
-    private static string GetSortButtonText(SortType sortType, SortType currentSort, bool isDescending,
-        string activeArrow, string check)
+    private static string GetSortButtonText(SortType sortType, SortType currentSort, bool isDescending)
     {
         var baseText = sortType switch
         {
@@ -336,7 +350,7 @@ public class Dota2MetaBot(
             _ => "?"
         };
 
-        if (currentSort == sortType) return baseText + (isDescending ? "↓" : "↑") + check;
+        if (currentSort == sortType) return "✅ " + baseText + (isDescending ? "↓" : "↑");
 
         return baseText + " ↓";
     }
@@ -345,13 +359,14 @@ public class Dota2MetaBot(
     {
         var baseText = flag switch
         {
+            RankFlags.Uncalibrated => "Неоткалиброванный",
             RankFlags.HeraldGuardian => "Рекрут-Страж",
             RankFlags.CrusaderArchon => "Рыцарь-Герой",
             RankFlags.LegendAncient => "Легенда-Властелин",
             RankFlags.DivineImmortal => "Божество-Титан",
             _ => "?"
         };
-        return selectedFlags.HasFlag(flag) ? baseText + "✅" : baseText;
+        return selectedFlags.HasFlag(flag) ? "✅ " + baseText : baseText;
     }
 
     private static string GetRoleButtonText(RoleFlags flag, RoleFlags selectedFlags)
@@ -365,6 +380,6 @@ public class Dota2MetaBot(
             RoleFlags.HardSupport => "Hard Support",
             _ => "?"
         };
-        return selectedFlags.HasFlag(flag) ? baseText + "✅" : baseText;
+        return selectedFlags.HasFlag(flag) ? "✅ " + baseText : baseText;
     }
 }
