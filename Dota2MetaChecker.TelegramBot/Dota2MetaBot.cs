@@ -236,53 +236,53 @@ public class Dota2MetaBot(
 
         var navButtons = new[]
         {
-            InlineKeyboardButton.WithCallbackData("◀ Назад", "page:prev"),
-            InlineKeyboardButton.WithCallbackData(string.Format("{0}/{1}", pageIndex + 1, totalPages + 1), "noop"),
-            InlineKeyboardButton.WithCallbackData("Вперёд ▶", "page:next")
+            new InlineKeyboardButton("◀ Назад", "page:prev"),
+            new InlineKeyboardButton(string.Format("{0}/{1}", pageIndex + 1, totalPages + 1), "noop"),
+            new InlineKeyboardButton("Вперёд ▶", "page:next")
         };
 
         var rankButtonsRow1 = new[]
         {
-            InlineKeyboardButton.WithCallbackData(
+            new InlineKeyboardButton(
                 GetRankButtonText(RankFlags.HeraldGuardian, options.Ranks),
                 "rank:" + Rank.HeraldGuardian),
-            InlineKeyboardButton.WithCallbackData(
+            new InlineKeyboardButton(
                 GetRankButtonText(RankFlags.CrusaderArchon, options.Ranks),
                 "rank:" + Rank.CrusaderArchon)
-        };
+        }.WithStyle(KeyboardButtonStyle.Primary);
 
         var rankButtonsRow2 = new[]
         {
-            InlineKeyboardButton.WithCallbackData(
+            new InlineKeyboardButton(
                 GetRankButtonText(RankFlags.LegendAncient, options.Ranks),
                 "rank:" + Rank.LegendAncient),
-            InlineKeyboardButton.WithCallbackData(
+            new InlineKeyboardButton(
                 GetRankButtonText(RankFlags.DivineImmortal, options.Ranks),
                 "rank:" + Rank.DivineImmortal)
-        };
+        }.WithStyle(KeyboardButtonStyle.Primary);
 
         var roleButtonsRow1 = new[]
         {
-            InlineKeyboardButton.WithCallbackData(
+            new InlineKeyboardButton(
                 GetRoleButtonText(RoleFlags.Safelane, options.Roles),
                 "role:" + Role.Safelane),
-            InlineKeyboardButton.WithCallbackData(
+            new InlineKeyboardButton(
                 GetRoleButtonText(RoleFlags.Midlane, options.Roles),
                 "role:" + Role.Midlane),
-            InlineKeyboardButton.WithCallbackData(
+            new InlineKeyboardButton(
             GetRoleButtonText(RoleFlags.Offlane, options.Roles),
             "role:" + Role.Offlane)
-        };
+        }.WithStyle(KeyboardButtonStyle.Success);
 
         var roleButtonsRow2 = new[]
         {
-            InlineKeyboardButton.WithCallbackData(
+            new InlineKeyboardButton(
                 GetRoleButtonText(RoleFlags.Support, options.Roles),
                 "role:" + Role.Support),
-            InlineKeyboardButton.WithCallbackData(
+            new InlineKeyboardButton(
                 GetRoleButtonText(RoleFlags.HardSupport, options.Roles),
                 "role:" + Role.HardSupport)
-        };
+        }.WithStyle(KeyboardButtonStyle.Success);
 
         var sortArrows = new[] { "↓", "↑" };
         var activeArrow = options.IsDescending ? sortArrows[0] : sortArrows[1];
@@ -290,16 +290,16 @@ public class Dota2MetaBot(
 
         var sortButtons = new[]
         {
-            InlineKeyboardButton.WithCallbackData(
+            new InlineKeyboardButton(
                 GetSortButtonText(SortType.MatchCount, options.SortBy, options.IsDescending, activeArrow, check),
                 "sort:" + SortType.MatchCount),
-            InlineKeyboardButton.WithCallbackData(
+            new InlineKeyboardButton(
                 GetSortButtonText(SortType.WinRate, options.SortBy, options.IsDescending, activeArrow, check),
                 "sort:" + SortType.WinRate),
-            InlineKeyboardButton.WithCallbackData(
+            new InlineKeyboardButton(
                 GetSortButtonText(SortType.Rating, options.SortBy, options.IsDescending, activeArrow, check),
                 "sort:" + SortType.Rating)
-        };
+        }.WithStyle(KeyboardButtonStyle.Danger);
 
 
         var rows = new List<IEnumerable<InlineKeyboardButton>>();
