@@ -1,4 +1,4 @@
-using Dota2MetaChecker.Common.Models;
+using Dota2MetaChecker.Common.Enums;
 
 namespace Dota2MetaChecker.TelegramBot.Extensions;
 

@@ -15,5 +15,5 @@ public interface IHeroInfoFormatter
     /// <summary>
     ///     Форматирует информацию о персонаже (имя, винрейт и пикрейт) с показателем динамики изменения
     /// </summary>
-    public string Format(Hero hero, int totalMatchCount, Hero oldHero, int oldTotalMatchCount);
+    string FormatWithDelta(Hero hero, int totalMatchCount);
 }

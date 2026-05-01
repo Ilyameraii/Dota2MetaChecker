@@ -30,28 +30,22 @@ public class HeroesListMessageBuilder(
     /// </summary>
     public (string message, InlineKeyboardMarkup keyboard) BuildMessageWithButtons(UserPreferences prefs)
     {
-        var newStatsHeroes = heroStatsProcessor.GetProcessedHeroStats(
+        var heroes = heroStatsProcessor.GetProcessedHeroStats(
             heroesCache.NewHeroesStats!,
-            heroesCache.HeroesNames!,
-            prefs.ProcessingOptions);
-
-        var oldStatsHeroes = heroStatsProcessor.GetProcessedHeroStats(
             heroesCache.OldHeroesStats!,
             heroesCache.HeroesNames!,
             prefs.ProcessingOptions);
 
-        var newTotalMatchCount = newStatsHeroes.Sum(h => h.MatchCount);
-        var oldTotalMatchCount = oldStatsHeroes.Sum(h => h.MatchCount);
-
-        var totalPages = (newStatsHeroes.Count - 1) / HeroesPerPage;
+        var totalMatchCount = heroes.Sum(h => h.MatchCount);
+        var totalPages = (heroes.Count - 1) / HeroesPerPage;
         var pageIndex = Math.Min(prefs.PageNumber, totalPages);
 
         var start = pageIndex * HeroesPerPage;
-        var end = Math.Min(start + HeroesPerPage, newStatsHeroes.Count);
+        var end = Math.Min(start + HeroesPerPage, heroes.Count);
 
         var lines = Enumerable.Range(start, end - start)
             .Select(i =>
-                $"{i + 1}. {heroFormatter.Format(newStatsHeroes[i], newTotalMatchCount, oldStatsHeroes[i], oldTotalMatchCount)}");
+                $"{i + 1}. {heroFormatter.Format(heroes[i], totalMatchCount)}");
 
         var message = string.Join("\n\n", lines);
         var keyboard = BuildKeyboard(pageIndex, totalPages, prefs);
@@ -70,18 +64,11 @@ public class HeroesListMessageBuilder(
             new InlineKeyboardButton("Вперёд ▶", "page:next")
         };
 
-        var sortButtons = new[]
-        {
-            new InlineKeyboardButton(
-                SortType.MatchCount.ToDisplayName(options.SortBy, options.IsDescending),
-                CallbackPrefixes.Sort + SortType.MatchCount),
-            new InlineKeyboardButton(
-                SortType.WinRate.ToDisplayName(options.SortBy, options.IsDescending),
-                CallbackPrefixes.Sort + SortType.WinRate),
-            new InlineKeyboardButton(
-                SortType.Rating.ToDisplayName(options.SortBy, options.IsDescending),
-                CallbackPrefixes.Sort + SortType.Rating)
-        }.WithStyle(KeyboardButtonStyle.Danger);
+        var sortButtons = Enum.GetValues<SortType>()
+            .Select(sortType => new InlineKeyboardButton(
+                sortType.ToDisplayName(options.SortBy, options.IsDescending),
+                CallbackPrefixes.Sort + sortType))
+            .WithStyle(KeyboardButtonStyle.Danger);
 
         var pairedRows = new List<IEnumerable<InlineKeyboardButton>>
         {

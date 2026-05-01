@@ -13,6 +13,7 @@ public interface IHeroStatsProcessor
     /// </summary>
     public List<Hero> GetProcessedHeroStats(
         IReadOnlyList<HeroStat> sourceStats,
+        IReadOnlyList<HeroStat> oldSourceStats,
         IReadOnlyDictionary<int, string> heroNames,
         HeroProcessingOptions processingOptions);
 }

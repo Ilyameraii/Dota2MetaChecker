@@ -42,24 +42,3 @@ public class HeroProcessingOptions
         };
     }
 }
-
-/// <summary>
-///     Тип сортировки героев
-/// </summary>
-public enum SortType
-{
-    /// <summary>
-    ///     По количеству матчей
-    /// </summary>
-    MatchCount,
-
-    /// <summary>
-    ///     По винрейту
-    /// </summary>
-    WinRate,
-
-    /// <summary>
-    ///     По рейтингу
-    /// </summary>
-    Rating
-}
