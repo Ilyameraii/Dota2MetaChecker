@@ -1,6 +1,4 @@
-using Services.Contracts.Models;
-
-namespace Services.Models;
+namespace Dota2MetaChecker.Common.Models;
 
 /// <summary>
 ///     Настройки пользователя для отображения списка героев

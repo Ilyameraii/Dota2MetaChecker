@@ -1,7 +1,7 @@
-using Services.Contracts.Enums;
-using Services.Contracts.Extensions;
+using Dota2MetaChecker.Common.Enums;
+using Dota2MetaChecker.Common.Extensions;
 
-namespace Services.Contracts.Models;
+namespace Dota2MetaChecker.Common.Models;
 
 /// <summary>
 ///     Параметры для обработки статистики персонажей

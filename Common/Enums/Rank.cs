@@ -1,4 +1,4 @@
-namespace Entities.Enums;
+namespace Dota2MetaChecker.Common.Enums;
 
 /// <summary>
 ///     Значения рангов для статистики

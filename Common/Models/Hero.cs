@@ -1,4 +1,4 @@
-namespace Services.Contracts.Models;
+namespace Dota2MetaChecker.Common.Models;
 
 /// <summary>
 ///     Модель персонажа с агрегированной статистикой

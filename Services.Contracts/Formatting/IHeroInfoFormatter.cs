@@ -1,4 +1,4 @@
-using Services.Contracts.Models;
+using Dota2MetaChecker.Common.Models;
 
 namespace Services.Contracts.Formatting;
 

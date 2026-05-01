@@ -1,6 +1,6 @@
-using Services.Contracts.Models;
+using Dota2MetaChecker.Common.Models;
 
-namespace Services.Contracts.Extensions;
+namespace Dota2MetaChecker.Common.Extensions;
 
 /// <summary>
 ///     Методы расширения для сортировки коллекции персонажей

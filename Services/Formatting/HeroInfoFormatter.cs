@@ -1,5 +1,5 @@
+using Dota2MetaChecker.Common.Models;
 using Services.Contracts.Formatting;
-using Services.Contracts.Models;
 
 namespace Services.Formatting;
 

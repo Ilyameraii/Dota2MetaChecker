@@ -1,5 +1,5 @@
+using Dota2MetaChecker.Common.Models;
 using Entities.Models;
-using Services.Contracts.Models;
 using Services.Contracts.Processing;
 
 namespace Services.Processing;

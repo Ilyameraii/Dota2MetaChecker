@@ -1,5 +1,4 @@
 using Entities.Models;
-using Services.Models;
 
 namespace Services.Data_sync;
 
@@ -27,11 +26,6 @@ public class HeroesDataCache
     ///     Словарь соответствия идентификаторов и имен персонажей
     /// </summary>
     public Dictionary<int, string>? HeroesNames { get; set; }
-
-    /// <summary>
-    ///     Настройки пользователей (номер страницы и параметры обработки)
-    /// </summary>
-    public Dictionary<long, UserPreferences> UserPreferences { get; } = new();
 
     /// <summary>
     ///     Проверка загрузки данных

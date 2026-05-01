@@ -1,5 +1,5 @@
 using System.Text.Json.Nodes;
-using Entities.Enums;
+using Dota2MetaChecker.Common.Enums;
 using Entities.Models;
 using Services.Contracts.Deserialization;
 

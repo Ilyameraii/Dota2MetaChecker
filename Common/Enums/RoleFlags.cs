@@ -1,4 +1,4 @@
-namespace Services.Contracts.Enums;
+namespace Dota2MetaChecker.Common.Enums;
 
 /// <summary>
 ///     Флаги для фильтрации по ролям
