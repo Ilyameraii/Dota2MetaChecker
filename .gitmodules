@@ -1,6 +1,3 @@
-[submodule "STRATZ_Models"]
-	path = STRATZ_Models
-	url = https://github.com/TheAmazingLooser/STRATZ_Models
-[submodule "Dota2StratzModels/STRATZ_Models"]
-	path = Dota2StratzModels/STRATZ_Models
+[submodule "Services/Deserialization/STRATZ_Models"]
+	path = Services/Deserialization/STRATZ_Models
 	url = https://github.com/TheAmazingLooser/STRATZ_Models
