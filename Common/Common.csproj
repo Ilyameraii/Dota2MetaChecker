@@ -7,8 +7,4 @@
         <RootNamespace>Dota2MetaChecker.Common</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-        <Folder Include="Interfaces\"/>
-    </ItemGroup>
-
 </Project>

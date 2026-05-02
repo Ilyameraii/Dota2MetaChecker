@@ -5,12 +5,12 @@ using Services.Extensions;
 
 namespace Services.Processing.StrategiesOfSorting;
 
-public class WinrateSortStrategy : IHeroSortStategy
+public class RatingDeltaSortStrategy : IHeroSortStategy
 {
-    public SortType SortType => SortType.WinRate;
+    public SortType SortType => SortType.RatingDelta;
 
     public IEnumerable<Hero> Sort(IEnumerable<Hero> heroes, bool descending)
     {
-        return heroes.OrderByWinRate(descending);
+        return heroes.OrderByRatingDelta(descending);
     }
 }

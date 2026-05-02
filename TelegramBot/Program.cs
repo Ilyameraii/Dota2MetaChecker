@@ -61,6 +61,7 @@ builder.Services.AddSingleton<IHeroSortStategy, WinrateSortStrategy>();
 builder.Services.AddSingleton<IHeroSortStategy, RatingSortStrategy>();
 builder.Services.AddSingleton<IHeroSortStategy, WinrateDeltaSortStrategy>();
 builder.Services.AddSingleton<IHeroSortStategy, PickrateDeltaSortStrategy>();
+builder.Services.AddSingleton<IHeroSortStategy, RatingDeltaSortStrategy>();
 
 // Фоновый сервис для обновления и сохранения в БД статистики по героям
 builder.Services.AddHostedService<HeroesDataSyncService>();

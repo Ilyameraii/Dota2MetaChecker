@@ -21,7 +21,8 @@ public class HeroStatDeltaCalculator : IHeroStatDeltaCalculator
             return hero.WithDeltas(
                 hero.WinRate - oldHero.WinRate,
                 (double)hero.MatchCount / totalMatchCount -
-                (double)oldHero.MatchCount / oldTotalMatchCount
+                (double)oldHero.MatchCount / oldTotalMatchCount,
+                hero.RatingDelta - oldHero.RatingDelta
             );
         });
     }

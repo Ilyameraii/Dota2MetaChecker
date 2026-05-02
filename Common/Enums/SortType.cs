@@ -23,10 +23,15 @@ public enum SortType
     /// <summary>
     ///     По
     /// </summary>
-    WinrateDelta,
-
+    PickrateDelta,
+    
     /// <summary>
     ///     По
     /// </summary>
-    PickrateDelta
+    WinrateDelta,
+    
+    /// <summary>
+    ///     По
+    /// </summary>
+    RatingDelta,
 }
