@@ -1,5 +1,5 @@
+using Dota2MetaChecker.Common.Models;
 using Entities.Models;
-using Services.Contracts.Models;
 
 namespace Services.Contracts.Processing;
 
@@ -13,6 +13,7 @@ public interface IHeroStatsProcessor
     /// </summary>
     public List<Hero> GetProcessedHeroStats(
         IReadOnlyList<HeroStat> sourceStats,
+        IReadOnlyList<HeroStat> oldSourceStats,
         IReadOnlyDictionary<int, string> heroNames,
         HeroProcessingOptions processingOptions);
 }

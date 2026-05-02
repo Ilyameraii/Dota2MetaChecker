@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Entities.Enums;
+namespace Dota2MetaChecker.Common.Enums;
 
 /// <summary>
 ///     Значения ролей, на которой ведется статистика персонажа

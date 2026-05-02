@@ -36,15 +36,12 @@ public class HeroesDataService(
         {
             var metaUpdate = new MetaUpdate
             {
-                DateTime = cache.UpdateTime.Value,
+                DateTime = cache.UpdateTime.Value
             };
 
             var heroStats = cache.NewHeroesStats;
 
-            foreach (var hero in heroStats)
-            {
-                hero.MetaUpdate = metaUpdate;
-            }
+            foreach (var hero in heroStats) hero.MetaUpdate = metaUpdate;
 
             await context.MetaUpdates.AddAsync(metaUpdate);
             await context.HeroesStats.AddRangeAsync(heroStats);
@@ -87,11 +84,9 @@ public class HeroesDataService(
         var oldestNeededUpdateId = lastUpdateId - 7 * 24;
 
         if (oldestNeededUpdateId > 1)
-        {
             await context.MetaUpdates
                 .Where(m => m.Id < oldestNeededUpdateId)
                 .ExecuteDeleteAsync();
-        }
     }
 
     private async Task<int> GetLastUpdateId()

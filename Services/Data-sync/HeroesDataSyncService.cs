@@ -21,11 +21,11 @@ public class HeroesDataSyncService(IHeroesDataService heroesDataService) : Backg
             {
                 await heroesDataService.UpdateNewStatsAsync();
                 await heroesDataService.SaveNewStatsAsync();
-                
+
                 // Сначала читаем старое обновление, потом удаляем из бд как ненужное
                 await heroesDataService.UpdateOldStatsAsync();
                 await heroesDataService.RemoveNeedlessStatsAsync();
-                
+
                 Console.WriteLine("Данные обновлены: {0}", DateTime.Now);
             }
             catch (OperationCanceledException)

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dota2MetaChecker.TelegramBot", "Dota2MetaChecker.TelegramBot\Dota2MetaChecker.TelegramBot.csproj", "{98409754-7C5A-44FE-A212-E440CF7EEC31}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramBot", "TelegramBot\TelegramBot.csproj", "{98409754-7C5A-44FE-A212-E440CF7EEC31}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{FECE2932-C0D0-4B2C-8B9F-C55597453001}"
 EndProject
@@ -11,6 +11,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Context", "Context\Context.csproj", "{823CE536-B4F8-4646-8922-47F10289CA7C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dota2StratzModels", "Dota2StratzModels\Dota2StratzModels.csproj", "{008B9852-A55F-4C7F-816D-A2BC49D2F025}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramBot.Contracts", "TelegramBot.Contracts\TelegramBot.Contracts.csproj", "{67934F2D-2388-4F82-9D00-0D92B5BAFE76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{040C1395-4EB9-4328-9D48-87546F4617E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +46,13 @@ Global
 		{008B9852-A55F-4C7F-816D-A2BC49D2F025}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{008B9852-A55F-4C7F-816D-A2BC49D2F025}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{008B9852-A55F-4C7F-816D-A2BC49D2F025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67934F2D-2388-4F82-9D00-0D92B5BAFE76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67934F2D-2388-4F82-9D00-0D92B5BAFE76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67934F2D-2388-4F82-9D00-0D92B5BAFE76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67934F2D-2388-4F82-9D00-0D92B5BAFE76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{040C1395-4EB9-4328-9D48-87546F4617E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{040C1395-4EB9-4328-9D48-87546F4617E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{040C1395-4EB9-4328-9D48-87546F4617E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{040C1395-4EB9-4328-9D48-87546F4617E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

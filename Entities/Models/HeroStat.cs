@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using Entities.Enums;
+using Dota2MetaChecker.Common.Enums;
 
 namespace Entities.Models;
 

@@ -1,5 +1,6 @@
+using Dota2MetaChecker.Common.Enums;
+using Dota2MetaChecker.Common.Models;
 using Entities.Models;
-using Services.Contracts.Models;
 using Services.Contracts.Processing;
 
 namespace Services.Processing;
@@ -9,7 +10,9 @@ namespace Services.Processing;
 /// </summary>
 public class HeroStatsProcessor(
     IHeroStatsFilterService filterService,
-    IHeroStatsAggregator aggregator)
+    IHeroStatsAggregator aggregator,
+    IHeroStatDeltaCalculator deltaCalculator,
+    IEnumerable<IHeroSortStategy> sortStrategies)
     : IHeroStatsProcessor
 {
     /// <summary>
@@ -17,18 +20,30 @@ public class HeroStatsProcessor(
     /// </summary>
     public List<Hero> GetProcessedHeroStats(
         IReadOnlyList<HeroStat> sourceStats,
+        IReadOnlyList<HeroStat> oldSourceStats,
         IReadOnlyDictionary<int, string> heroNames,
         HeroProcessingOptions query)
     {
         // 1. Фильтрация
         var filtered = filterService.ApplyFilters(sourceStats, query.Ranks, query.Roles);
+        var oldFiltered = filterService.ApplyFilters(oldSourceStats, query.Ranks, query.Roles);
 
         // 2. Агрегация
         var aggregated = aggregator.AggregateByHero(filtered, heroNames);
+        var oldAggregated = aggregator.AggregateByHero(oldFiltered, heroNames);
 
-        // 3. Сортировка
-        var sorted = query.GetSortFunction()(aggregated);
+        // 3. Дельты
+        var withDeltas = deltaCalculator.CalculateDeltas(
+            aggregated,
+            oldAggregated,
+            filtered.Sum(s => s.MatchCount),
+            oldFiltered.Sum(s => s.MatchCount));
 
+        // 4. Сортировка
+        var strategy = sortStrategies.FirstOrDefault(s => s.SortType == query.SortBy)
+                       ?? sortStrategies.First(s => s.SortType == SortType.Rating);
+
+        var sorted = strategy.Sort(withDeltas, query.IsDescending);
         return sorted.ToList();
     }
 }

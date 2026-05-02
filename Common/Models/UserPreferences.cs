@@ -1,6 +1,4 @@
-using Services.Contracts.Models;
-
-namespace Services.Models;
+namespace Dota2MetaChecker.Common.Models;
 
 /// <summary>
 ///     Настройки пользователя для отображения списка героев
@@ -16,4 +14,13 @@ public class UserPreferences
     ///     Параметры обработки (сортировка и фильтрация)
     /// </summary>
     public HeroProcessingOptions ProcessingOptions { get; set; } = new();
+    
+    /// <summary>
+    ///     Сбрасывает настройки пользователя до значений по умолчанию.
+    /// </summary>
+    public void Reset()
+    {
+        ProcessingOptions = new HeroProcessingOptions();
+        PageNumber = 0;
+    }
 }

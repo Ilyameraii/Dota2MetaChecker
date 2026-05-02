@@ -1,5 +1,5 @@
+using Dota2MetaChecker.Common.Models;
 using Entities.Models;
-using Services.Contracts.Models;
 
 namespace Services.Contracts.Processing;
 
@@ -11,5 +11,5 @@ public interface IHeroStatsAggregator
     /// <summary>
     ///     Агрегирует статистику по героям
     /// </summary>
-    IEnumerable<Hero> AggregateByHero(IEnumerable<HeroStat> stats, IReadOnlyDictionary<int, string> heroNames);
+    IEnumerable<Hero> AggregateByHero(IReadOnlyList<HeroStat> stats, IReadOnlyDictionary<int, string> heroNames);
 }
