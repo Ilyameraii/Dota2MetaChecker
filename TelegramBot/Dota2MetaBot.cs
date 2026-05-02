@@ -53,13 +53,8 @@ public class Dota2MetaBot(
         try
         {
             if (update.Message is { } message)
-            {
                 await HandleMessageAsync(message);
-            }
-            else if (update.CallbackQuery is { } callbackQuery)
-            {
-                await HandleCallbackQueryAsync(callbackQuery);
-            }
+            else if (update.CallbackQuery is { } callbackQuery) await HandleCallbackQueryAsync(callbackQuery);
         }
         catch (Exception ex)
         {
@@ -79,26 +74,23 @@ public class Dota2MetaBot(
             await botClient.SendMessage(chatId, "Данные ещё загружаются, попробуйте через минуту.", ParseMode.Html);
             return;
         }
-        
+
         var (messageText, keyboard) = messageBuilder.BuildMessageWithButtons(preferencesService.GetOrCreate(userId));
-        
+
         await botClient.SendMessage(chatId, messageText, ParseMode.Html, replyMarkup: keyboard);
     }
 
     private async Task HandleCallbackQueryAsync(CallbackQuery callbackQuery)
     {
         var data = callbackQuery.Data;
-        if (data == null)
-        {
-            return;
-        }
+        if (data == null) return;
 
         var userId = callbackQuery.From.Id;
-        
+
         preferencesService.Apply(userId, data);
 
         var (messageText, keyboard) = messageBuilder.BuildMessageWithButtons(preferencesService.GetOrCreate(userId));
-        
+
         try
         {
             await botClient.EditMessageText(
@@ -106,7 +98,7 @@ public class Dota2MetaBot(
                 callbackQuery.Message.MessageId,
                 messageText,
                 ParseMode.Html,
-                replyMarkup: keyboard);
+                keyboard);
         }
         catch
         {

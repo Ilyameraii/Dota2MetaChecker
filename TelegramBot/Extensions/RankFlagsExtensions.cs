@@ -4,9 +4,9 @@ namespace Dota2MetaChecker.TelegramBot.Extensions;
 
 public static class RankFlagsExtensions
 {
-    public static string ToDisplayName(this RankFlags flag, RankFlags selectedFlags)
+    public static string ToDisplayName(this RankFlags rankFlag, RankFlags selectedFlags)
     {
-        var baseText = flag switch
+        var baseText = rankFlag switch
         {
             RankFlags.Uncalibrated => "Неоткалиброванный",
             RankFlags.HeraldGuardian => "Рекрут-Страж",
@@ -15,6 +15,10 @@ public static class RankFlagsExtensions
             RankFlags.DivineImmortal => "Божество-Титан",
             _ => "?"
         };
-        return selectedFlags.HasFlag(flag) ? "✅ " + baseText : baseText;
+
+
+        return selectedFlags.HasFlag(rankFlag) ? "✅ " + baseText : baseText;
     }
+    
+    
 }

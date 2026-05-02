@@ -14,4 +14,13 @@ public class UserPreferences
     ///     Параметры обработки (сортировка и фильтрация)
     /// </summary>
     public HeroProcessingOptions ProcessingOptions { get; set; } = new();
+    
+    /// <summary>
+    ///     Сбрасывает настройки пользователя до значений по умолчанию.
+    /// </summary>
+    public void Reset()
+    {
+        ProcessingOptions = new HeroProcessingOptions();
+        PageNumber = 0;
+    }
 }

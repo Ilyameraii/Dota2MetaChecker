@@ -7,11 +7,12 @@ using Services.Contracts.Formatting;
 using Services.Contracts.Processing;
 using Services.Data_sync;
 using Telegram.Bot.Types.ReplyMarkups;
+using SortType = Dota2MetaChecker.Common.Enums.SortType;
 
 namespace Dota2MetaChecker.TelegramBot;
 
 /// <summary>
-/// Строит сообщение со списком героев и клавиатуру для него.
+///     Строит сообщение со списком героев и клавиатуру для него.
 /// </summary>
 public class HeroesListMessageBuilder(
     IHeroInfoFormatter heroFormatter,
@@ -21,12 +22,12 @@ public class HeroesListMessageBuilder(
     private const int HeroesPerPage = 5;
 
     /// <summary>
-    /// Возвращает true, если данные для построения сообщения готовы.
+    ///     Возвращает true, если данные для построения сообщения готовы.
     /// </summary>
     public bool IsReady => heroesCache.IsLoaded;
 
     /// <summary>
-    /// Возвращает текст сообщения и inline-клавиатуру со списком героев для заданного пользователя.
+    ///     Возвращает текст сообщения и inline-клавиатуру со списком героев для заданного пользователя.
     /// </summary>
     public (string message, InlineKeyboardMarkup keyboard) BuildMessageWithButtons(UserPreferences prefs)
     {
@@ -45,7 +46,7 @@ public class HeroesListMessageBuilder(
 
         var lines = Enumerable.Range(start, end - start)
             .Select(i =>
-                $"{i + 1}. {heroFormatter.Format(heroes[i], totalMatchCount)}");
+                $"{i + 1}. {heroFormatter.FormatWithDelta(heroes[i], totalMatchCount)}");
 
         var message = string.Join("\n\n", lines);
         var keyboard = BuildKeyboard(pageIndex, totalPages, prefs);
@@ -59,24 +60,26 @@ public class HeroesListMessageBuilder(
 
         var navButtons = new[]
         {
-            new InlineKeyboardButton("◀ Назад", "page:prev"),
-            new InlineKeyboardButton($"{pageIndex + 1}/{totalPages + 1}", "noop"),
-            new InlineKeyboardButton("Вперёд ▶", "page:next")
+            new InlineKeyboardButton("◀ Назад", CallbackPrefixes.Page + PageDirection.Previous),
+            new InlineKeyboardButton($"{pageIndex + 1}/{totalPages + 1}", CallbackConstants.Noop),
+            new InlineKeyboardButton("Вперёд ▶",
+                CallbackPrefixes.Page + PageDirection.Next)
         };
 
         var sortButtons = Enum.GetValues<SortType>()
             .Select(sortType => new InlineKeyboardButton(
                 sortType.ToDisplayName(options.SortBy, options.IsDescending),
                 CallbackPrefixes.Sort + sortType))
-            .WithStyle(KeyboardButtonStyle.Danger);
+            .WithStyle(KeyboardButtonStyle.Danger)
+            .Chunk(3); // разбиваем по 3 кнопки на ряд
 
         var pairedRows = new List<IEnumerable<InlineKeyboardButton>>
         {
-            BuildRankRoleRow(RankFlags.HeraldGuardian, Rank.HeraldGuardian, RoleFlags.Safelane, Role.Safelane, options),
-            BuildRankRoleRow(RankFlags.CrusaderArchon, Rank.CrusaderArchon, RoleFlags.Midlane, Role.Midlane, options),
-            BuildRankRoleRow(RankFlags.LegendAncient, Rank.LegendAncient, RoleFlags.Offlane, Role.Offlane, options),
-            BuildRankRoleRow(RankFlags.DivineImmortal, Rank.DivineImmortal, RoleFlags.Support, Role.Support, options),
-            BuildRankRoleRow(RankFlags.Uncalibrated, Rank.Uncalibrated, RoleFlags.HardSupport, Role.HardSupport, options)
+            BuildRankRoleRow(RankFlags.HeraldGuardian, RoleFlags.Safelane, options),
+            BuildRankRoleRow(RankFlags.CrusaderArchon, RoleFlags.Midlane, options),
+            BuildRankRoleRow(RankFlags.LegendAncient, RoleFlags.Offlane, options),
+            BuildRankRoleRow(RankFlags.DivineImmortal, RoleFlags.Support, options),
+            BuildRankRoleRow(RankFlags.Uncalibrated, RoleFlags.HardSupport, options)
         };
 
         var rows = new List<IEnumerable<InlineKeyboardButton>>();
@@ -91,24 +94,30 @@ public class HeroesListMessageBuilder(
         }
 
         rows.AddRange(pairedRows);
-        rows.Add(sortButtons);
-
+        
+        // вношу по 3 кнопки в ряд
+        foreach (var row in sortButtons)
+        {
+        rows.Add(row);
+        }
+        
+        // кнопка для сброса настроек
+        rows.Add([
+            new InlineKeyboardButton("Сбросить",  CallbackConstants.ClearOptions),
+        ]);
+        
         return new InlineKeyboardMarkup(rows);
     }
 
     private InlineKeyboardButton[] BuildRankRoleRow(
-        RankFlags rankFlag, Rank rank,
-        RoleFlags roleFlag, Role role,
+        RankFlags rankFlag,
+        RoleFlags roleFlag,
         HeroProcessingOptions options)
     {
-        var rankButton = new InlineKeyboardButton(rankFlag.ToDisplayName(options.Ranks), CallbackPrefixes.Rank + rank);
-        var roleButton = new InlineKeyboardButton(roleFlag.ToDisplayName(options.Roles), CallbackPrefixes.Role + role);
+        var rankButton = new InlineKeyboardButton(rankFlag.ToDisplayName(options.Ranks), CallbackPrefixes.Rank + rankFlag);
+        var roleButton = new InlineKeyboardButton(roleFlag.ToDisplayName(options.Roles), CallbackPrefixes.Role + roleFlag);
         rankButton.Style = KeyboardButtonStyle.Primary;
         roleButton.Style = KeyboardButtonStyle.Success;
         return [rankButton, roleButton];
     }
-
-    
-
-    
 }

@@ -24,6 +24,4 @@ public class HeroStatsFilterService : IHeroStatsFilterService
 
         return result.ToList();
     }
-
-    
 }

@@ -15,6 +15,7 @@ using Services.Data_sync.CallbackHandlers;
 using Services.Deserialization;
 using Services.Formatting;
 using Services.Processing;
+using Services.Processing.StrategiesOfSorting;
 using Telegram.Bot;
 
 var builder = Host.CreateApplicationBuilder(args);
@@ -52,6 +53,14 @@ builder.Services.AddSingleton<ICallbackHandler, PageCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, RankCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, RoleCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, SortCallbackHandler>();
+builder.Services.AddSingleton<ICallbackHandler, ClearOptionsCallbackHandler>();
+
+// Стратегии сортировки для HeroStatsProcessor
+builder.Services.AddSingleton<IHeroSortStategy, MatchCountSortStrategy>();
+builder.Services.AddSingleton<IHeroSortStategy, WinrateSortStrategy>();
+builder.Services.AddSingleton<IHeroSortStategy, RatingSortStrategy>();
+builder.Services.AddSingleton<IHeroSortStategy, WinrateDeltaSortStrategy>();
+builder.Services.AddSingleton<IHeroSortStategy, PickrateDeltaSortStrategy>();
 
 // Фоновый сервис для обновления и сохранения в БД статистики по героям
 builder.Services.AddHostedService<HeroesDataSyncService>();

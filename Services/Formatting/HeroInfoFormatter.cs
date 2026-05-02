@@ -26,7 +26,7 @@ public class HeroInfoFormatter : IHeroInfoFormatter
         var pickRateDelta = FormatDelta(hero.PickRateDelta);
 
         return
-            $"<b>{hero.Name}</b> - <b>{winRate:F2}%</b> ({winRateDelta}) побед, <b>{pickRate:F2}%</b> ({pickRateDelta}) выборов";
+            $"<b>{hero.Name}</b> - <b>{winRate:F2}%</b> (<b>{winRateDelta}</b>) побед, <b>{pickRate:F2}%</b> (<b>{pickRateDelta}</b>) выборов";
     }
 
     private static string FormatDelta(double delta)

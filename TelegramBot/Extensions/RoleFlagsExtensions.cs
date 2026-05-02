@@ -4,9 +4,9 @@ namespace Dota2MetaChecker.TelegramBot.Extensions;
 
 public static class RoleFlagsExtensions
 {
-    public static string ToDisplayName(this RoleFlags flag, RoleFlags selectedFlags)
+    public static string ToDisplayName(this RoleFlags roleFlag, RoleFlags selectedFlags)
     {
-        var baseText = flag switch
+        var baseText = roleFlag switch
         {
             RoleFlags.Safelane => "Safelane",
             RoleFlags.Midlane => "Midlane",
@@ -15,6 +15,6 @@ public static class RoleFlagsExtensions
             RoleFlags.HardSupport => "Hard Support",
             _ => "?"
         };
-        return selectedFlags.HasFlag(flag) ? "✅ " + baseText : baseText;
+        return selectedFlags.HasFlag(roleFlag) ? "✅ " + baseText : baseText;
     }
 }

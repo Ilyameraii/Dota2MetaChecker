@@ -4,23 +4,29 @@ namespace Services.Extensions;
 
 public static class FlagExtensions
 {
-    public static RankFlags ToFlag(this Rank rank) => rank switch
+    public static RankFlags ToFlag(this Rank rank)
     {
-        Rank.Uncalibrated => RankFlags.Uncalibrated,
-        Rank.HeraldGuardian => RankFlags.HeraldGuardian,
-        Rank.CrusaderArchon => RankFlags.CrusaderArchon,
-        Rank.LegendAncient => RankFlags.LegendAncient,
-        Rank.DivineImmortal => RankFlags.DivineImmortal,
-        _ => RankFlags.None
-    };
+        return rank switch
+        {
+            Rank.Uncalibrated => RankFlags.Uncalibrated,
+            Rank.HeraldGuardian => RankFlags.HeraldGuardian,
+            Rank.CrusaderArchon => RankFlags.CrusaderArchon,
+            Rank.LegendAncient => RankFlags.LegendAncient,
+            Rank.DivineImmortal => RankFlags.DivineImmortal,
+            _ => RankFlags.None
+        };
+    }
 
-    public static RoleFlags ToFlag(this Role role) => role switch
+    public static RoleFlags ToFlag(this Role role)
     {
-        Role.Safelane => RoleFlags.Safelane,
-        Role.Midlane => RoleFlags.Midlane,
-        Role.Offlane => RoleFlags.Offlane,
-        Role.Support => RoleFlags.Support,
-        Role.HardSupport => RoleFlags.HardSupport,
-        _ => RoleFlags.None
-    };
+        return role switch
+        {
+            Role.Safelane => RoleFlags.Safelane,
+            Role.Midlane => RoleFlags.Midlane,
+            Role.Offlane => RoleFlags.Offlane,
+            Role.Support => RoleFlags.Support,
+            Role.HardSupport => RoleFlags.HardSupport,
+            _ => RoleFlags.None
+        };
+    }
 }

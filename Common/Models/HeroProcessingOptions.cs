@@ -1,5 +1,4 @@
 using Dota2MetaChecker.Common.Enums;
-using Dota2MetaChecker.Common.Extensions;
 
 namespace Dota2MetaChecker.Common.Models;
 
@@ -27,18 +26,6 @@ public class HeroProcessingOptions
     ///     Сортировка по убыванию
     /// </summary>
     public bool IsDescending { get; set; } = true;
-
-    /// <summary>
-    ///     Возвращает функцию сортировки на основе текущих настроек
-    /// </summary>
-    public Func<IEnumerable<Hero>, IOrderedEnumerable<Hero>> GetSortFunction()
-    {
-        return SortBy switch
-        {
-            SortType.MatchCount => h => h.OrderByMatchCount(IsDescending),
-            SortType.WinRate => h => h.OrderByWinRate(IsDescending),
-            SortType.Rating => h => h.OrderByRating(IsDescending),
-            _ => h => h.OrderByRating(IsDescending)
-        };
-    }
+    
+    
 }

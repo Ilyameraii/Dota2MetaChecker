@@ -5,12 +5,12 @@ namespace Services.Contracts.Data_sync;
 public interface IUserPreferencesService
 {
     /// <summary>
-    /// Возвращает настройки пользователя.
+    ///     Возвращает настройки пользователя.
     /// </summary>
     UserPreferences GetOrCreate(long userId);
 
     /// <summary>
-    /// Применяет изменение на основе данных callback-а.
+    ///     Применяет изменение на основе данных callback-а.
     /// </summary>
     void Apply(long userId, string callbackData);
 }

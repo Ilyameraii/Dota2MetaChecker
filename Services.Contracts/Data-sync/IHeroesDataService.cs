@@ -17,12 +17,12 @@ public interface IHeroesDataService
     /// </summary>
     /// <returns></returns>
     Task SaveNewStatsAsync();
-    
+
     /// <summary>
     ///     Получение идентификатора обновления старой статистики
     /// </summary>
     Task UpdateOldStatsAsync();
-    
+
     /// <summary>
     ///     Получение статистики персонажей по идентификатору обновления
     /// </summary>

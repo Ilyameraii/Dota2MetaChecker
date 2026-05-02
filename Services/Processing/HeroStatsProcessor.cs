@@ -1,3 +1,4 @@
+using Dota2MetaChecker.Common.Enums;
 using Dota2MetaChecker.Common.Models;
 using Entities.Models;
 using Services.Contracts.Processing;
@@ -10,7 +11,8 @@ namespace Services.Processing;
 public class HeroStatsProcessor(
     IHeroStatsFilterService filterService,
     IHeroStatsAggregator aggregator,
-    IHeroStatDeltaCalculator deltaCalculator)
+    IHeroStatDeltaCalculator deltaCalculator,
+    IEnumerable<IHeroSortStategy> sortStrategies)
     : IHeroStatsProcessor
 {
     /// <summary>
@@ -38,7 +40,10 @@ public class HeroStatsProcessor(
             oldFiltered.Sum(s => s.MatchCount));
 
         // 4. Сортировка
-        return query.GetSortFunction()(withDeltas).ToList();
+        var strategy = sortStrategies.FirstOrDefault(s => s.SortType == query.SortBy)
+                       ?? sortStrategies.First(s => s.SortType == SortType.Rating);
 
+        var sorted = strategy.Sort(withDeltas, query.IsDescending);
+        return sorted.ToList();
     }
 }

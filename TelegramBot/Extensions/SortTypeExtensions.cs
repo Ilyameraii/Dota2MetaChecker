@@ -11,10 +11,12 @@ public static class SortTypeExtensions
             SortType.MatchCount => "Матчи",
             SortType.WinRate => "Винрейт",
             SortType.Rating => "Рейтинг",
+            SortType.WinrateDelta => "Рост винрейта",
+            SortType.PickrateDelta => "Рост пикрейта",
             _ => "?"
         };
 
-        if (currentSort == sortType) return "✅ " + baseText + (isDescending ? "↓" : "↑");
+        if (currentSort == sortType) return "✅ " + baseText + " " + (isDescending ? "↓" : "↑");
 
         return baseText + " ↓";
     }

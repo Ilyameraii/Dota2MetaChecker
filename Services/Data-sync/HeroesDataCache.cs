@@ -11,12 +11,12 @@ public class HeroesDataCache
     ///     Время последнего обновления
     /// </summary>
     public DateTime? UpdateTime { get; set; }
-    
+
     /// <summary>
     ///     Новая статистика персонажей
     /// </summary>
     public IReadOnlyList<HeroStat>? NewHeroesStats { get; set; }
-    
+
     /// <summary>
     ///     Старая статистика персонажей
     /// </summary>

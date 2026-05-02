@@ -19,14 +19,14 @@ public enum SortType
     ///     По рейтингу
     /// </summary>
     Rating,
-    
+
     /// <summary>
-    ///     По 
+    ///     По
     /// </summary>
     WinrateDelta,
-    
+
     /// <summary>
-    ///     По 
+    ///     По
     /// </summary>
     PickrateDelta
 }

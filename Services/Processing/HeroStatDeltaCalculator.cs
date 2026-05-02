@@ -19,9 +19,9 @@ public class HeroStatDeltaCalculator : IHeroStatDeltaCalculator
                 return hero;
 
             return hero.WithDeltas(
-                winRateDelta: hero.WinRate - oldHero.WinRate,
-                pickRateDelta: (double)hero.MatchCount / totalMatchCount - 
-                               (double)oldHero.MatchCount / oldTotalMatchCount
+                hero.WinRate - oldHero.WinRate,
+                (double)hero.MatchCount / totalMatchCount -
+                (double)oldHero.MatchCount / oldTotalMatchCount
             );
         });
     }
