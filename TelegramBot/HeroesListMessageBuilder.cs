@@ -71,16 +71,11 @@ public class HeroesListMessageBuilder(
                 sortType.ToDisplayName(options.SortBy, options.IsDescending),
                 CallbackPrefixes.Sort + sortType))
             .WithStyle(KeyboardButtonStyle.Danger)
-            .Chunk(3); // разбиваем по 3 кнопки на ряд
+            .Chunk(2); // разбиваем по 2 кнопки на ряд
 
-        var pairedRows = new List<IEnumerable<InlineKeyboardButton>>
-        {
-            BuildRankRoleRow(RankFlags.HeraldGuardian, RoleFlags.Safelane, options),
-            BuildRankRoleRow(RankFlags.CrusaderArchon, RoleFlags.Midlane, options),
-            BuildRankRoleRow(RankFlags.LegendAncient, RoleFlags.Offlane, options),
-            BuildRankRoleRow(RankFlags.DivineImmortal, RoleFlags.Support, options),
-            BuildRankRoleRow(RankFlags.Uncalibrated, RoleFlags.HardSupport, options)
-        };
+        var pairedRows = RankRolePairs.Default
+            .Select(p => BuildRankRoleRow(p.RankFlag, p.RoleFlag, options))
+            .ToList();
 
         var rows = new List<IEnumerable<InlineKeyboardButton>>();
 

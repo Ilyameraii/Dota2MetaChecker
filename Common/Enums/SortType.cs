@@ -6,29 +6,31 @@ namespace Dota2MetaChecker.Common.Enums;
 public enum SortType
 {
     /// <summary>
-    ///     По количеству матчей
-    /// </summary>
-    MatchCount,
-
-    /// <summary>
     ///     По винрейту
     /// </summary>
     WinRate,
-
+    
     /// <summary>
-    ///     По рейтингу
+    ///     По
     /// </summary>
-    Rating,
+    WinrateDelta,
+    
+    /// <summary>
+    ///     По количеству матчей
+    /// </summary>
+    MatchCount,
 
     /// <summary>
     ///     По
     /// </summary>
     PickrateDelta,
     
+    
+    
     /// <summary>
-    ///     По
+    ///     По рейтингу
     /// </summary>
-    WinrateDelta,
+    Rating,
     
     /// <summary>
     ///     По
