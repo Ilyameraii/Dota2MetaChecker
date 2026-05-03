@@ -7,7 +7,7 @@ namespace Dota2MetaChecker.Common.Enums;
 public enum RankFlags
 {
     /// <summary>
-    ///     Остутствие флагов
+    ///     Отсутствие флагов
     /// </summary>
     None = 0,
 

@@ -8,7 +8,7 @@ public static class HeroRatingConstants
     public const int WinrateImpactValue = 20;
     
     /// <summary>
-    /// Минимальное количество матчей героя для вычисления рейтинга (иначе минимальное - 0)
+    /// Минимальное количество матчей героя для вычисления у него рейтинга
     /// </summary>
     public const int MinMatchesForRating = 200;
 }
