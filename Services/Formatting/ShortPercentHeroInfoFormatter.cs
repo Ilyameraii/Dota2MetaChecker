@@ -24,6 +24,6 @@ public class ShortPercentHeroInfoFormatter:IHeroInfoFormatter
         var pickRateDelta = hero.PickRateDelta.FormatDelta();
 
         return
-            $"<b>{hero.Name}</b> - <b>{winRate:F2}</b> (<b>{winRateDelta}</b>) % побед, <b>{pickRate:F2}</b> (<b>{pickRateDelta}</b>) % выборов";
+            $"<b>{hero.Name}</b> - <b>{winRate:F2} ({winRateDelta}) % </b>побед, <b>{pickRate:F2} ({pickRateDelta}) % </b>выборов";
     }
 }
