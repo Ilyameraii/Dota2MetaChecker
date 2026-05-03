@@ -90,10 +90,10 @@ public class HeroesListMessageBuilder(
 
         rows.AddRange(pairedRows);
         
-        // вношу по 3 кнопки в ряд
+        // Вношу по 2 кнопки в ряд
         foreach (var row in sortButtons)
         {
-        rows.Add(row);
+            rows.Add(row);
         }
         
         // кнопка для сброса настроек

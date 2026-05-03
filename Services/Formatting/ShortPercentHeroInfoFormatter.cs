@@ -4,10 +4,7 @@ using Services.Formatting.Extensions;
 
 namespace Services.Formatting;
 
-/// <summary>
-///     Форматировщик информации о персонажах для отображения
-/// </summary>
-public class HeroInfoFormatter : IHeroInfoFormatter
+public class ShortPercentHeroInfoFormatter:IHeroInfoFormatter
 {
     /// <summary>
     ///     Форматирует информацию о персонаже (имя, винрейт и пикрейт)
@@ -27,6 +24,6 @@ public class HeroInfoFormatter : IHeroInfoFormatter
         var pickRateDelta = hero.PickRateDelta.FormatDelta();
 
         return
-            $"<b>{hero.Name}</b> - <b>{winRate:F2}%</b> (<b>{winRateDelta}</b>) побед, <b>{pickRate:F2}%</b> (<b>{pickRateDelta}</b>) выборов";
+            $"<b>{hero.Name}</b> - <b>{winRate:F2}</b> (<b>{winRateDelta}</b>) % побед, <b>{pickRate:F2}</b> (<b>{pickRateDelta}</b>) % выборов";
     }
 }
