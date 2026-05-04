@@ -37,7 +37,6 @@ public class HeroesListMessageBuilder(
             heroesCache.HeroesNames!,
             prefs.ProcessingOptions);
 
-        var totalMatchCount = heroes.Sum(h => h.MatchCount);
         var totalPages = (heroes.Count - 1) / HeroesPerPage;
         var pageIndex = Math.Min(prefs.PageNumber, totalPages);
 
@@ -46,7 +45,7 @@ public class HeroesListMessageBuilder(
 
         var lines = Enumerable.Range(start, end - start)
             .Select(i =>
-                $"{i + 1}. {heroFormatter.FormatWithDelta(heroes[i], totalMatchCount)}");
+                $"{i + 1}. {heroFormatter.FormatWithDelta(heroes[i])}");
 
         var message = string.Join("\n\n", lines);
         var keyboard = BuildKeyboard(pageIndex, totalPages, prefs);
