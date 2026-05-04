@@ -18,7 +18,7 @@ public class HeroInfoFormatter : IHeroInfoFormatter
         var pickRate = hero.PickRate * 100;
         
         return
-            $"<b>{hero.Name}</b> - <b>{winRate * 100:F2}%</b> win rate, <b>{100.0 * pickRate:F2}%</b> pick rate";
+            $"<b>{hero.Name}</b> - <b>{winRate:F2}%</b> win rate, <b>{pickRate:F2}%</b> pick rate";
     }
 
     public string FormatWithDelta(Hero hero)
@@ -30,6 +30,6 @@ public class HeroInfoFormatter : IHeroInfoFormatter
         var pickRateDelta = hero.PickRateDelta * 100;
 
         return
-            $"<b>{hero.Name}</b> - <b>{winRate:F2}%</b> (<b>{winRateDelta} %</b>) побед, <b>{pickRate:F2}%</b> (<b>{pickRateDelta} %</b>) выборов";
+            $"<b>{hero.Name}</b> - <b>{winRate:F2}%</b> (<b>{winRateDelta:F2} %</b>) побед, <b>{pickRate:F2}%</b> (<b>{pickRateDelta:F2} %</b>) выборов";
     }
 }
