@@ -1,4 +1,5 @@
 using Dota2MetaChecker.Common.Models;
+using Services.Processing.Extensions.Constants;
 
 namespace Services.Processing.Extensions;
 
@@ -24,8 +25,13 @@ public static class HeroCalculatorExtensions
 
     public static Hero WithRating(this Hero hero)
     {
-        // твоя формула рейтинга
-        var rating = hero.WinRate * hero.PickRate;
+        if (hero.PickRate < HeroRatingConstants.MinPickrateForRating)
+        {
+            return hero with { Rating = double.MinValue };
+        }
+        
+        // формула рейтинга
+        var rating = 5*(hero.WinRate-0.5) + hero.PickRate;
         
         return hero with { Rating = rating };
     }
