@@ -5,22 +5,8 @@ namespace Dota2MetaChecker.Common.Models;
 /// <summary>
 ///     Модель персонажа с агрегированной статистикой
 /// </summary>
-public class Hero
+public record Hero
 {
-    public Hero WithDeltas(double winRateDelta, double pickRateDelta, double ratingDelta)
-    {
-        return new Hero
-        {
-            Id = Id,
-            Name = Name,
-            WinCount = WinCount,
-            MatchCount = MatchCount,
-            WinRateDelta = winRateDelta,
-            PickRateDelta = pickRateDelta,
-            RatingDelta = ratingDelta
-        };
-    }
-
     /// <summary>
     ///     Идентификатор персонажа
     /// </summary>
@@ -44,35 +30,25 @@ public class Hero
     /// <summary>
     ///     Процент побед
     /// </summary>
-    public float WinRate => MatchCount > 0 ? (float)WinCount / MatchCount : 0;
+    public float WinRate { get; init; }
 
     /// <summary>
     ///     Рейтинг персонажа
     /// </summary>
-    public double Rating
-    {
-        get
-        {
-            if (MatchCount < HeroRatingConstants.MinMatchesForRating)
-            {
-                return double.MinValue;
-            }
-            return HeroRatingConstants.WinrateImpactValue * (WinRate - 0.50) + Math.Log(MatchCount);
-        }
-    }
+    public double Rating { get; init; }
 
     /// <summary>
     ///     Изменение пикрейта относительно предыдущего периода
     /// </summary>
-    public double PickRateDelta { get; private init; }
+    public double PickRateDelta { get; init; }
 
     /// <summary>
     ///     Изменение винрейта относительно предыдущего периода
     /// </summary>
-    public double WinRateDelta { get; private init; }
+    public double WinRateDelta { get; init; }
 
     /// <summary>
     ///     Изменение рейтинга относительно предыдущего периода
     /// </summary>
-    public double RatingDelta { get; private init; }
+    public double RatingDelta { get; init; }
 }
