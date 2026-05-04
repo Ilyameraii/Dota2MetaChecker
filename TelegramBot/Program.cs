@@ -46,7 +46,7 @@ builder.Services.AddSingleton<IHeroStatsProcessor, HeroStatsProcessor>();
 builder.Services.AddSingleton<IHeroesDataService, HeroesDataService>();
 builder.Services.AddSingleton<IUserPreferencesService, UserPreferencesService>();
 builder.Services.AddSingleton<IHeroesListMessageBuilder, HeroesListMessageBuilder>();
-builder.Services.AddSingleton<IHeroStatDeltaCalculator, HeroStatDeltaCalculator>();
+builder.Services.AddSingleton<IHeroCalculator, HeroCalculator>();
 
 // Callback-обработчики для UserPreferencesService
 builder.Services.AddSingleton<ICallbackHandler, PageCallbackHandler>();

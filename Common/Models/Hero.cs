@@ -30,7 +30,12 @@ public record Hero
     /// <summary>
     ///     Процент побед
     /// </summary>
-    public float WinRate { get; init; }
+    public double WinRate { get; init; }
+    
+    /// <summary>
+    ///     Процент побед
+    /// </summary>
+    public double PickRate { get; init; }
 
     /// <summary>
     ///     Рейтинг персонажа

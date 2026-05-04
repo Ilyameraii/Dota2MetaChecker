@@ -11,7 +11,7 @@ namespace Services.Processing;
 public class HeroStatsProcessor(
     IHeroStatsFilterService filterService,
     IHeroStatsAggregator aggregator,
-    IHeroStatDeltaCalculator deltaCalculator,
+    IHeroCalculator calculator,
     IEnumerable<IHeroSortStategy> sortStrategies)
     : IHeroStatsProcessor
 {
@@ -33,7 +33,7 @@ public class HeroStatsProcessor(
         var oldAggregated = aggregator.AggregateByHero(oldFiltered, heroNames);
 
         // 3. Дельты
-        var withDeltas = deltaCalculator.CalculateDeltas(
+        var withDeltas = calculator.CalculateDeltas(
             aggregated,
             oldAggregated,
             filtered.Sum(s => s.MatchCount),
