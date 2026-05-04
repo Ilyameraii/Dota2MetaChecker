@@ -41,7 +41,7 @@ builder.Services.AddSingleton<IStratzApiService>(_ =>
 builder.Services.AddSingleton<IStratzHeroParser, StratzHeroParser>();
 builder.Services.AddSingleton<IHeroStatsFilterService, HeroStatsFilterService>();
 builder.Services.AddSingleton<IHeroStatsAggregator, HeroStatsAggregator>();
-builder.Services.AddSingleton<IHeroInfoFormatter, ShortPercentHeroInfoFormatter>();
+builder.Services.AddSingleton<IHeroInfoFormatter, HeroInfoFormatter>();
 builder.Services.AddSingleton<IHeroStatsProcessor, HeroStatsProcessor>();
 builder.Services.AddSingleton<IHeroesDataService, HeroesDataService>();
 builder.Services.AddSingleton<IUserPreferencesService, UserPreferencesService>();

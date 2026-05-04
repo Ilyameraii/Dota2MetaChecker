@@ -46,7 +46,7 @@ public class HeroesListMessageBuilder(
 
         var lines = Enumerable.Range(start, end - start)
             .Select(i =>
-                $"{i + 1}. {heroFormatter.FormatWithDelta(heroes[i], totalMatchCount)}");
+                $"{i + 1}. {heroFormatter.FormatWithDelta(heroes[i])}");
 
         var message = string.Join("\n\n", lines);
         var keyboard = BuildKeyboard(pageIndex, totalPages, prefs);

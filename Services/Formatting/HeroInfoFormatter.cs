@@ -12,21 +12,24 @@ public class HeroInfoFormatter : IHeroInfoFormatter
     /// <summary>
     ///     Форматирует информацию о персонаже (имя, винрейт и пикрейт)
     /// </summary>
-    public string Format(Hero hero, int totalMatchCount)
-    {
-        return
-            $"{hero.Name} - {hero.WinRate * 100:F2}% win rate, {100.0 * hero.MatchCount / totalMatchCount:F2}% pick rate";
-    }
-
-    public string FormatWithDelta(Hero hero, int totalMatchCount)
+    public string Format(Hero hero)
     {
         var winRate = hero.WinRate * 100;
-        var pickRate = 100.0 * hero.MatchCount / totalMatchCount;
+        var pickRate = hero.PickRate * 100;
+        
+        return
+            $"<b>{hero.Name}</b> - <b>{winRate:F2}%</b> win rate, <b>{pickRate:F2}%</b> pick rate";
+    }
 
-        var winRateDelta = hero.WinRateDelta.FormatDelta();
-        var pickRateDelta = hero.PickRateDelta.FormatDelta();
+    public string FormatWithDelta(Hero hero)
+    {
+        var winRate = hero.WinRate * 100;
+        var pickRate = hero.PickRate * 100;
+
+        var winRateDelta = hero.WinRateDelta * 100;
+        var pickRateDelta = hero.PickRateDelta * 100;
 
         return
-            $"<b>{hero.Name}</b> - <b>{winRate:F2}%</b> (<b>{winRateDelta}</b>) побед, <b>{pickRate:F2}%</b> (<b>{pickRateDelta}</b>) выборов";
+            $"<b>{hero.Name}</b> - <b>{winRate:F2}%</b> (<b>{winRateDelta:F2} %</b>) побед, <b>{pickRate:F2}%</b> (<b>{pickRateDelta:F2} %</b>) выборов";
     }
 }
