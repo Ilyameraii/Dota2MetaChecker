@@ -1,9 +1,10 @@
 using Dota2MetaChecker.Common.Models;
+using Services.Contracts.Processing;
 using Services.Processing.Extensions;
 
 namespace Services.Processing;
 
-public class HeroCalculator
+public class HeroCalculator: IHeroCalculator
 {
     public Hero Calculate(Hero hero, int totalMatchCount, Hero? previous = null)
     {
