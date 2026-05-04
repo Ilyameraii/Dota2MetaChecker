@@ -1,6 +1,6 @@
 using Dota2MetaChecker.Common.Models;
 
-namespace Services.Extensions;
+namespace Services.Processing.StrategiesOfSorting.Extensions;
 
 /// <summary>
 ///     Методы расширения для сортировки коллекции персонажей
@@ -52,6 +52,6 @@ public static class HeroesSortingExtensions
     /// </summary>
     public static IOrderedEnumerable<Hero> OrderByRatingDelta(this IEnumerable<Hero> source, bool descending = false)
     {
-        return descending ? source.OrderByDescending(h => h.PickRateDelta) : source.OrderBy(h => h.PickRateDelta);
+        return descending ? source.OrderByDescending(h => h.RatingDelta) : source.OrderBy(h => h.RatingDelta);
     }
 }
