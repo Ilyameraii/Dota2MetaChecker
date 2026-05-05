@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormattingResources", "FormattingResources\FormattingResources.csproj", "{8617C847-0053-4807-AC20-135EB8D5DD97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Tests", "Services.Tests\Services.Tests.csproj", "{F43ABD65-CB03-4969-9AD7-952E8E945CBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramBot.Tests", "TelegramBot.Tests\TelegramBot.Tests.csproj", "{53E53C33-21E3-4F53-A97B-A83FE1435D7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +58,13 @@ Global
 		{8617C847-0053-4807-AC20-135EB8D5DD97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8617C847-0053-4807-AC20-135EB8D5DD97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8617C847-0053-4807-AC20-135EB8D5DD97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F43ABD65-CB03-4969-9AD7-952E8E945CBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F43ABD65-CB03-4969-9AD7-952E8E945CBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F43ABD65-CB03-4969-9AD7-952E8E945CBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F43ABD65-CB03-4969-9AD7-952E8E945CBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53E53C33-21E3-4F53-A97B-A83FE1435D7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53E53C33-21E3-4F53-A97B-A83FE1435D7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53E53C33-21E3-4F53-A97B-A83FE1435D7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53E53C33-21E3-4F53-A97B-A83FE1435D7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
