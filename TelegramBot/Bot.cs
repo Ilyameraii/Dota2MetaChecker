@@ -1,4 +1,3 @@
-using Dota2MetaChecker.Common.Models;
 using Dota2MetaChecker.TelegramBot.Contracts;
 using Services.Contracts.Data_sync;
 using Services.Data_sync;
@@ -6,13 +5,14 @@ using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using static Dota2MetaChecker.TelegramBot.Constants.PaginationConstants;
 
 namespace Dota2MetaChecker.TelegramBot;
 
 /// <summary>
 ///     Telegram бот для отображения статистики персонажей
 /// </summary>
-public class Dota2MetaBot(
+public class Bot(
     ITelegramBotClient botClient,
     IUserPreferencesService preferencesService,
     HeroesDataCache heroesCache,
@@ -21,8 +21,6 @@ public class Dota2MetaBot(
     IHeroesImageBuilder imageBuilder
 )
 {
-    private const int HeroesPerPage = 5;
-
     /// <summary>
     ///     Запускает приём обновлений от Telegram
     /// </summary>

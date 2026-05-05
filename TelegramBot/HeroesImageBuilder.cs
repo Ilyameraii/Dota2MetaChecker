@@ -4,7 +4,7 @@ using Services.Contracts.Avatars;
 using Services.Contracts.Processing;
 using Services.Data_sync;
 using Services.Formatting;
-using Telegram.Bot.Types.ReplyMarkups;
+using static Dota2MetaChecker.TelegramBot.Constants.PaginationConstants;
 
 namespace Dota2MetaChecker.TelegramBot;
 
@@ -17,7 +17,6 @@ public class HeroesImageBuilder(
     HeroImageGenerator imageGenerator,
     IHeroAvatarProvider avatarProvider) : IHeroesImageBuilder
 {
-    private const int HeroesPerPage = 5;
  
     public bool IsReady => heroesCache.IsLoaded;
  

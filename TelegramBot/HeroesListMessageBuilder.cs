@@ -1,13 +1,9 @@
-using Dota2MetaChecker.Common.Constants;
-using Dota2MetaChecker.Common.Enums;
 using Dota2MetaChecker.Common.Models;
 using Dota2MetaChecker.TelegramBot.Contracts;
-using Dota2MetaChecker.TelegramBot.Extensions;
 using Services.Contracts.Formatting;
 using Services.Contracts.Processing;
 using Services.Data_sync;
-using Telegram.Bot.Types.ReplyMarkups;
-using SortType = Dota2MetaChecker.Common.Enums.SortType;
+using static Dota2MetaChecker.TelegramBot.Constants.PaginationConstants;
 
 namespace Dota2MetaChecker.TelegramBot;
 
@@ -19,7 +15,6 @@ public class HeroesListMessageBuilder(
     IHeroStatsProcessor heroStatsProcessor,
     HeroesDataCache heroesCache) : IHeroesListMessageBuilder
 {
-    private const int HeroesPerPage = 5;
  
     public bool IsReady => heroesCache.IsLoaded;
  

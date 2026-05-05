@@ -75,7 +75,7 @@ builder.Services.AddSingleton<IHeroSortStategy, RatingDeltaSortStrategy>();
 builder.Services.AddHostedService<HeroesDataSyncService>();
 
 // Регистрация самого бота
-builder.Services.AddSingleton<Dota2MetaBot>();
+builder.Services.AddSingleton<Bot>();
 
 using var host = builder.Build();
 
@@ -83,7 +83,7 @@ using var host = builder.Build();
 await host.StartAsync();
 
 // 4. Запуск бота
-var bot = host.Services.GetRequiredService<Dota2MetaBot>();
+var bot = host.Services.GetRequiredService<Bot>();
 var cts = new CancellationTokenSource();
 
 Console.CancelKeyPress += (_, e) =>
