@@ -1,5 +1,6 @@
 using Services.Contracts.Avatars;
 using Services.Data_sync;
+// ReSharper disable InconsistentlySynchronizedField
 
 namespace Services.ImageProviders;
 
@@ -12,7 +13,8 @@ public class HeroAvatarProvider(HttpClient http, HeroesDataCache cache) : IHeroA
         CancellationToken ct)
     {
         var result = new Dictionary<int, byte[]>();
-        var toLoad = heroIds.Where(id => !avatarCache.ContainsKey(id)).ToList();
+        var enumerable = heroIds.ToList();
+        var toLoad = enumerable.Where(id => !avatarCache.ContainsKey(id)).ToList();
 
         await Parallel.ForEachAsync(toLoad, ct, async (id, token) =>
         {
@@ -31,7 +33,8 @@ public class HeroAvatarProvider(HttpClient http, HeroesDataCache cache) : IHeroA
             }
         });
 
-        foreach (var id in heroIds)
+        foreach (var id in enumerable)
+            // ReSharper disable once InconsistentlySynchronizedField
             if (avatarCache.TryGetValue(id, out var b))
                 result[id] = b;
 

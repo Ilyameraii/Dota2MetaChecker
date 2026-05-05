@@ -39,7 +39,9 @@ public class HeroImageGenerator : IImageGenerator
     ///     Смещение нумерации. Для страницы 1 (ТОП-5) = 0,
     ///     для страницы 2 (ТОП-10) = 5, для страницы 3 (ТОП-15) = 10 и т.д.
     /// </param>
+    /// <param name="options">Параметры сортировки и фильтрации списка персонажей</param>
     /// <returns>PNG-байты изображения</returns>
+    [Obsolete("Obsolete")]
     public byte[] Generate(
         IReadOnlyList<Hero> heroes,
         IReadOnlyDictionary<int, byte[]>? heroAvatars = null,
@@ -91,56 +93,50 @@ public class HeroImageGenerator : IImageGenerator
 
     // ─── Заголовок ───────────────────────────────────────────────────────────
 
+    [Obsolete("Obsolete")]
     private static void DrawHeader(SKCanvas canvas, string title)
     {
         const float y = 52f;
 
         // "DOTA 2 META TRACKER"
-        using var labelPaint = new SKPaint
-        {
-            Color = SKColors.White,
-            TextSize = 28,
-            IsAntialias = true,
-            Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright),
-            FakeBoldText = true
-        };
+        using var labelPaint = new SKPaint();
+        labelPaint.Color = SKColors.White;
+        labelPaint.TextSize = 28;
+        labelPaint.IsAntialias = true;
+        labelPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        labelPaint.FakeBoldText = true;
         canvas.DrawText("DOTA 2 META TRACKER", Padding, y, labelPaint);
 
         // Разделитель "|"
-        using var sepPaint = new SKPaint
-        {
-            Color = new SKColor(100, 100, 100),
-            TextSize = 28,
-            IsAntialias = true,
-            Typeface = labelPaint.Typeface
-        };
+        using var sepPaint = new SKPaint();
+        sepPaint.Color = new SKColor(100, 100, 100);
+        sepPaint.TextSize = 28;
+        sepPaint.IsAntialias = true;
+        sepPaint.Typeface = labelPaint.Typeface;
         var labelWidth = labelPaint.MeasureText("DOTA 2 META TRACKER");
         canvas.DrawText("  |  ", Padding + labelWidth, y, sepPaint);
 
         // Красный заголовок (ТОП-5)
-        using var titlePaint = new SKPaint
-        {
-            Color = AccentRed,
-            TextSize = 28,
-            IsAntialias = true,
-            Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright),
-            FakeBoldText = true
-        };
+        using var titlePaint = new SKPaint();
+        titlePaint.Color = AccentRed;
+        titlePaint.TextSize = 28;
+        titlePaint.IsAntialias = true;
+        titlePaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        titlePaint.FakeBoldText = true;
         var sepWidth = sepPaint.MeasureText("  |  ");
         canvas.DrawText(title.ToUpper(), Padding + labelWidth + sepWidth, y, titlePaint);
 
         // Нижняя линия заголовка
-        using var linePaint = new SKPaint
-        {
-            Color = AccentRed,
-            StrokeWidth = 2,
-            IsAntialias = true
-        };
+        using var linePaint = new SKPaint();
+        linePaint.Color = AccentRed;
+        linePaint.StrokeWidth = 2;
+        linePaint.IsAntialias = true;
         canvas.DrawLine(Padding, HeaderHeight - 10, Width - Padding, HeaderHeight - 10, linePaint);
     }
 
     // ─── Строка героя ────────────────────────────────────────────────────────
 
+    [Obsolete("Obsolete")]
     private static void DrawHeroRow(
         SKCanvas canvas,
         Hero hero,
@@ -153,7 +149,8 @@ public class HeroImageGenerator : IImageGenerator
         var centerY = rowTop + RowHeight / 2f;
 
         // Полупрозрачная карточка фона (чётные/нечётные чуть разные)
-        using var cardPaint = new SKPaint { IsAntialias = true };
+        using var cardPaint = new SKPaint();
+        cardPaint.IsAntialias = true;
         var cardAlpha = (byte)(index % 2 == 0 ? 40 : 20);
         cardPaint.Color = CardBackground.WithAlpha(cardAlpha);
         var cardRect = new SKRect(Padding / 2f, rowTop + 4, Width - Padding / 2f, rowBottom - 4);
@@ -162,20 +159,20 @@ public class HeroImageGenerator : IImageGenerator
         // Разделитель
         if (index > 0)
         {
-            using var divPaint = new SKPaint { Color = DividerColor, StrokeWidth = 1 };
+            using var divPaint = new SKPaint();
+            divPaint.Color = DividerColor;
+            divPaint.StrokeWidth = 1;
             canvas.DrawLine(Padding, rowTop, Width - Padding, rowTop, divPaint);
         }
 
         float x = Padding;
 
         // ── Номер ──
-        using var rankPaint = new SKPaint
-        {
-            Color = RankColor,
-            TextSize = 30,
-            IsAntialias = true,
-            Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright)
-        };
+        using var rankPaint = new SKPaint();
+        rankPaint.Color = RankColor;
+        rankPaint.TextSize = 30;
+        rankPaint.IsAntialias = true;
+        rankPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
         var rankText = $"{index + 1 + rankOffset}";   // <-- учитываем смещение страницы
         canvas.DrawText(rankText, x, centerY + 11, rankPaint);
         x += 52;
@@ -186,34 +183,28 @@ public class HeroImageGenerator : IImageGenerator
         x += AvatarWidth + 20;
 
         // ── Имя героя ──
-        using var namePaint = new SKPaint
-        {
-            Color = HeroNameColor,
-            TextSize = 26,
-            IsAntialias = true,
-            FakeBoldText = true,
-            Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright)
-        };
+        using var namePaint = new SKPaint();
+        namePaint.Color = HeroNameColor;
+        namePaint.TextSize = 26;
+        namePaint.IsAntialias = true;
+        namePaint.FakeBoldText = true;
+        namePaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
         var displayName = (hero.Name ?? "Unknown").ToUpper();
         canvas.DrawText(displayName, x, centerY + 9, namePaint);
 
         // ── Win Rate ──
         const float statX = 580f;
-        using var wrPaint = new SKPaint
-        {
-            Color = WinRateColor,
-            TextSize = 24,
-            IsAntialias = true,
-            FakeBoldText = true,
-            Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright)
-        };
-        using var wrLabelPaint = new SKPaint
-        {
-            Color = new SKColor(160, 200, 160),
-            TextSize = 14,
-            IsAntialias = true,
-            Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright)
-        };
+        using var wrPaint = new SKPaint();
+        wrPaint.Color = WinRateColor;
+        wrPaint.TextSize = 24;
+        wrPaint.IsAntialias = true;
+        wrPaint.FakeBoldText = true;
+        wrPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        using var wrLabelPaint = new SKPaint();
+        wrLabelPaint.Color = new SKColor(160, 200, 160);
+        wrLabelPaint.TextSize = 14;
+        wrLabelPaint.IsAntialias = true;
+        wrLabelPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
 
         var wrText = $"{hero.WinRate * 100:F2}%";
         canvas.DrawText(wrText, statX, centerY + 4, wrPaint);
@@ -225,21 +216,17 @@ public class HeroImageGenerator : IImageGenerator
 
         // ── Pick Rate ──
         const float prX = 740f;
-        using var prPaint = new SKPaint
-        {
-            Color = PickRateColor,
-            TextSize = 24,
-            IsAntialias = true,
-            FakeBoldText = true,
-            Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright)
-        };
-        using var prLabelPaint = new SKPaint
-        {
-            Color = new SKColor(180, 180, 180),
-            TextSize = 14,
-            IsAntialias = true,
-            Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright)
-        };
+        using var prPaint = new SKPaint();
+        prPaint.Color = PickRateColor;
+        prPaint.TextSize = 24;
+        prPaint.IsAntialias = true;
+        prPaint.FakeBoldText = true;
+        prPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        using var prLabelPaint = new SKPaint();
+        prLabelPaint.Color = new SKColor(180, 180, 180);
+        prLabelPaint.TextSize = 14;
+        prLabelPaint.IsAntialias = true;
+        prLabelPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
 
         var prText = $"{hero.PickRate * 100:F2}%";
         canvas.DrawText(prText, prX, centerY + 4, prPaint);
@@ -252,6 +239,7 @@ public class HeroImageGenerator : IImageGenerator
 
     // ─── Аватар героя ────────────────────────────────────────────────────────
 
+    [Obsolete("Obsolete")]
     private static void DrawAvatar(
         SKCanvas canvas,
         Hero hero,
@@ -259,13 +247,11 @@ public class HeroImageGenerator : IImageGenerator
         SKRect rect)
     {
         // Рамка аватара
-        using var borderPaint = new SKPaint
-        {
-            Color = new SKColor(80, 60, 40),
-            StrokeWidth = 2,
-            IsAntialias = true,
-            Style = SKPaintStyle.Stroke
-        };
+        using var borderPaint = new SKPaint();
+        borderPaint.Color = new SKColor(80, 60, 40);
+        borderPaint.StrokeWidth = 2;
+        borderPaint.IsAntialias = true;
+        borderPaint.Style = SKPaintStyle.Stroke;
         canvas.DrawRoundRect(rect, 6, 6, borderPaint);
 
         if (heroAvatars != null && heroAvatars.TryGetValue(hero.Id, out var avatarBytes) && avatarBytes.Length > 0)
@@ -279,7 +265,9 @@ public class HeroImageGenerator : IImageGenerator
                 clipPath.AddRoundRect(rect, 6, 6);
                 canvas.ClipPath(clipPath, antialias: true);
 
-                using var imgPaint = new SKPaint { IsAntialias = true, FilterQuality = SKFilterQuality.High };
+                using var imgPaint = new SKPaint();
+                imgPaint.IsAntialias = true;
+                imgPaint.FilterQuality = SKFilterQuality.High;
                 canvas.DrawBitmap(avatarBitmap, rect, imgPaint);
                 canvas.Restore();
                 return;
@@ -287,30 +275,27 @@ public class HeroImageGenerator : IImageGenerator
         }
 
         // Fallback: placeholder с инициалом
-        using var bgPaint = new SKPaint
-        {
-            Color = new SKColor(50, 35, 25),
-            IsAntialias = true
-        };
+        using var bgPaint = new SKPaint();
+        bgPaint.Color = new SKColor(50, 35, 25);
+        bgPaint.IsAntialias = true;
         canvas.DrawRoundRect(rect, 6, 6, bgPaint);
 
         var initial = (hero.Name ?? "?").Length > 0
             ? hero.Name![0].ToString().ToUpper()
             : "?";
 
-        using var initPaint = new SKPaint
-        {
-            Color = new SKColor(180, 140, 100),
-            TextSize = 28,
-            IsAntialias = true,
-            FakeBoldText = true,
-            TextAlign = SKTextAlign.Center
-        };
+        using var initPaint = new SKPaint();
+        initPaint.Color = new SKColor(180, 140, 100);
+        initPaint.TextSize = 28;
+        initPaint.IsAntialias = true;
+        initPaint.FakeBoldText = true;
+        initPaint.TextAlign = SKTextAlign.Center;
         canvas.DrawText(initial, rect.MidX, rect.MidY + 10, initPaint);
     }
 
     // ─── Дельта (изменение) ──────────────────────────────────────────────────
 
+    [Obsolete("Obsolete")]
     private static void DrawDelta(SKCanvas canvas, double delta, float x, float y, float textSize)
     {
         if (Math.Abs(delta) < 0.0001) return;
@@ -320,13 +305,11 @@ public class HeroImageGenerator : IImageGenerator
         var arrow = isPositive ? "▲" : "▼";
         var color = isPositive ? new SKColor(80, 200, 80) : new SKColor(220, 70, 60);
 
-        using var deltaPaint = new SKPaint
-        {
-            Color = color,
-            TextSize = textSize,
-            IsAntialias = true,
-            Typeface = SKTypeface.FromFamilyName("Arial")
-        };
+        using var deltaPaint = new SKPaint();
+        deltaPaint.Color = color;
+        deltaPaint.TextSize = textSize;
+        deltaPaint.IsAntialias = true;
+        deltaPaint.Typeface = SKTypeface.FromFamilyName("Arial");
         canvas.DrawText($"{arrow} {Math.Abs(deltaPercent):F2}%", x, y, deltaPaint);
     }
 }

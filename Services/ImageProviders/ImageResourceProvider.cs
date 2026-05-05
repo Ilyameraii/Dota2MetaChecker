@@ -9,10 +9,9 @@ namespace Services.ImageProviders;
 public static class ImageResourceProvider
 {
     // Явно указываем сборку FormattingResources через маркерный тип из того проекта.
-    // typeof(ImageResourceProvider).Assembly здесь дало бы Services.dll — не то!
-    private static readonly Assembly resourceAssembly = typeof(ResourceAssemblyMarker).Assembly;
+    private static readonly Assembly ResourceAssembly = typeof(ResourceAssemblyMarker).Assembly;
  
-    private static readonly Dictionary<string, byte[]> cache = new(StringComparer.OrdinalIgnoreCase);
+    private static readonly Dictionary<string, byte[]> Cache = new(StringComparer.OrdinalIgnoreCase);
  
     /// <summary>
     ///     Возвращает байты PNG-иконки ранга или null, если ресурс не найден.
@@ -30,24 +29,23 @@ public static class ImageResourceProvider
  
     /// <summary>
     ///     Возвращает список всех встроенных имён ресурсов из FormattingResources.dll.
-    ///     Используй при отладке чтобы убедиться что имена совпадают с запрашиваемыми.
     /// </summary>
     public static IEnumerable<string> ListAll()
-        => resourceAssembly.GetManifestResourceNames();
+        => ResourceAssembly.GetManifestResourceNames();
  
     private static byte[]? GetResource(string resourceName)
     {
-        if (cache.TryGetValue(resourceName, out var cached))
+        if (Cache.TryGetValue(resourceName, out var cached))
             return cached;
  
-        using var stream = resourceAssembly.GetManifestResourceStream(resourceName);
+        using var stream = ResourceAssembly.GetManifestResourceStream(resourceName);
         if (stream == null)
             return null;
  
         var bytes = new byte[stream.Length];
         _ = stream.Read(bytes, 0, bytes.Length);
  
-        cache[resourceName] = bytes;
+        Cache[resourceName] = bytes;
         return bytes;
     }
 }
