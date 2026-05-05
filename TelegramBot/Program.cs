@@ -53,6 +53,7 @@ builder.Services.AddSingleton<IHeroesKeyboardBuilder, HeroesKeyboardBuilder>();
 builder.Services.AddSingleton<IHeroesListMessageBuilder, HeroesListMessageBuilder>();
 builder.Services.AddSingleton<IHeroesImageBuilder, HeroesImageBuilder>();
 builder.Services.AddSingleton<IImageGenerator, HeroOptionsImageGenerator>();
+builder.Services.AddSingleton<IBotMessageRenderer, BotMessageRenderer>();
 builder.Services.AddSingleton<IHeroAvatarProvider, HeroAvatarProvider>();
 builder.Services.AddHttpClient<HeroAvatarProvider>();
 

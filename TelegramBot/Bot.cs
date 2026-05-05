@@ -16,9 +16,7 @@ public class Bot(
     ITelegramBotClient botClient,
     IUserPreferencesService preferencesService,
     HeroesDataCache heroesCache,
-    IHeroesKeyboardBuilder keyboardBuilder,
-    IHeroesListMessageBuilder messageBuilder,
-    IHeroesImageBuilder imageBuilder
+    IBotMessageRenderer renderer
 )
 {
     /// <summary>
@@ -77,26 +75,13 @@ public class Bot(
     {
         if (!heroesCache.IsLoaded)
         {
-            await botClient.SendMessage(chatId, "Данные ещё загружаются, попробуйте через минуту.", ParseMode.Html);
+            await botClient.SendMessage(chatId,
+                "Данные ещё загружаются, попробуйте через минуту.", ParseMode.Html);
             return;
         }
 
         var prefs = preferencesService.GetOrCreate(userId);
-        var totalPages = GetTotalPages();
-        var pageIndex = Math.Min(prefs.PageNumber, totalPages);
-        var keyboard = keyboardBuilder.Build(pageIndex, totalPages, prefs);
-
-        if (prefs.IsImageFormat)
-        {
-            var image = await imageBuilder.BuildAsync(prefs);
-            using var stream = new MemoryStream(image);
-            await botClient.SendPhoto(chatId, InputFile.FromStream(stream, "meta.png"), replyMarkup: keyboard);
-        }
-        else
-        {
-            var message = messageBuilder.BuildMessage(prefs);
-            await botClient.SendMessage(chatId, message, ParseMode.Html, replyMarkup: keyboard);
-        }
+        await renderer.RenderAsync(chatId, oldMessageId: null, prefs);
     }
 
     private async Task HandleCallbackQueryAsync(CallbackQuery callbackQuery)
@@ -108,45 +93,7 @@ public class Bot(
         preferencesService.Apply(userId, callbackQuery.Data!);
         var prefs = preferencesService.GetOrCreate(userId);
 
-        var totalPages = GetTotalPages();
-        var pageIndex = Math.Min(prefs.PageNumber, totalPages);
-        var keyboard = keyboardBuilder.Build(pageIndex, totalPages, prefs);
-
-        if (prefs.IsImageFormat)
-        {
-            var image = await imageBuilder.BuildAsync(prefs);
-            try
-            {
-                using var stream = new MemoryStream(image);
-                await botClient.EditMessageMedia(chatId, messageId,
-                    new InputMediaPhoto(InputFile.FromStream(stream, "meta.png")),
-                    replyMarkup: keyboard);
-            }
-            catch
-            {
-                using var stream = new MemoryStream(image);
-                await botClient.SendPhoto(chatId,
-                    InputFile.FromStream(stream, "meta.png"),
-                    replyMarkup: keyboard);
-            }
-        }
-        else
-        {
-            var message = messageBuilder.BuildMessage(prefs);
-            try
-            {
-                await botClient.EditMessageText(chatId, messageId, message,
-                    ParseMode.Html, replyMarkup: keyboard);
-            }
-            catch
-            {
-                await botClient.SendMessage(chatId, message,
-                    ParseMode.Html, replyMarkup: keyboard);
-            }
-        }
-
+        await renderer.RenderAsync(chatId, messageId, prefs);
         await botClient.AnswerCallbackQuery(callbackQuery.Id);
     }
-    
-    private int GetTotalPages() => (heroesCache.HeroCount - 1) / HeroesPerPage;
 }
