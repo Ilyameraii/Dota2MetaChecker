@@ -23,41 +23,51 @@ using Telegram.Bot;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-//  Убираю логирование добавлений данных в БД
+// Скрываем логи Entity Framework (уровень Warning и выше)
 builder.Logging.AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning);
 
-// 1. Настройка базы данных PostgreSQL
+// === КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ ===
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2. Регистрация сервисов 
+// === КЭШИРОВАНИЕ ===
 builder.Services.AddSingleton<HeroesDataCache>();
 
-// Регистрация API клиента через HttpClient 
+// === ВНЕШНИЕ API КЛИЕНТЫ ===
+// Telegram Bot API
 builder.Services.AddSingleton<ITelegramBotClient>(_ =>
     new TelegramBotClient(builder.Configuration["Telegram:Token"] ?? throw new Exception("Token not found")));
 
-// Регистрация бизнес-логики
+// Stratz API (источник данных о героях)
 builder.Services.AddSingleton<IStratzApiService>(_ =>
     new StratzApiService(builder.Configuration["StratzApi:Token"] ?? string.Empty));
 
+// === ПАРСИНГ И ОБРАБОТКА ДАННЫХ ===
 builder.Services.AddSingleton<IStratzHeroParser, StratzHeroParser>();
 builder.Services.AddSingleton<IHeroStatsFilterService, HeroStatsFilterService>();
 builder.Services.AddSingleton<IHeroStatsAggregator, HeroStatsAggregator>();
+builder.Services.AddSingleton<IHeroCalculator, HeroCalculator>();
+
+// === ФОРМАТИРОВАНИЕ И ОТОБРАЖЕНИЕ ===
 builder.Services.AddSingleton<IHeroInfoFormatter, HeroInfoFormatter>();
 builder.Services.AddSingleton<IHeroStatsProcessor, HeroStatsProcessor>();
 builder.Services.AddSingleton<IHeroesDataService, HeroesDataService>();
-builder.Services.AddSingleton<IUserPreferencesService, UserPreferencesService>();
-builder.Services.AddSingleton<IHeroCalculator, HeroCalculator>();
+
+// === ПОЛЬЗОВАТЕЛЬСКИЙ ИНТЕРФЕЙС ===
+// Клавиатуры и сообщения
 builder.Services.AddSingleton<IHeroesKeyboardBuilder, HeroesKeyboardBuilder>();
 builder.Services.AddSingleton<IHeroesListMessageBuilder, HeroesListMessageBuilder>();
+builder.Services.AddSingleton<IBotMessageRenderer, BotMessageRenderer>();
+
+// Генерация изображений
 builder.Services.AddSingleton<IHeroesImageBuilder, HeroesImageBuilder>();
 builder.Services.AddSingleton<IImageGenerator, HeroOptionsImageGenerator>();
-builder.Services.AddSingleton<IBotMessageRenderer, BotMessageRenderer>();
+
+// Аватарки героев (с HTTP-клиентом)
 builder.Services.AddSingleton<IHeroAvatarProvider, HeroAvatarProvider>();
 builder.Services.AddHttpClient<HeroAvatarProvider>();
 
-// Callback-обработчики для UserPreferencesService
+// === ОБРАБОТЧИКИ CALLBACK-ЗАПРОСОВ ===
 builder.Services.AddSingleton<ICallbackHandler, PageCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, RankCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, RoleCallbackHandler>();
@@ -65,8 +75,7 @@ builder.Services.AddSingleton<ICallbackHandler, SortCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, ClearOptionsCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, SwitchFormatCallbackHandler>();
 
-
-// Стратегии сортировки для HeroStatsProcessor
+// === СТРАТЕГИИ СОРТИРОВКИ ===
 builder.Services.AddSingleton<IHeroSortStategy, MatchCountSortStrategy>();
 builder.Services.AddSingleton<IHeroSortStategy, WinrateSortStrategy>();
 builder.Services.AddSingleton<IHeroSortStategy, RatingSortStrategy>();
@@ -74,10 +83,14 @@ builder.Services.AddSingleton<IHeroSortStategy, WinrateDeltaSortStrategy>();
 builder.Services.AddSingleton<IHeroSortStategy, PickrateDeltaSortStrategy>();
 builder.Services.AddSingleton<IHeroSortStategy, RatingDeltaSortStrategy>();
 
-// Фоновый сервис для обновления и сохранения в БД статистики по героям
+// === СЕРВИСЫ ПОЛЬЗОВАТЕЛЬСКИХ НАСТРОЕК ===
+builder.Services.AddSingleton<IUserPreferencesService, UserPreferencesService>();
+
+// === ФОНОВЫЕ СЕРВИСЫ ===
+// Синхронизация статистики героев с БД
 builder.Services.AddHostedService<HeroesDataSyncService>();
 
-// Регистрация самого бота
+// === САМ БОТ ===
 builder.Services.AddSingleton<Bot>();
 
 using var host = builder.Build();
