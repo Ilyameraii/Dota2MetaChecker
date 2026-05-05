@@ -32,7 +32,7 @@ public class UserPreferences
     /// <summary>
     ///     Меняет формат для пользователя
     /// </summary>
-    public void ChangeFormat()
+    public void SwitchFormat()
     {
         IsImageFormat = !IsImageFormat;
     }

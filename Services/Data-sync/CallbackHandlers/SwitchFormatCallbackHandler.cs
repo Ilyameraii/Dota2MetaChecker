@@ -4,12 +4,14 @@ using Services.Contracts.Data_sync;
 
 namespace Services.Data_sync.CallbackHandlers;
 
-public class ClearOptionsCallbackHandler : ICallbackHandler
+public class SwitchFormatCallbackHandler: ICallbackHandler
 {
-    public bool CanHandle(string callbackData) => callbackData == CallbackConstants.ClearOptions;
-
+    public bool CanHandle(string callbackData)
+    {
+        return callbackData.StartsWith(CallbackConstants.SwitchFormat);
+    }
     public void Handle(UserPreferences prefs, string callbackData)
     {
-        prefs.Reset();
+        prefs.SwitchFormat();
     }
 }

@@ -8,10 +8,7 @@ namespace Services.Data_sync.CallbackHandlers;
 
 public class RoleCallbackHandler : ICallbackHandler
 {
-    public bool CanHandle(string callbackData)
-    {
-        return callbackData.StartsWith(CallbackPrefixes.Role);
-    }
+    public bool CanHandle(string callbackData) => callbackData.StartsWith(CallbackPrefixes.Role);
 
     public void Handle(UserPreferences prefs, string callbackData)
     {

@@ -6,10 +6,7 @@ namespace Services.Data_sync.CallbackHandlers;
 
 public class PageCallbackHandler : ICallbackHandler
 {
-    public bool CanHandle(string callbackData)
-    {
-        return callbackData.StartsWith(CallbackPrefixes.Page);
-    }
+    public bool CanHandle(string callbackData) => callbackData.StartsWith(CallbackPrefixes.Page);
 
     public void Handle(UserPreferences prefs, string callbackData)
     {

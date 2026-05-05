@@ -7,10 +7,7 @@ namespace Services.Data_sync.CallbackHandlers;
 
 public class RankCallbackHandler : ICallbackHandler
 {
-    public bool CanHandle(string callbackData)
-    {
-        return callbackData.StartsWith(CallbackPrefixes.Rank);
-    }
+    public bool CanHandle(string callbackData) => callbackData.StartsWith(CallbackPrefixes.Rank);
 
     public void Handle(UserPreferences prefs, string callbackData)
     {
