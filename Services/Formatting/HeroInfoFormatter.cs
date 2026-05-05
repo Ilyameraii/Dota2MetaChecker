@@ -23,13 +23,13 @@
 
         public string FormatWithDelta(Hero hero)
         {
-            var winRate = hero.WinRate * 100;
-            var pickRate = hero.PickRate * 100;
+            var winRate = hero.WinRate;
+            var pickRate = hero.PickRate;
 
-            var winRateDelta = hero.WinRateDelta * 100;
-            var pickRateDelta = hero.PickRateDelta * 100;
+            var winRateDelta = hero.WinRateDelta;
+            var pickRateDelta = hero.PickRateDelta;
 
             return
-                $"<b>{hero.Name}</b> - <b>{winRate:F2}%</b> (<b>{winRateDelta:F2} %</b>) побед, <b>{pickRate:F2}%</b> (<b>{pickRateDelta:F2} %</b>) выборов";
+                $"<b>{hero.Name}</b> - <b>{winRate*100:F2}%</b> (<b>{winRateDelta*100:F2} %</b>) побед, <b>{pickRate.FormatDelta()}%</b> (<b>{pickRateDelta.FormatDelta()} %</b>) выборов";
         }
     }
