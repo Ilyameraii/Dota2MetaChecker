@@ -1,7 +1,7 @@
 using Services.Contracts.Avatars;
 using Services.Data_sync;
 
-namespace Services.Avatars;
+namespace Services.ImageProviders;
 
 public class HeroAvatarProvider(HttpClient http, HeroesDataCache cache) : IHeroAvatarProvider
 {

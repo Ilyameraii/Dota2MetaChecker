@@ -1,12 +1,13 @@
 using Dota2MetaChecker.Common.Models;
+using Services.Contracts.Formatting;
 using SkiaSharp;
 
-namespace Services.Formatting;
+namespace Services.Formatting.ImageGenerators;
 
 /// <summary>
 ///     Генератор изображений для топа героев мета Dota 2
 /// </summary>
-public class HeroImageGenerator
+public class HeroImageGenerator : IImageGenerator
 {
     // === Размеры холста ===
     private const int Width = 900;
@@ -43,7 +44,8 @@ public class HeroImageGenerator
         IReadOnlyList<Hero> heroes,
         IReadOnlyDictionary<int, byte[]>? heroAvatars = null,
         string title = "ТОП-5",
-        int rankOffset = 0)
+        int rankOffset = 0,
+        HeroProcessingOptions? options = null)
     {
         var height = HeaderHeight + heroes.Count * RowHeight + Padding;
 

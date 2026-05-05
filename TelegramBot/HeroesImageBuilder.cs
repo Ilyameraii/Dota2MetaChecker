@@ -1,9 +1,11 @@
 using Dota2MetaChecker.Common.Models;
 using Dota2MetaChecker.TelegramBot.Contracts;
 using Services.Contracts.Avatars;
+using Services.Contracts.Formatting;
 using Services.Contracts.Processing;
 using Services.Data_sync;
 using Services.Formatting;
+using Services.Formatting.ImageGenerators;
 using static Dota2MetaChecker.TelegramBot.Constants.PaginationConstants;
 
 namespace Dota2MetaChecker.TelegramBot;
@@ -14,7 +16,7 @@ namespace Dota2MetaChecker.TelegramBot;
 public class HeroesImageBuilder(
     IHeroStatsProcessor heroStatsProcessor,
     HeroesDataCache heroesCache,
-    HeroImageGenerator imageGenerator,
+    IImageGenerator imageGenerator,
     IHeroAvatarProvider avatarProvider) : IHeroesImageBuilder
 {
  
@@ -38,7 +40,7 @@ public class HeroesImageBuilder(
         var pageHeroes = heroes.GetRange(start, end - start);
  
         var avatars = await avatarProvider.GetAvatarsAsync(pageHeroes.Select(h => h.Id), ct);
-        var pngBytes = imageGenerator.Generate(pageHeroes, avatars, $"ТОП-{end}", start);
+        var pngBytes = imageGenerator.Generate(pageHeroes, avatars, $"ТОП-{end}", start, prefs.ProcessingOptions);
         
         return pngBytes;
     }
