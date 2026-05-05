@@ -16,5 +16,5 @@ public interface IHeroesListMessageBuilder
     /// <summary>
     ///     Возвращает текст сообщения и inline-клавиатуру для заданного пользователя.
     /// </summary>
-    (string message, InlineKeyboardMarkup keyboard) BuildMessageWithButtons(UserPreferences prefs);
+    string BuildMessage(UserPreferences prefs);
 }

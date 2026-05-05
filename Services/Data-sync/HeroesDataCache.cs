@@ -27,6 +27,8 @@ public class HeroesDataCache
     /// </summary>
     public Dictionary<int, string>? HeroesNames { get; set; }
 
+    public int HeroCount => HeroesNames?.Count ?? 0;
+    
     /// <summary>
     ///     Проверка загрузки данных
     /// </summary>

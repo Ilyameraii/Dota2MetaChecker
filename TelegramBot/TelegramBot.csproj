@@ -9,10 +9,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Context\Context.csproj"/>
-        <ProjectReference Include="..\TelegramBot.Contracts\TelegramBot.Contracts.csproj"/>
-        <ProjectReference Include="..\Services.Contracts\Services.Contracts.csproj"/>
-        <ProjectReference Include="..\Services\Services.csproj"/>
+        <ProjectReference Include="..\Context\Context.csproj" />
+        <ProjectReference Include="..\TelegramBot.Contracts\TelegramBot.Contracts.csproj" />
+        <ProjectReference Include="..\Services.Contracts\Services.Contracts.csproj" />
+        <ProjectReference Include="..\Services\Services.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -20,23 +20,24 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.7"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.7"/>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7"/>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1"/>
-        <PackageReference Include="Telegram.Bot" Version="22.9.6.1"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.7" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+        <PackageReference Include="Telegram.Bot" Version="22.9.6.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Remove="publish\**"/>
+        <Compile Remove="publish\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Remove="publish\**"/>
+        <EmbeddedResource Remove="publish\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="publish\**"/>
+        <None Remove="publish\**" />
     </ItemGroup>
 
 </Project>

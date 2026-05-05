@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Services.Avatars;
+using Services.Contracts.Avatars;
 using Services.Contracts.Data_sync;
 using Services.Contracts.Deserialization;
 using Services.Contracts.Formatting;
@@ -45,8 +47,11 @@ builder.Services.AddSingleton<IHeroInfoFormatter, HeroInfoFormatter>();
 builder.Services.AddSingleton<IHeroStatsProcessor, HeroStatsProcessor>();
 builder.Services.AddSingleton<IHeroesDataService, HeroesDataService>();
 builder.Services.AddSingleton<IUserPreferencesService, UserPreferencesService>();
-builder.Services.AddSingleton<IHeroesListMessageBuilder, HeroesListMessageBuilder>();
 builder.Services.AddSingleton<IHeroCalculator, HeroCalculator>();
+builder.Services.AddSingleton<IHeroesKeyboardBuilder, HeroesKeyboardBuilder>();
+builder.Services.AddSingleton<IHeroesListMessageBuilder, HeroesListMessageBuilder>();
+builder.Services.AddSingleton<IHeroesImageBuilder, HeroesImageBuilder>();
+
 
 // Callback-обработчики для UserPreferencesService
 builder.Services.AddSingleton<ICallbackHandler, PageCallbackHandler>();
@@ -54,6 +59,9 @@ builder.Services.AddSingleton<ICallbackHandler, RankCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, RoleCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, SortCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, ClearOptionsCallbackHandler>();
+builder.Services.AddSingleton<HeroImageGenerator>();
+builder.Services.AddSingleton<IHeroAvatarProvider, HeroAvatarProvider>();
+builder.Services.AddHttpClient<HeroAvatarProvider>();
 
 // Стратегии сортировки для HeroStatsProcessor
 builder.Services.AddSingleton<IHeroSortStategy, MatchCountSortStrategy>();
