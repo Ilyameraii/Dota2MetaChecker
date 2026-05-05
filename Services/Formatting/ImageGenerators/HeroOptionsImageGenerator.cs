@@ -311,7 +311,20 @@ public class HeroOptionsImageGenerator :IImageGenerator
             Typeface = SKTypeface.FromFamilyName(
                 "Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright)
         };
-        canvas.DrawText((hero.Name ?? "Unknown").ToUpper(), x, centerY + 9, namePaint);
+
+        const float maxNameWidth = 560f;
+        
+        var displayName = (hero.Name ?? "Unknown").ToUpper();
+        var fontSize = 26f;
+        namePaint.TextSize = fontSize;
+
+        while (fontSize > 16f && x + namePaint.MeasureText(displayName) > maxNameWidth)
+        {
+            fontSize -= 1f;
+            namePaint.TextSize = fontSize;
+        }
+
+        canvas.DrawText(displayName, x, centerY + 9, namePaint);
 
         // ── Win Rate ──
         const float statX = 580f;
