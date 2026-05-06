@@ -4,7 +4,7 @@ using Dota2MetaChecker.Common.Models;
 using FluentAssertions;
 using Services.Data_sync.CallbackHandlers;
 
-namespace Services.Tests;
+namespace Services.Tests.Data_sync.CallbackHandlers;
 
 public class CallbackHandlersTests
 {

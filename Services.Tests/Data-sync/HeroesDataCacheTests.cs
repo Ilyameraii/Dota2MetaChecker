@@ -3,7 +3,7 @@ using FluentAssertions;
 using Services.Data_sync;
 using Xunit;
 
-namespace Services.Tests;
+namespace Services.Tests.Data_sync;
 
 public class HeroesDataCacheTests
 {
