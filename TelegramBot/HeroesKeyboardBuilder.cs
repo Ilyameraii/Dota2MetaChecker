@@ -54,11 +54,7 @@ public class HeroesKeyboardBuilder : IHeroesKeyboardBuilder
         clearButton.Style = KeyboardButtonStyle.Danger;
         rows.Add([clearButton]);
 
-        var switchFormatButtonText = "Режим изображения";
-        if (prefs.IsImageFormat)
-        {
-            switchFormatButtonText += " ✅";
-        }
+        var switchFormatButtonText = $"{(prefs.IsImageFormat ? "✅" : "")} Режим изображения (медленный)";
 
         rows.Add([new InlineKeyboardButton(switchFormatButtonText, CallbackConstants.SwitchFormat)]);
 
