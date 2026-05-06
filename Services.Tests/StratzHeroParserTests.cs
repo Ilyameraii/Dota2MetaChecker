@@ -1,8 +1,7 @@
+using System.Text.Json;
 using Dota2MetaChecker.Common.Enums;
-using Entities.Models;
 using FluentAssertions;
 using Services.Deserialization;
-using Xunit;
 
 namespace Services.Tests;
 
@@ -57,7 +56,7 @@ public class StratzHeroParserTests
     [Fact]
     public void ParseHeroStats_ThrowsOnInvalidJson()
     {
-        Assert.Throws<InvalidOperationException>(() => _parser.ParseHeroStats("{ invalid json }"));
+        Assert.ThrowsAny<JsonException>(() => _parser.ParseHeroStats("{ invalid json }"));
     }
 
     [Fact]
@@ -83,6 +82,6 @@ public class StratzHeroParserTests
     [Fact]
     public void ParseHeroesNames_ThrowsOnInvalidJson()
     {
-        Assert.Throws<InvalidOperationException>(() => _parser.ParseHeroesNames("{ invalid }"));
+        Assert.ThrowsAny<JsonException>(() => _parser.ParseHeroesNames("{ invalid }"));
     }
 }

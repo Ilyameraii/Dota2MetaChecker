@@ -62,8 +62,9 @@ public class HeroCalculatorExtensionsTests
         var current = new Hero { WinRate = 0.6, PickRate = 0.02, Rating = 0.61 };
         var previous = new Hero { WinRate = 0.55, PickRate = 0.015, Rating = 0.565 };
         var result = current.WithDeltas(previous);
-        result.WinRateDelta.Should().Be(0.05);
-        result.PickRateDelta.Should().Be(0.005);
-        result.RatingDelta.Should().Be(0.045);
+        result.WinRateDelta.Should().BeApproximately(0.05, 1e-10);
+        result.PickRateDelta.Should().BeApproximately(0.005, 1e-10);
+        result.RatingDelta.Should().BeApproximately(0.045, 1e-10);
+
     }
 }

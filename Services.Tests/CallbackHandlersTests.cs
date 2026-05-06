@@ -61,8 +61,8 @@ public class CallbackHandlersTests
     {
         var prefs = new UserPreferences();
         var handler = new SortCallbackHandler();
-        handler.Handle(prefs, CallbackPrefixes.Sort + "Rating");
-        prefs.ProcessingOptions.SortBy.Should().Be(SortType.Rating);
+        handler.Handle(prefs, CallbackPrefixes.Sort + SortType.WinRate);
+        prefs.ProcessingOptions.SortBy.Should().Be(SortType.WinRate);
         prefs.ProcessingOptions.IsDescending.Should().BeTrue();
         prefs.PageNumber.Should().Be(0);
     }
@@ -75,7 +75,7 @@ public class CallbackHandlersTests
         prefs.ProcessingOptions.IsDescending = true;
 
         var handler = new SortCallbackHandler();
-        handler.Handle(prefs, CallbackPrefixes.Sort + "WinRate");
+        handler.Handle(prefs, CallbackPrefixes.Sort + SortType.WinRate);
         prefs.ProcessingOptions.IsDescending.Should().BeFalse();
     }
 

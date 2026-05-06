@@ -25,9 +25,9 @@ public class HeroCalculatorTests
         var hero = new Hero { MatchCount = 20, WinCount = 14, WinRate = 0.7, PickRate = 0.2, Rating = 0.9 };
         var previous = new Hero { WinRate = 0.6, PickRate = 0.15, Rating = 0.75 };
         var result = _calculator.Calculate(hero, totalMatchCount: 100, previous);
-        result.WinRateDelta.Should().Be(0.1);
-        result.PickRateDelta.Should().Be(0.05);
-        result.RatingDelta.Should().Be(0.15);
+        result.WinRateDelta.Should().BeApproximately(0.1, 1e-10);
+        result.PickRateDelta.Should().BeApproximately(0.05, 1e-10);
+        result.RatingDelta.Should().BeApproximately(0.15, 1e-10);
     }
 
     [Fact]

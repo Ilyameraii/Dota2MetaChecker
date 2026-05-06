@@ -41,6 +41,11 @@ public class HeroStatsProcessorTests
         var oldAggregated = new List<Hero> { new() { Id = 1 } };
         var calculated = new List<Hero> { new() { Id = 1 } };
 
+        var mockStrategy = new Mock<IHeroSortStategy>();
+        mockStrategy.Setup(s => s.SortType).Returns(SortType.Rating);
+        mockStrategy.Setup(s => s.Sort(It.IsAny<IEnumerable<Hero>>(), It.IsAny<bool>())).Returns(calculated);
+        _sortStrategies.Add(mockStrategy.Object);
+        
         _filterMock.Setup(f => f.ApplyFilters(sourceStats, query.Ranks, query.Roles)).Returns(filtered);
         _filterMock.Setup(f => f.ApplyFilters(oldSourceStats, query.Ranks, query.Roles)).Returns(oldFiltered);
         _aggregatorMock.Setup(a => a.AggregateByHero(filtered, heroNames)).Returns(aggregated);
