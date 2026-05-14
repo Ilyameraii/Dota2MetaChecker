@@ -31,7 +31,7 @@ public record Hero
     ///     Процент побед
     /// </summary>
     public double WinRate { get; init; }
-    
+
     /// <summary>
     ///     Процент побед
     /// </summary>

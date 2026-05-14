@@ -19,9 +19,8 @@ public class HeroesImageBuilder(
     IImageGenerator imageGenerator,
     IHeroAvatarProvider avatarProvider) : IHeroesImageBuilder
 {
- 
     public bool IsReady => heroesCache.IsLoaded;
- 
+
     public async Task<byte[]> BuildAsync(
         UserPreferences prefs,
         CancellationToken ct = default)
@@ -31,17 +30,17 @@ public class HeroesImageBuilder(
             heroesCache.OldHeroesStats!,
             heroesCache.HeroesNames!,
             prefs.ProcessingOptions);
- 
+
         var totalPages = (heroes.Count - 1) / HeroesPerPage;
         var pageIndex = Math.Min(prefs.PageNumber, totalPages);
- 
+
         var start = pageIndex * HeroesPerPage;
         var end = Math.Min(start + HeroesPerPage, heroes.Count);
         var pageHeroes = heroes.GetRange(start, end - start);
- 
+
         var avatars = await avatarProvider.GetAvatarsAsync(pageHeroes.Select(h => h.Id), ct);
         var pngBytes = imageGenerator.Generate(pageHeroes, avatars, $"ТОП-{end}", start, prefs.ProcessingOptions);
-        
+
         return pngBytes;
     }
 }

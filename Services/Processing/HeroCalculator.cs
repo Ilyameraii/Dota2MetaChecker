@@ -4,7 +4,7 @@ using Services.Processing.Extensions;
 
 namespace Services.Processing;
 
-public class HeroCalculator: IHeroCalculator
+public class HeroCalculator : IHeroCalculator
 {
     public Hero Calculate(Hero hero, int totalMatchCount, Hero? previous = null)
     {

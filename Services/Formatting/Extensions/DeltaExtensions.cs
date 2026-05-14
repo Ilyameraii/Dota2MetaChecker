@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace Services.Formatting.Extensions;
 
 public static class DeltaExtensions
@@ -11,6 +13,6 @@ public static class DeltaExtensions
             >= 0 => "+",
             _ => string.Empty
         };
-        return $"{sign}{Math.Abs(delta):F2}";
+        return $"{sign}{Math.Abs(delta).ToString("F2", CultureInfo.InvariantCulture)}";
     }
 }

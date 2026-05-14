@@ -19,6 +19,4 @@ public static class RankFlagsExtensions
 
         return selectedFlags.HasFlag(rankFlag) ? "✅ " + baseText : baseText;
     }
-    
-    
 }

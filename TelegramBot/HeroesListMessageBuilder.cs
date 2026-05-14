@@ -15,9 +15,8 @@ public class HeroesListMessageBuilder(
     IHeroStatsProcessor heroStatsProcessor,
     HeroesDataCache heroesCache) : IHeroesListMessageBuilder
 {
- 
     public bool IsReady => heroesCache.IsLoaded;
- 
+
     public string BuildMessage(UserPreferences prefs)
     {
         var heroes = heroStatsProcessor.GetProcessedHeroStats(
@@ -25,18 +24,18 @@ public class HeroesListMessageBuilder(
             heroesCache.OldHeroesStats!,
             heroesCache.HeroesNames!,
             prefs.ProcessingOptions);
- 
+
         var totalPages = (heroes.Count - 1) / HeroesPerPage;
         var pageIndex = Math.Min(prefs.PageNumber, totalPages);
- 
+
         var start = pageIndex * HeroesPerPage;
         var end = Math.Min(start + HeroesPerPage, heroes.Count);
- 
+
         var lines = Enumerable.Range(start, end - start)
             .Select(i => $"{i + 1}. {heroFormatter.FormatWithDelta(heroes[i])}");
- 
+
         var message = string.Join("\n\n", lines);
-        
+
         return message;
     }
 }

@@ -8,8 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Ranks\*.png" />
-        <EmbeddedResource Include="Roles\*.png" />
+        <EmbeddedResource Include="Ranks\*.png"/>
+        <EmbeddedResource Include="Roles\*.png"/>
     </ItemGroup>
 
 </Project>

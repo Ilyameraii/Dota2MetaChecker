@@ -13,7 +13,7 @@ public static class SortTypeExtensions
             SortType.Rating => "Рейтинг",
             SortType.WinrateDelta => "Рост винрейта",
             SortType.PickrateDelta => "Рост пикрейта",
-            SortType.RatingDelta=>"Рост рейтинга",
+            SortType.RatingDelta => "Рост рейтинга",
             _ => "?"
         };
 

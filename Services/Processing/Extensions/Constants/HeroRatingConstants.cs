@@ -6,7 +6,7 @@ public static class HeroRatingConstants
     /// Коэффициент влияния процента побед на рейтинг
     /// </summary>
     public const double WinrateImpactValue = 1;
-    
+
     /// <summary>
     /// Минимальное количество матчей героя для вычисления у него рейтинга
     /// </summary>

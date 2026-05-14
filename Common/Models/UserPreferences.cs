@@ -19,7 +19,7 @@ public class UserPreferences
     ///    Формировать ли для пользователя картинку
     /// </summary>
     public bool IsImageFormat { get; private set; } = true;
-    
+
     /// <summary>
     ///     Сбрасывает настройки пользователя до значений по умолчанию.
     /// </summary>
@@ -28,7 +28,7 @@ public class UserPreferences
         ProcessingOptions = new HeroProcessingOptions();
         PageNumber = 0;
     }
-    
+
     /// <summary>
     ///     Меняет формат для пользователя
     /// </summary>

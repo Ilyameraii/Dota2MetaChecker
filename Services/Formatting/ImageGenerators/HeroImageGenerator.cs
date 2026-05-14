@@ -11,10 +11,10 @@ public class HeroImageGenerator : IImageGenerator
 {
     // === Размеры холста ===
     private const int Width = 900;
-    private const int RowHeight = 88;       // было 110 — уменьшено для нормальных пропорций
+    private const int RowHeight = 88; // было 110 — уменьшено для нормальных пропорций
     private const int HeaderHeight = 80;
     private const int Padding = 40;
-    private const int AvatarSize = 72;   // это ВЫСОТА аватара
+    private const int AvatarSize = 72; // это ВЫСОТА аватара
     private const int AvatarWidth = 128; // это ШИРИНА аватара — добавить
 
     // === Цвета ===
@@ -103,7 +103,8 @@ public class HeroImageGenerator : IImageGenerator
         labelPaint.Color = SKColors.White;
         labelPaint.TextSize = 28;
         labelPaint.IsAntialias = true;
-        labelPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        labelPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal,
+            SKFontStyleSlant.Upright);
         labelPaint.FakeBoldText = true;
         canvas.DrawText("DOTA 2 META TRACKER", Padding, y, labelPaint);
 
@@ -121,7 +122,8 @@ public class HeroImageGenerator : IImageGenerator
         titlePaint.Color = AccentRed;
         titlePaint.TextSize = 28;
         titlePaint.IsAntialias = true;
-        titlePaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        titlePaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal,
+            SKFontStyleSlant.Upright);
         titlePaint.FakeBoldText = true;
         var sepWidth = sepPaint.MeasureText("  |  ");
         canvas.DrawText(title.ToUpper(), Padding + labelWidth + sepWidth, y, titlePaint);
@@ -172,8 +174,9 @@ public class HeroImageGenerator : IImageGenerator
         rankPaint.Color = RankColor;
         rankPaint.TextSize = 30;
         rankPaint.IsAntialias = true;
-        rankPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
-        var rankText = $"{index + 1 + rankOffset}";   // <-- учитываем смещение страницы
+        rankPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal,
+            SKFontStyleSlant.Upright);
+        var rankText = $"{index + 1 + rankOffset}"; // <-- учитываем смещение страницы
         canvas.DrawText(rankText, x, centerY + 11, rankPaint);
         x += 52;
 
@@ -188,7 +191,8 @@ public class HeroImageGenerator : IImageGenerator
         namePaint.TextSize = 26;
         namePaint.IsAntialias = true;
         namePaint.FakeBoldText = true;
-        namePaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        namePaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal,
+            SKFontStyleSlant.Upright);
         var displayName = (hero.Name ?? "Unknown").ToUpper();
         canvas.DrawText(displayName, x, centerY + 9, namePaint);
 
@@ -199,12 +203,14 @@ public class HeroImageGenerator : IImageGenerator
         wrPaint.TextSize = 24;
         wrPaint.IsAntialias = true;
         wrPaint.FakeBoldText = true;
-        wrPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        wrPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal,
+            SKFontStyleSlant.Upright);
         using var wrLabelPaint = new SKPaint();
         wrLabelPaint.Color = new SKColor(160, 200, 160);
         wrLabelPaint.TextSize = 14;
         wrLabelPaint.IsAntialias = true;
-        wrLabelPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        wrLabelPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal,
+            SKFontStyleSlant.Upright);
 
         var wrText = $"{hero.WinRate * 100:F2}%";
         canvas.DrawText(wrText, statX, centerY + 4, wrPaint);
@@ -221,12 +227,14 @@ public class HeroImageGenerator : IImageGenerator
         prPaint.TextSize = 24;
         prPaint.IsAntialias = true;
         prPaint.FakeBoldText = true;
-        prPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        prPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal,
+            SKFontStyleSlant.Upright);
         using var prLabelPaint = new SKPaint();
         prLabelPaint.Color = new SKColor(180, 180, 180);
         prLabelPaint.TextSize = 14;
         prLabelPaint.IsAntialias = true;
-        prLabelPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        prLabelPaint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal,
+            SKFontStyleSlant.Upright);
 
         var prText = $"{hero.PickRate * 100:F2}%";
         canvas.DrawText(prText, prX, centerY + 4, prPaint);
