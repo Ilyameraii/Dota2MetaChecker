@@ -9,12 +9,12 @@ public enum SortType
     ///     По винрейту
     /// </summary>
     WinRate,
-    
+
     /// <summary>
     ///     По
     /// </summary>
     WinrateDelta,
-    
+
     /// <summary>
     ///     По количеству матчей
     /// </summary>
@@ -24,14 +24,13 @@ public enum SortType
     ///     По
     /// </summary>
     PickrateDelta,
-    
-    
-    
+
+
     /// <summary>
     ///     По рейтингу
     /// </summary>
     Rating,
-    
+
     /// <summary>
     ///     По
     /// </summary>

@@ -33,7 +33,8 @@ public class HeroStatsProcessorTests
         var sourceStats = new List<HeroStat> { new() };
         var oldSourceStats = new List<HeroStat> { new() };
         var heroNames = new Dictionary<int, string> { { 1, "Test" } };
-        var query = new HeroProcessingOptions { Ranks = RankFlags.None, Roles = RoleFlags.None, SortBy = SortType.Rating, IsDescending = true };
+        var query = new HeroProcessingOptions
+            { Ranks = RankFlags.None, Roles = RoleFlags.None, SortBy = SortType.Rating, IsDescending = true };
 
         var filtered = new List<HeroStat> { new() };
         var oldFiltered = new List<HeroStat> { new() };
@@ -45,7 +46,7 @@ public class HeroStatsProcessorTests
         mockStrategy.Setup(s => s.SortType).Returns(SortType.Rating);
         mockStrategy.Setup(s => s.Sort(It.IsAny<IEnumerable<Hero>>(), It.IsAny<bool>())).Returns(calculated);
         _sortStrategies.Add(mockStrategy.Object);
-        
+
         _filterMock.Setup(f => f.ApplyFilters(sourceStats, query.Ranks, query.Roles)).Returns(filtered);
         _filterMock.Setup(f => f.ApplyFilters(oldSourceStats, query.Ranks, query.Roles)).Returns(oldFiltered);
         _aggregatorMock.Setup(a => a.AggregateByHero(filtered, heroNames)).Returns(aggregated);
@@ -77,11 +78,14 @@ public class HeroStatsProcessorTests
         var heroNames = new Dictionary<int, string>();
         var query = new HeroProcessingOptions { SortBy = SortType.WinRate }; // No matching strategy
 
-        _filterMock.Setup(f => f.ApplyFilters(It.IsAny<IReadOnlyList<HeroStat>>(), It.IsAny<RankFlags>(), It.IsAny<RoleFlags>()))
+        _filterMock.Setup(f =>
+                f.ApplyFilters(It.IsAny<IReadOnlyList<HeroStat>>(), It.IsAny<RankFlags>(), It.IsAny<RoleFlags>()))
             .Returns(new List<HeroStat>());
-        _aggregatorMock.Setup(a => a.AggregateByHero(It.IsAny<IReadOnlyList<HeroStat>>(), It.IsAny<IReadOnlyDictionary<int, string>>()))
+        _aggregatorMock.Setup(a =>
+                a.AggregateByHero(It.IsAny<IReadOnlyList<HeroStat>>(), It.IsAny<IReadOnlyDictionary<int, string>>()))
             .Returns(new List<Hero>());
-        _calculatorMock.Setup(c => c.CalculateAll(It.IsAny<IEnumerable<Hero>>(), It.IsAny<int>(), It.IsAny<IEnumerable<Hero>>()))
+        _calculatorMock.Setup(c =>
+                c.CalculateAll(It.IsAny<IEnumerable<Hero>>(), It.IsAny<int>(), It.IsAny<IEnumerable<Hero>>()))
             .Returns(new List<Hero>());
 
         _processor.GetProcessedHeroStats(sourceStats, oldSourceStats, heroNames, query);

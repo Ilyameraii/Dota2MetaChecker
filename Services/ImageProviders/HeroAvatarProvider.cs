@@ -1,5 +1,6 @@
 using Services.Contracts.Avatars;
 using Services.Data_sync;
+
 // ReSharper disable InconsistentlySynchronizedField
 
 namespace Services.ImageProviders;

@@ -46,7 +46,7 @@ public static class HeroesSortingExtensions
     {
         return descending ? source.OrderByDescending(h => h.PickRateDelta) : source.OrderBy(h => h.PickRateDelta);
     }
-    
+
     /// <summary>
     ///     Сортировка по росту рейтинга
     /// </summary>

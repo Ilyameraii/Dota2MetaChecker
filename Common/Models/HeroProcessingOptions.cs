@@ -26,6 +26,4 @@ public class HeroProcessingOptions
     ///     Сортировка по убыванию
     /// </summary>
     public bool IsDescending { get; set; } = true;
-    
-    
 }

@@ -9,6 +9,7 @@ namespace Services.Tests;
 public class HeroStatsFilterServiceTests
 {
     private readonly HeroStatsFilterService _filterService = new();
+
     private readonly List<HeroStat> _stats = new()
     {
         new HeroStat { HeroId = 1, Rank = Rank.HeraldGuardian, Role = Role.Safelane },
@@ -42,7 +43,7 @@ public class HeroStatsFilterServiceTests
     [Fact]
     public void ApplyFilters_FilterByRankAndRole_ReturnsMatching()
     {
-        var result = _filterService.ApplyFilters(_stats, 
+        var result = _filterService.ApplyFilters(_stats,
             ranks: RankFlags.HeraldGuardian, roles: RoleFlags.Support);
         result.Should().HaveCount(1);
         result.Should().OnlyContain(h => h.Rank == Rank.HeraldGuardian && h.Role == Role.Support);

@@ -40,14 +40,14 @@ public static class HeroCalculatorExtensions
         hero with
         {
             WinRateDelta = CalculateWinrateDelta(hero, previous),
-            PickRateDelta = CalculatePickrateDelta(hero,previous),
+            PickRateDelta = CalculatePickrateDelta(hero, previous),
             RatingDelta = CalculateRatingDelta(hero, previous)
         };
 
-    private static double CalculateWinrateDelta(Hero hero , Hero previous) => hero.WinRate - previous.WinRate;
-    
-    private static double CalculatePickrateDelta(Hero hero, Hero previous)=> hero.PickRate - previous.PickRate;
-    
+    private static double CalculateWinrateDelta(Hero hero, Hero previous) => hero.WinRate - previous.WinRate;
+
+    private static double CalculatePickrateDelta(Hero hero, Hero previous) => hero.PickRate - previous.PickRate;
+
     private static double CalculateRatingDelta(Hero hero, Hero previous)
     {
         if (hero.PickRate < HeroRatingConstants.MinPickrateForRating ||
@@ -61,5 +61,4 @@ public static class HeroCalculatorExtensions
 
         return delta;
     }
-
 }

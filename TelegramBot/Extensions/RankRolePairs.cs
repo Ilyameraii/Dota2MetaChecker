@@ -8,8 +8,8 @@ public static class RankRolePairs
     [
         (RankFlags.HeraldGuardian, RoleFlags.Safelane),
         (RankFlags.CrusaderArchon, RoleFlags.Midlane),
-        (RankFlags.LegendAncient,  RoleFlags.Offlane),
+        (RankFlags.LegendAncient, RoleFlags.Offlane),
         (RankFlags.DivineImmortal, RoleFlags.Support),
-        (RankFlags.Uncalibrated,   RoleFlags.HardSupport),
+        (RankFlags.Uncalibrated, RoleFlags.HardSupport),
     ];
 }

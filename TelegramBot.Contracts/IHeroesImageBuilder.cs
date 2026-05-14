@@ -6,7 +6,7 @@ namespace Dota2MetaChecker.TelegramBot.Contracts;
 public interface IHeroesImageBuilder
 {
     bool IsReady { get; }
-    
+
     Task<byte[]> BuildAsync(
         UserPreferences prefs,
         CancellationToken ct = default);

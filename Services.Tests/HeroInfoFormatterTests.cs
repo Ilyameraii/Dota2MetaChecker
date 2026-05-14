@@ -22,10 +22,10 @@ public class HeroInfoFormatterTests
     [Fact]
     public void FormatWithDelta_ReturnsCorrectString()
     {
-        var hero = new Hero 
-        { 
-            Name = "Axe", 
-            WinRate = 0.5123, 
+        var hero = new Hero
+        {
+            Name = "Axe",
+            WinRate = 0.5123,
             PickRate = 0.0987,
             WinRateDelta = 0.0123,
             PickRateDelta = -0.0045

@@ -9,13 +9,13 @@ namespace Services.Formatting.ImageGenerators;
 /// <summary>
 ///     Генератор изображений для топа героев мета Dota 2
 /// </summary>
-public class HeroOptionsImageGenerator :IImageGenerator
+public class HeroOptionsImageGenerator : IImageGenerator
 {
     // === Размеры холста ===
     private const int Width = 900;
     private const int RowHeight = 88;
-    private const int HeaderHeight = 90;    // две строки заголовка + отступ до линии
-    private const int FooterHeight = 50;    // строка РАНГИ/РОЛИ снизу
+    private const int HeaderHeight = 90; // две строки заголовка + отступ до линии
+    private const int FooterHeight = 50; // строка РАНГИ/РОЛИ снизу
     private const int Padding = 40;
     private const int AvatarSize = 72;
     private const int AvatarWidth = 128;
@@ -25,16 +25,16 @@ public class HeroOptionsImageGenerator :IImageGenerator
     private const int FilterIconSpacing = 5;
 
     // === Цвета ===
-    private static readonly SKColor BackgroundTop    = new(18, 12, 10);
+    private static readonly SKColor BackgroundTop = new(18, 12, 10);
     private static readonly SKColor BackgroundBottom = new(30, 14, 8);
-    private static readonly SKColor AccentRed        = new(200, 40, 30);
-    private static readonly SKColor WinRateColor     = new(106, 213, 106);
-    private static readonly SKColor PickRateColor    = new(220, 220, 220);
-    private static readonly SKColor HeroNameColor    = new(255, 255, 255);
-    private static readonly SKColor RankColor        = new(180, 160, 140);
-    private static readonly SKColor DividerColor     = new(60, 40, 30);
-    private static readonly SKColor CardBackground   = new(28, 18, 14);
-    private static readonly SKColor SubtitleColor    = new(180, 160, 140);
+    private static readonly SKColor AccentRed = new(200, 40, 30);
+    private static readonly SKColor WinRateColor = new(106, 213, 106);
+    private static readonly SKColor PickRateColor = new(220, 220, 220);
+    private static readonly SKColor HeroNameColor = new(255, 255, 255);
+    private static readonly SKColor RankColor = new(180, 160, 140);
+    private static readonly SKColor DividerColor = new(60, 40, 30);
+    private static readonly SKColor CardBackground = new(28, 18, 14);
+    private static readonly SKColor SubtitleColor = new(180, 160, 140);
 
     /// <summary>
     ///     Генерирует PNG-изображение с топом героев.
@@ -162,75 +162,75 @@ public class HeroOptionsImageGenerator :IImageGenerator
 
     [Obsolete("Obsolete")]
     private static void DrawFooter(SKCanvas canvas, int totalHeight, HeroProcessingOptions? options)
-{
-    var footerTop = totalHeight - FooterHeight;
-    var footerIconY = footerTop + (FooterHeight - FilterIconSize) / 2f;
-    var textY = footerTop + FooterHeight / 2f + 6f;
-
-    // Разделительная линия над футером
-    using var linePaint = new SKPaint();
-    linePaint.Color = DividerColor;
-    linePaint.StrokeWidth = 1;
-    linePaint.IsAntialias = true;
-    canvas.DrawLine(Padding, footerTop + 4, Width - Padding, footerTop + 4, linePaint);
-
-    var boldTypeface = SKTypeface.FromFamilyName(
-        "Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
-
-    using var labelPaint = new SKPaint();
-    labelPaint.Color = SKColors.White;
-    labelPaint.TextSize = 16;
-    labelPaint.IsAntialias = true;
-    labelPaint.Typeface = boldTypeface;
-    labelPaint.FakeBoldText = true;
-    using var valuePaint = new SKPaint();
-    valuePaint.Color = SubtitleColor;
-    valuePaint.TextSize = 16;
-    valuePaint.IsAntialias = true;
-    valuePaint.Typeface = boldTypeface;
-
-    // ── РАНГИ (слева) ──
-    float rankX = Padding-20f;
-    canvas.DrawText("РАНГИ:", rankX, textY, labelPaint);
-    rankX += labelPaint.MeasureText("РАНГИ:") + 10;
-
-    var rankIcons = options != null ? GetRankIconNames(options.Ranks) : [];
-    if (rankIcons.Count == 0)
     {
-        canvas.DrawText("ВСЕ", rankX, textY, valuePaint);
-    }
-    else
-    {
-        foreach (var name in rankIcons)
+        var footerTop = totalHeight - FooterHeight;
+        var footerIconY = footerTop + (FooterHeight - FilterIconSize) / 2f;
+        var textY = footerTop + FooterHeight / 2f + 6f;
+
+        // Разделительная линия над футером
+        using var linePaint = new SKPaint();
+        linePaint.Color = DividerColor;
+        linePaint.StrokeWidth = 1;
+        linePaint.IsAntialias = true;
+        canvas.DrawLine(Padding, footerTop + 4, Width - Padding, footerTop + 4, linePaint);
+
+        var boldTypeface = SKTypeface.FromFamilyName(
+            "Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+
+        using var labelPaint = new SKPaint();
+        labelPaint.Color = SKColors.White;
+        labelPaint.TextSize = 16;
+        labelPaint.IsAntialias = true;
+        labelPaint.Typeface = boldTypeface;
+        labelPaint.FakeBoldText = true;
+        using var valuePaint = new SKPaint();
+        valuePaint.Color = SubtitleColor;
+        valuePaint.TextSize = 16;
+        valuePaint.IsAntialias = true;
+        valuePaint.Typeface = boldTypeface;
+
+        // ── РАНГИ (слева) ──
+        float rankX = Padding - 20f;
+        canvas.DrawText("РАНГИ:", rankX, textY, labelPaint);
+        rankX += labelPaint.MeasureText("РАНГИ:") + 10;
+
+        var rankIcons = options != null ? GetRankIconNames(options.Ranks) : [];
+        if (rankIcons.Count == 0)
         {
-            var bytes = ImageResourceProvider.GetRankIcon(name);
-            if (bytes == null) continue;
-            DrawFilterIcon(canvas, bytes, rankX, footerIconY);
-            rankX += FilterIconSize + FilterIconSpacing;
+            canvas.DrawText("ВСЕ", rankX, textY, valuePaint);
+        }
+        else
+        {
+            foreach (var name in rankIcons)
+            {
+                var bytes = ImageResourceProvider.GetRankIcon(name);
+                if (bytes == null) continue;
+                DrawFilterIcon(canvas, bytes, rankX, footerIconY);
+                rankX += FilterIconSize + FilterIconSpacing;
+            }
+        }
+
+        // ── РОЛИ (правее горизонтального центра) ──
+        float roleX = Width / 2f + 20f;
+        canvas.DrawText("РОЛИ:", roleX, textY, labelPaint);
+        roleX += labelPaint.MeasureText("РОЛИ:") + 10;
+
+        var roleIcons = options != null ? GetRoleIconNames(options.Roles) : [];
+        if (roleIcons.Count == 0)
+        {
+            canvas.DrawText("ВСЕ", roleX, textY, valuePaint);
+        }
+        else
+        {
+            foreach (var name in roleIcons)
+            {
+                var bytes = ImageResourceProvider.GetRoleIcon(name);
+                if (bytes == null) continue;
+                DrawFilterIcon(canvas, bytes, roleX, footerIconY);
+                roleX += FilterIconSize + FilterIconSpacing;
+            }
         }
     }
-
-    // ── РОЛИ (правее горизонтального центра) ──
-    float roleX = Width / 2f + 20f;
-    canvas.DrawText("РОЛИ:", roleX, textY, labelPaint);
-    roleX += labelPaint.MeasureText("РОЛИ:") + 10;
-
-    var roleIcons = options != null ? GetRoleIconNames(options.Roles) : [];
-    if (roleIcons.Count == 0)
-    {
-        canvas.DrawText("ВСЕ", roleX, textY, valuePaint);
-    }
-    else
-    {
-        foreach (var name in roleIcons)
-        {
-            var bytes = ImageResourceProvider.GetRoleIcon(name);
-            if (bytes == null) continue;
-            DrawFilterIcon(canvas, bytes, roleX, footerIconY);
-            roleX += FilterIconSize + FilterIconSpacing;
-        }
-    }
-}
 
     // ─── Иконка фильтра ──────────────────────────────────────────────────────
 
@@ -264,9 +264,9 @@ public class HeroOptionsImageGenerator :IImageGenerator
         IReadOnlyDictionary<int, byte[]>? heroAvatars,
         int rankOffset = 0)
     {
-        var rowTop    = HeaderHeight + index * RowHeight;
+        var rowTop = HeaderHeight + index * RowHeight;
         var rowBottom = rowTop + RowHeight;
-        var centerY   = rowTop + RowHeight / 2f;
+        var centerY = rowTop + RowHeight / 2f;
 
         // Полупрозрачная карточка фона
         using var cardPaint = new SKPaint();
@@ -313,7 +313,7 @@ public class HeroOptionsImageGenerator :IImageGenerator
             "Arial", SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
 
         const float maxNameWidth = 560f;
-        
+
         var displayName = (hero.Name ?? "Unknown").ToUpper();
         var fontSize = 26f;
         namePaint.TextSize = fontSize;
@@ -428,9 +428,9 @@ public class HeroOptionsImageGenerator :IImageGenerator
         if (Math.Abs(delta) < 0.0001) return;
 
         var deltaPercent = delta * 100;
-        var isPositive   = deltaPercent > 0;
-        var color        = isPositive ? new SKColor(80, 200, 80) : new SKColor(220, 70, 60);
-        var arrow        = isPositive ? "▲" : "▼";
+        var isPositive = deltaPercent > 0;
+        var color = isPositive ? new SKColor(80, 200, 80) : new SKColor(220, 70, 60);
+        var arrow = isPositive ? "▲" : "▼";
 
         using var deltaPaint = new SKPaint();
         deltaPaint.Color = color;
@@ -444,13 +444,13 @@ public class HeroOptionsImageGenerator :IImageGenerator
 
     private static string GetSortLabel(SortType sortBy) => sortBy switch
     {
-        SortType.WinRate          => "По винрейту",
-        SortType.MatchCount       => "По количеству матчей",
-        SortType.Rating           => "По рейтингу",
-        SortType.WinrateDelta    => "По росту винрейта за неделю",
+        SortType.WinRate => "По винрейту",
+        SortType.MatchCount => "По количеству матчей",
+        SortType.Rating => "По рейтингу",
+        SortType.WinrateDelta => "По росту винрейта за неделю",
         SortType.PickrateDelta => "По росту матчей за неделю",
-        SortType.RatingDelta     => "По росту рейтинга за неделю",
-        _                         => string.Empty
+        SortType.RatingDelta => "По росту рейтинга за неделю",
+        _ => string.Empty
     };
 
     /// <summary>
@@ -466,11 +466,30 @@ public class HeroOptionsImageGenerator :IImageGenerator
 
         // Файлы: archon.png, crusader.png, guardian.png, herald.png, immortal.png, legend.png
         // Файлы divine.png, ancient.png, uncalibrated.png отсутствуют — иконки будут пропущены
-        if (ranks.HasFlag(RankFlags.Uncalibrated))   result.Add("uncalibrated");
-        if (ranks.HasFlag(RankFlags.HeraldGuardian)) { result.Add("herald");   result.Add("guardian"); }
-        if (ranks.HasFlag(RankFlags.CrusaderArchon)) { result.Add("crusader"); result.Add("archon");   }
-        if (ranks.HasFlag(RankFlags.LegendAncient))  { result.Add("legend");   result.Add("ancient");  }
-        if (ranks.HasFlag(RankFlags.DivineImmortal)) { result.Add("divine");   result.Add("immortal"); }
+        if (ranks.HasFlag(RankFlags.Uncalibrated)) result.Add("uncalibrated");
+        if (ranks.HasFlag(RankFlags.HeraldGuardian))
+        {
+            result.Add("herald");
+            result.Add("guardian");
+        }
+
+        if (ranks.HasFlag(RankFlags.CrusaderArchon))
+        {
+            result.Add("crusader");
+            result.Add("archon");
+        }
+
+        if (ranks.HasFlag(RankFlags.LegendAncient))
+        {
+            result.Add("legend");
+            result.Add("ancient");
+        }
+
+        if (ranks.HasFlag(RankFlags.DivineImmortal))
+        {
+            result.Add("divine");
+            result.Add("immortal");
+        }
 
         return result;
     }
@@ -486,10 +505,10 @@ public class HeroOptionsImageGenerator :IImageGenerator
         if (roles == RoleFlags.None) return result;
 
         // Файлы: safelane.png, midlane.png, offlane.png, support.png, hard_support.png
-        if (roles.HasFlag(RoleFlags.Safelane))    result.Add("safelane");
-        if (roles.HasFlag(RoleFlags.Midlane))     result.Add("midlane");
-        if (roles.HasFlag(RoleFlags.Offlane))     result.Add("offlane");
-        if (roles.HasFlag(RoleFlags.Support))     result.Add("support");
+        if (roles.HasFlag(RoleFlags.Safelane)) result.Add("safelane");
+        if (roles.HasFlag(RoleFlags.Midlane)) result.Add("midlane");
+        if (roles.HasFlag(RoleFlags.Offlane)) result.Add("offlane");
+        if (roles.HasFlag(RoleFlags.Support)) result.Add("support");
         if (roles.HasFlag(RoleFlags.HardSupport)) result.Add("hard_support");
 
         return result;

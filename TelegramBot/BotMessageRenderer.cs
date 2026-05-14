@@ -6,7 +6,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using static Dota2MetaChecker.TelegramBot.Constants.PaginationConstants;
-    
+
 namespace Dota2MetaChecker.TelegramBot;
 
 public class BotMessageRenderer(
@@ -81,7 +81,13 @@ public class BotMessageRenderer(
 
     private async Task TryDeleteAsync(long chatId, int messageId)
     {
-        try { await botClient.DeleteMessage(chatId, messageId); }
-        catch { /* сообщение уже удалено или нет прав */ }
+        try
+        {
+            await botClient.DeleteMessage(chatId, messageId);
+        }
+        catch
+        {
+            /* сообщение уже удалено или нет прав */
+        }
     }
 }

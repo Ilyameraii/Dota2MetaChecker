@@ -9,9 +9,18 @@ public class HeroesSortingExtensionsTests
 {
     private readonly List<Hero> _heroes = new()
     {
-        new Hero { WinRate = 0.5, MatchCount = 10, Rating = 0.6, WinRateDelta = 0.1, PickRateDelta = 0.02, RatingDelta = 0.05 },
-        new Hero { WinRate = 0.6, MatchCount = 5, Rating = 0.7, WinRateDelta = -0.1, PickRateDelta = 0.01, RatingDelta = -0.05 },
-        new Hero { WinRate = 0.4, MatchCount = 20, Rating = 0.5, WinRateDelta = 0.2, PickRateDelta = 0.03, RatingDelta = 0.1 }
+        new Hero
+        {
+            WinRate = 0.5, MatchCount = 10, Rating = 0.6, WinRateDelta = 0.1, PickRateDelta = 0.02, RatingDelta = 0.05
+        },
+        new Hero
+        {
+            WinRate = 0.6, MatchCount = 5, Rating = 0.7, WinRateDelta = -0.1, PickRateDelta = 0.01, RatingDelta = -0.05
+        },
+        new Hero
+        {
+            WinRate = 0.4, MatchCount = 20, Rating = 0.5, WinRateDelta = 0.2, PickRateDelta = 0.03, RatingDelta = 0.1
+        }
     };
 
     [Fact]

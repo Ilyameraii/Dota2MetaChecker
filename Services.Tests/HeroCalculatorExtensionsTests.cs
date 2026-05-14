@@ -65,6 +65,5 @@ public class HeroCalculatorExtensionsTests
         result.WinRateDelta.Should().BeApproximately(0.05, 1e-10);
         result.PickRateDelta.Should().BeApproximately(0.005, 1e-10);
         result.RatingDelta.Should().BeApproximately(0.045, 1e-10);
-
     }
 }
