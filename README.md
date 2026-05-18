@@ -200,6 +200,6 @@ sudo systemctl start dota2metachecker
 sudo systemctl status dota2metachecker
 ```
 
-Copyright (c) 2026 Ilyameraii
+Copyright © 2026 Ilyameraii
 
 All rights reserved.
