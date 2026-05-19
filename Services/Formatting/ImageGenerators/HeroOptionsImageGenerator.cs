@@ -1,7 +1,7 @@
 using Dota2MetaChecker.Common.Enums;
 using Dota2MetaChecker.Common.Models;
 using Services.Contracts.Formatting;
-using Services.ImageProviders;
+using Services.Formatting.ImageProviders;
 using SkiaSharp;
 
 namespace Services.Formatting.ImageGenerators;
@@ -111,6 +111,17 @@ public class HeroOptionsImageGenerator : IImageGenerator
         trackerPaint.Typeface = boldTypeface;
         trackerPaint.FakeBoldText = true;
         canvas.DrawText("DOTA 2 META TRACKER", Padding, line1Y, trackerPaint);
+        
+        // надпись с ссылкой на бота
+        using var botPaint = new SKPaint();
+        botPaint.Color = SKColors.White.WithAlpha(180);
+        botPaint.TextSize = 18;
+        botPaint.IsAntialias = true;
+        botPaint.Typeface = boldTypeface;
+
+        const float botLabelY = 68f;
+
+        canvas.DrawText("@dota2_meta_tracker_bot", Padding, botLabelY, botPaint);
 
         using var sepPaint = new SKPaint();
         sepPaint.Color = new SKColor(100, 100, 100);

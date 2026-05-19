@@ -16,7 +16,7 @@ using Services.Data_sync.CallbackHandlers;
 using Services.Deserialization;
 using Services.Formatting;
 using Services.Formatting.ImageGenerators;
-using Services.ImageProviders;
+using Services.Formatting.ImageProviders;
 using Services.Processing;
 using Services.Processing.StrategiesOfSorting;
 using Telegram.Bot;
