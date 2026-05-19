@@ -112,7 +112,7 @@ public class HeroOptionsImageGenerator : IImageGenerator
         trackerPaint.FakeBoldText = true;
         canvas.DrawText("DOTA 2 META TRACKER", Padding, line1Y, trackerPaint);
         
-        // надпись с ссылкой на бота
+        // надпись со ссылкой на бота
         using var botPaint = new SKPaint();
         botPaint.Color = SKColors.White.WithAlpha(180);
         botPaint.TextSize = 18;
