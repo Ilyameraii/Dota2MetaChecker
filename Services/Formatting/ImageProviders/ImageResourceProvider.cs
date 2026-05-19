@@ -1,7 +1,7 @@
 using System.Reflection;
 using FormattingResources;
 
-namespace Services.ImageProviders;
+namespace Services.Formatting.ImageProviders;
 
 /// <summary>
 ///     Провайдер иконок рангов и ролей, встроенных в сборку FormattingResources как EmbeddedResource.

@@ -3,7 +3,7 @@ using Services.Data_sync;
 
 // ReSharper disable InconsistentlySynchronizedField
 
-namespace Services.ImageProviders;
+namespace Services.Formatting.ImageProviders;
 
 public class HeroAvatarProvider(HttpClient http, HeroesDataCache cache) : IHeroAvatarProvider
 {
