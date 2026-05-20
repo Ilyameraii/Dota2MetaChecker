@@ -1,7 +1,7 @@
 using System.Reflection;
 using FormattingResources;
 
-namespace Services.Formatting.ImageProviders;
+namespace Services.Formatting.ImageGenerators.ImageProviders;
 
 /// <summary>
 ///     Провайдер иконок рангов и ролей, встроенных в сборку FormattingResources как EmbeddedResource.
@@ -27,6 +27,13 @@ public static class ImageResourceProvider
     public static byte[]? GetRoleIcon(string fileName)
         => GetResource($"FormattingResources.Roles.{fileName}.png");
 
+    /// <summary>
+    ///     Возвращает байты PNG-иконки героя или null, если ресурс не найден.
+    ///     Имя файла — urlName героя, например "antimage", "shadow_fiend".
+    /// </summary>
+    public static byte[]? GetHeroIcon(string fileName)
+        => GetResource($"FormattingResources.Heroes.{fileName}.png");
+    
     /// <summary>
     ///     Возвращает список всех встроенных имён ресурсов из FormattingResources.dll.
     /// </summary>

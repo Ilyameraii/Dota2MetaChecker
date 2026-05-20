@@ -1,7 +1,7 @@
 using Dota2MetaChecker.Common.Enums;
 using Dota2MetaChecker.Common.Models;
 using Services.Contracts.Formatting;
-using Services.Formatting.ImageProviders;
+using Services.Formatting.ImageGenerators.ImageProviders;
 using SkiaSharp;
 
 namespace Services.Formatting.ImageGenerators;
@@ -19,7 +19,8 @@ public class HeroOptionsImageGenerator : IImageGenerator
     private const int Padding = 40;
     private const int AvatarSize = 72;
     private const int AvatarWidth = 128;
-
+    private const int RankNumberWidth = 55; // минимальная ширина колонки номера
+ 
     // === Размеры иконок фильтров ===
     private const int FilterIconSize = 35;
     private const int FilterIconSpacing = 5;
@@ -306,9 +307,11 @@ public class HeroOptionsImageGenerator : IImageGenerator
         numPaint.IsAntialias = true;
         numPaint.Typeface = SKTypeface.FromFamilyName(
             "Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
-        canvas.DrawText($"{index + 1 + rankOffset}", x, centerY + 11, numPaint);
-        x += 52;
-
+        var rankText = $"{index + 1 + rankOffset}";
+        canvas.DrawText(rankText, x, centerY + 11, numPaint);
+        
+        x += Math.Max(RankNumberWidth, numPaint.MeasureText(rankText) + 12);
+        
         // ── Аватар ──
         var avatarRect = new SKRect(x, centerY - AvatarSize / 2f, x + AvatarWidth, centerY + AvatarSize / 2f);
         DrawAvatar(canvas, hero, heroAvatars, avatarRect);

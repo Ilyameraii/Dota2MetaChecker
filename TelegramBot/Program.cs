@@ -16,7 +16,7 @@ using Services.Data_sync.CallbackHandlers;
 using Services.Deserialization;
 using Services.Formatting;
 using Services.Formatting.ImageGenerators;
-using Services.Formatting.ImageProviders;
+using Services.Formatting.ImageGenerators.ImageProviders;
 using Services.Processing;
 using Services.Processing.StrategiesOfSorting;
 using Telegram.Bot;
@@ -66,6 +66,11 @@ builder.Services.AddSingleton<IImageGenerator, HeroOptionsImageGenerator>();
 // Аватарки героев (с HTTP-клиентом)
 builder.Services.AddSingleton<IHeroAvatarProvider, HeroAvatarProvider>();
 builder.Services.AddHttpClient<HeroAvatarProvider>();
+builder.Services.AddSingleton<IHeroAvatarProvider>(sp =>
+    new FallbackHeroAvatarProvider(
+        sp.GetRequiredService<HeroAvatarProvider>(),
+        sp.GetRequiredService<HeroesDataCache>() 
+    ));
 
 // === ОБРАБОТЧИКИ CALLBACK-ЗАПРОСОВ ===
 builder.Services.AddSingleton<ICallbackHandler, PageCallbackHandler>();

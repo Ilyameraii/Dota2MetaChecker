@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Services.Formatting.ImageProviders;
+using Services.Formatting.ImageGenerators.ImageProviders;
 using Xunit;
 
 namespace Services.Tests;

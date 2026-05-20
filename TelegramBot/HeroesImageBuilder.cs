@@ -4,8 +4,6 @@ using Services.Contracts.Avatars;
 using Services.Contracts.Formatting;
 using Services.Contracts.Processing;
 using Services.Data_sync;
-using Services.Formatting;
-using Services.Formatting.ImageGenerators;
 using static Dota2MetaChecker.TelegramBot.Constants.PaginationConstants;
 
 namespace Dota2MetaChecker.TelegramBot;

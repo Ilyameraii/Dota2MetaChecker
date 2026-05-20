@@ -10,6 +10,7 @@
     <ItemGroup>
         <EmbeddedResource Include="Ranks\*.png"/>
         <EmbeddedResource Include="Roles\*.png"/>
+        <EmbeddedResource Include="Heroes\*.png"/>
     </ItemGroup>
 
 </Project>
