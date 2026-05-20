@@ -73,7 +73,7 @@ builder.Services.AddSingleton<IHeroAvatarProvider>(sp =>
     ));
 
 // === ОБРАБОТЧИКИ CALLBACK-ЗАПРОСОВ ===
-builder.Services.AddSingleton<ICallbackHandler, PageCallbackHandler>();
+builder.Services.AddSingleton<ICallbackHandler, ToPageCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, RankCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, RoleCallbackHandler>();
 builder.Services.AddSingleton<ICallbackHandler, SortCallbackHandler>();

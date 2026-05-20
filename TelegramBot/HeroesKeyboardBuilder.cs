@@ -16,12 +16,17 @@ public class HeroesKeyboardBuilder : IHeroesKeyboardBuilder
     {
         var options = prefs.ProcessingOptions;
 
+        string ToPage(int page) => $"{CallbackPrefixes.ToPage}:{page}:{totalPages}";
+
         var navButtons = new[]
         {
-            new InlineKeyboardButton("◀ Назад", CallbackPrefixes.Page + PageDirection.Previous),
+            new InlineKeyboardButton("◀◀", ToPage(0)),
+            new InlineKeyboardButton("◀", ToPage(pageIndex - 1)),
             new InlineKeyboardButton($"{pageIndex + 1}/{totalPages + 1}", CallbackConstants.Noop),
-            new InlineKeyboardButton("Вперёд ▶", CallbackPrefixes.Page + PageDirection.Next)
+            new InlineKeyboardButton("▶", ToPage(pageIndex + 1)),
+            new InlineKeyboardButton("▶▶", ToPage(totalPages)),
         };
+
 
         var sortButtons = Enum.GetValues<SortType>()
             .Select(sortType => new InlineKeyboardButton(
@@ -36,14 +41,7 @@ public class HeroesKeyboardBuilder : IHeroesKeyboardBuilder
 
         var rows = new List<IEnumerable<InlineKeyboardButton>>();
 
-        if (pageIndex > 0 || pageIndex < totalPages)
-        {
-            var navRow = new List<InlineKeyboardButton>();
-            if (pageIndex > 0) navRow.Add(navButtons[0]);
-            navRow.Add(navButtons[1]);
-            if (pageIndex < totalPages) navRow.Add(navButtons[2]);
-            rows.Add(navRow);
-        }
+        rows.Add(navButtons);
 
         rows.AddRange(pairedRows);
 

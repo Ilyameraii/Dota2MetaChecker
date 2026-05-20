@@ -80,36 +80,39 @@ public class CallbackHandlersTests
     }
 
     [Fact]
-    public void PageCallbackHandler_CanHandle_ReturnsTrueForPagePrefix()
+    public void ToPageCallbackHandler_CanHandle_ReturnsTrueForPagePrefix()
     {
-        new PageCallbackHandler().CanHandle(CallbackPrefixes.Page + PageDirection.Next).Should().BeTrue();
+        new ToPageCallbackHandler().CanHandle(CallbackPrefixes.ToPage).Should().BeTrue();
     }
 
     [Fact]
-    public void PageCallbackHandler_Handle_IncrementsPage_ForNext()
+    public void ToPageCallbackHandler_Handle_IncrementsPage_ForNext()
     {
         var prefs = new UserPreferences();
-        var handler = new PageCallbackHandler();
-        handler.Handle(prefs, CallbackPrefixes.Page + PageDirection.Next);
-        prefs.PageNumber.Should().Be(1);
+        var handler = new ToPageCallbackHandler();
+        var pageNumber = 5;
+        prefs.PageNumber = pageNumber;
+        handler.Handle(prefs, CallbackPrefixes.ToPage + (pageNumber + 1));
+        prefs.PageNumber.Should().Be(pageNumber + 1);
     }
 
     [Fact]
     public void PageCallbackHandler_Handle_DecrementsPage_ForPrevious()
     {
         var prefs = new UserPreferences();
-        prefs.PageNumber = 2;
-        var handler = new PageCallbackHandler();
-        handler.Handle(prefs, CallbackPrefixes.Page + PageDirection.Previous);
-        prefs.PageNumber.Should().Be(1);
+        var pageNumber = 3;
+        prefs.PageNumber = pageNumber;
+        var handler = new ToPageCallbackHandler();
+        handler.Handle(prefs, CallbackPrefixes.ToPage + (pageNumber - 1));
+        prefs.PageNumber.Should().Be(pageNumber - 1);
     }
 
     [Fact]
     public void PageCallbackHandler_Handle_DoesNotGoBelowZero()
     {
         var prefs = new UserPreferences();
-        var handler = new PageCallbackHandler();
-        handler.Handle(prefs, CallbackPrefixes.Page + PageDirection.Previous);
+        var handler = new ToPageCallbackHandler();
+        handler.Handle(prefs, CallbackPrefixes.ToPage + -1);
         prefs.PageNumber.Should().Be(0);
     }
 
