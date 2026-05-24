@@ -93,22 +93,7 @@ public class StratzApiService : IStratzApiService
                         .WithPosition()
                         .WithWinCount()
                         .WithMatchCount(),
-                    bracketBasicIds: new RankBracketBasicEnum?[]
-                    {
-                        RankBracketBasicEnum.Uncalibrated,
-                        RankBracketBasicEnum.HeraldGuardian,
-                        RankBracketBasicEnum.CrusaderArchon,
-                        RankBracketBasicEnum.LegendAncient,
-                        RankBracketBasicEnum.DivineImmortal
-                    },
-                    positionIds: new MatchPlayerPositionType?[]
-                    {
-                        MatchPlayerPositionType.Position1,
-                        MatchPlayerPositionType.Position2,
-                        MatchPlayerPositionType.Position3,
-                        MatchPlayerPositionType.Position4,
-                        MatchPlayerPositionType.Position5
-                    },
+                    week: 2941,
                     groupByPosition: true,
                     groupByBracket: true
                 )

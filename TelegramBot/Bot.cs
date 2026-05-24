@@ -5,7 +5,6 @@ using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using static Dota2MetaChecker.TelegramBot.Constants.PaginationConstants;
 
 namespace Dota2MetaChecker.TelegramBot;
 
@@ -57,8 +56,9 @@ public class Bot(
         try
         {
             if (update.Message is { } message)
-                await HandleMessageAsync(message);
-            else if (update.CallbackQuery is { } callbackQuery) await HandleCallbackQueryAsync(callbackQuery);
+                await HandleMessageAsync(message,cancellationToken);
+            else if (update.CallbackQuery is { } callbackQuery)
+                await HandleCallbackQueryAsync(callbackQuery, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -66,17 +66,18 @@ public class Bot(
         }
     }
 
-    private async Task HandleMessageAsync(Message message)
+    private async Task HandleMessageAsync(Message message, CancellationToken cancellationToken)
     {
-        if (message.Text == "/start") await HandleStartCommandAsync(message.Chat.Id, message.From!.Id);
+        if (message.Text == "/start")
+            await HandleStartCommandAsync(message.Chat.Id, message.From!.Id, cancellationToken);
     }
 
-    private async Task HandleStartCommandAsync(long chatId, long userId)
+    private async Task HandleStartCommandAsync(long chatId, long userId, CancellationToken cancellationToken)
     {
         if (!heroesCache.IsLoaded)
         {
             await botClient.SendMessage(chatId,
-                "Данные ещё загружаются, попробуйте через минуту.", ParseMode.Html);
+                "Данные ещё загружаются, попробуйте через минуту.", ParseMode.Html, cancellationToken: cancellationToken);
             return;
         }
 
@@ -84,7 +85,7 @@ public class Bot(
         await renderer.RenderAsync(chatId, oldMessageId: null, prefs);
     }
 
-    private async Task HandleCallbackQueryAsync(CallbackQuery callbackQuery)
+    private async Task HandleCallbackQueryAsync(CallbackQuery callbackQuery, CancellationToken cancellationToken)
     {
         var userId = callbackQuery.From.Id;
         var chatId = callbackQuery.Message!.Chat.Id;
@@ -94,6 +95,6 @@ public class Bot(
         var prefs = preferencesService.GetOrCreate(userId);
 
         await renderer.RenderAsync(chatId, messageId, prefs);
-        await botClient.AnswerCallbackQuery(callbackQuery.Id);
+        await botClient.AnswerCallbackQuery(callbackQuery.Id, cancellationToken: cancellationToken);
     }
 }
