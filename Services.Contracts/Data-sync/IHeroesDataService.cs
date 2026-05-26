@@ -10,7 +10,7 @@ public interface IHeroesDataService
     /// <summary>
     ///     Обновляет данные о персонажах из STRATZ API
     /// </summary>
-    Task UpdateNewStatsAsync();
+    Task UpdateNewStatsAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Сохранение статистики в БД
@@ -33,4 +33,6 @@ public interface IHeroesDataService
     ///     Удаление обновления статистики по идентификатору
     /// </summary>
     Task RemoveNeedlessStatsAsync();
+    
+    Task DuplicateLastStatsAsync();
 }

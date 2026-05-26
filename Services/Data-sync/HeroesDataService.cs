@@ -18,7 +18,7 @@ public class HeroesDataService(
     /// <summary>
     ///     Обновляет данные о персонажах из API
     /// </summary>
-    public async Task UpdateNewStatsAsync()
+    public async Task UpdateNewStatsAsync(CancellationToken cancellationToken = default)
     {
         cache.NewHeroesStats = heroParser.ParseHeroStats(
             await apiService.GetHeroesStats());
@@ -89,6 +89,51 @@ public class HeroesDataService(
                 .ExecuteDeleteAsync();
     }
 
+    public async Task DuplicateLastStatsAsync()
+    {
+        var lastUpdateId = await GetLastUpdateId();
+        if (lastUpdateId == 0)
+        {
+            return;
+        }
+
+        var lastStats = await context.HeroesStats
+            .AsNoTracking()
+            .Where(h => h.MetaUpdateId == lastUpdateId)
+            .ToListAsync();
+
+        if (!lastStats.Any())
+        {
+            return;
+        }
+
+        var metaUpdate = new MetaUpdate
+        {
+            DateTime = DateTime.UtcNow
+        };
+
+        var duplicatedStats = lastStats.Select(h => new HeroStat
+        {
+            // копируем все поля кроме Id и MetaUpdateId
+            HeroId = h.HeroId,
+            WinCount = h.WinCount,
+            MatchCount = h.MatchCount,
+            Rank = h.Rank,
+            Role =  h.Role,
+            MetaUpdate = metaUpdate
+        }).ToList();
+
+        await context.MetaUpdates.AddAsync(metaUpdate);
+        await context.HeroesStats.AddRangeAsync(duplicatedStats);
+        await context.SaveChangesAsync();
+
+        // Обновляем кэш чтобы бот не отдавал пустые данные
+        cache.NewHeroesStats = duplicatedStats;
+        cache.UpdateTime = metaUpdate.DateTime;
+
+        Console.WriteLine("Данные продублированы из обновления {0}: {1}", lastUpdateId, DateTime.UtcNow);
+    }
+    
     private async Task<int> GetLastUpdateId()
     {
         return await context.MetaUpdates

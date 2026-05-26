@@ -19,22 +19,26 @@ public class HeroesDataSyncService(IHeroesDataService heroesDataService) : Backg
         {
             try
             {
-                await heroesDataService.UpdateNewStatsAsync();
-                await heroesDataService.SaveNewStatsAsync();
+                using var cts = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
+                cts.CancelAfter(TimeSpan.FromMinutes(5));
 
-                // Сначала читаем старое обновление, потом удаляем из бд как ненужное
+                await heroesDataService.UpdateNewStatsAsync(cts.Token);
+                await heroesDataService.SaveNewStatsAsync();
                 await heroesDataService.UpdateOldStatsAsync();
                 await heroesDataService.RemoveNeedlessStatsAsync();
 
                 Console.WriteLine("Данные обновлены: {0}", DateTime.Now);
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Ошибка обновления данных: {0}", ex.Message);
+                Console.WriteLine("Ошибка обновления данных, использую предыдущие: {0}", ex.Message);
+            
+                // При таймауте/ошибке — дублируем последние данные из БД
+                await heroesDataService.DuplicateLastStatsAsync();
             }
 
             await Task.Delay(Interval, stoppingToken);
