@@ -130,6 +130,21 @@ public class HeroesDataService(
         // Обновляем кэш чтобы бот не отдавал пустые данные
         cache.NewHeroesStats = duplicatedStats;
         cache.UpdateTime = metaUpdate.DateTime;
+        
+        // Если HeroesNames ещё не загружены — загрузить из API или оставить пустым словарём
+        if (cache.HeroesNames == null)
+        {
+            try
+            {
+                cache.HeroesNames = heroParser.ParseHeroesNames(
+                    await apiService.GetHeroesNames());
+            }
+            catch
+            {
+                cache.HeroesNames = new Dictionary<int, string>(); // пустой fallback
+            }
+        }
+
 
         Console.WriteLine("Данные продублированы из обновления {0}: {1}", lastUpdateId, DateTime.UtcNow);
     }

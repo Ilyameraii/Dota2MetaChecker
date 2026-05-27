@@ -2,7 +2,6 @@ using Dota2MetaChecker.Common.Models;
 using FluentAssertions;
 using Services.Processing.Extensions;
 using Services.Processing.Extensions.Constants;
-using Xunit;
 
 namespace Services.Tests;
 
@@ -38,14 +37,6 @@ public class HeroCalculatorExtensionsTests
         var hero = new Hero { MatchCount = 5 };
         var result = hero.WithPickRate(0);
         result.PickRate.Should().Be(0);
-    }
-
-    [Fact]
-    public void WithRating_SetsMinValue_WhenPickRateBelowMin()
-    {
-        var hero = new Hero { PickRate = HeroRatingConstants.MinPickrateForRating - 0.001 };
-        var result = hero.WithRating();
-        result.Rating.Should().Be(double.MinValue);
     }
 
     [Fact]

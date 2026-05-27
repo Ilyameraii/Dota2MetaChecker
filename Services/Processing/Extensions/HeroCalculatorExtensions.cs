@@ -25,14 +25,14 @@ public static class HeroCalculatorExtensions
 
     public static Hero WithRating(this Hero hero)
     {
+        var penalty = 1;
+        var rating = HeroRatingConstants.WinrateImpactValue * hero.WinRate + hero.PickRate;
+        
         if (hero.PickRate < HeroRatingConstants.MinPickrateForRating)
         {
-            return hero with { Rating = double.MinValue };
+            // формула рейтинга
+            rating -= penalty;
         }
-
-        // формула рейтинга
-        var rating = HeroRatingConstants.WinrateImpactValue * hero.WinRate + hero.PickRate;
-
         return hero with { Rating = rating };
     }
 
@@ -50,15 +50,16 @@ public static class HeroCalculatorExtensions
 
     private static double CalculateRatingDelta(Hero hero, Hero previous)
     {
-        if (hero.PickRate < HeroRatingConstants.MinPickrateForRating ||
-            previous.PickRate < HeroRatingConstants.MinPickrateForRating)
-        {
-            return double.MinValue;
-        }
-
-        // формула рейтинга
+        const int penalty = 1;
+        var heroBelowMin = hero.PickRate < HeroRatingConstants.MinPickrateForRating;
+        var previousBelowMin = previous.PickRate < HeroRatingConstants.MinPickrateForRating;
         var delta = hero.Rating - previous.Rating;
 
-        return delta;
+        return (heroBelowMin, previousBelowMin) switch
+        {
+            (true, false) => delta + penalty,
+            (_, true)     => delta - penalty,
+            _             => delta
+        };
     }
 }

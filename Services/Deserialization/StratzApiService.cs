@@ -93,7 +93,6 @@ public class StratzApiService : IStratzApiService
                         .WithPosition()
                         .WithWinCount()
                         .WithMatchCount(),
-                    week: 2941,
                     groupByPosition: true,
                     groupByBracket: true
                 )

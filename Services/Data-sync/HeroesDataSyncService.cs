@@ -31,17 +31,32 @@ public class HeroesDataSyncService(IHeroesDataService heroesDataService) : Backg
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {
-                throw;
+                throw; // реальная остановка сервиса
+            }
+            catch (OperationCanceledException)
+            {
+                Console.WriteLine("Таймаут обновления данных: {0}", DateTime.Now);
+                await TryDuplicateLastStatsAsync();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Ошибка обновления данных, использую предыдущие: {0}", ex.Message);
-            
-                // При таймауте/ошибке — дублируем последние данные из БД
-                await heroesDataService.DuplicateLastStatsAsync();
+                Console.WriteLine("Ошибка обновления данных: {0}", ex.Message);
+                await TryDuplicateLastStatsAsync();
             }
 
             await Task.Delay(Interval, stoppingToken);
+        }
+    }
+    
+    private async Task TryDuplicateLastStatsAsync()
+    {
+        try
+        {
+            await heroesDataService.DuplicateLastStatsAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Ошибка дублирования данных: {0}", ex.Message);
         }
     }
 }

@@ -31,14 +31,6 @@ public class HeroCalculatorTests
     }
 
     [Fact]
-    public void Calculate_WithLowPickRate_SetsRatingMinValue()
-    {
-        var hero = new Hero { MatchCount = 1, WinCount = 1 };
-        var result = _calculator.Calculate(hero, totalMatchCount: 1000); // PickRate = 0.001 < 0.002
-        result.Rating.Should().Be(double.MinValue);
-    }
-
-    [Fact]
     public void CalculateAll_MapsPreviousById()
     {
         var heroes = new List<Hero> { new() { Id = 1, MatchCount = 10, WinCount = 6 } };
