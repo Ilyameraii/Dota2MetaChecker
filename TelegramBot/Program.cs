@@ -98,7 +98,16 @@ builder.Services.AddHostedService<HeroesDataSyncService>();
 // === САМ БОТ ===
 builder.Services.AddSingleton<Bot>();
 
-using var host = builder.Build();
+
+
+var host = builder.Build();
+
+// Применяем миграции при старте (опционально)
+using (var scope = host.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    await db.Database.MigrateAsync();
+}
 
 // 3. Запуск хоста (стартует все IHostedService, включая HeroDataUpdateHostedService)
 await host.StartAsync();

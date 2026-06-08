@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using Dota2MetaChecker.Common.Models;
 using Services.Contracts.Data_sync;
 
@@ -5,7 +6,7 @@ namespace Services.Data_sync;
 
 public class UserPreferencesService(IEnumerable<ICallbackHandler> handlers) : IUserPreferencesService
 {
-    private readonly Dictionary<long, UserPreferences> preferences = new();
+    private readonly ConcurrentDictionary<long, UserPreferences> preferences = new();
 
     /// <summary>
     ///     Возвращает настройки пользователя, создавая их при первом обращении.
