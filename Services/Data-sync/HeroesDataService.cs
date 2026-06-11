@@ -12,7 +12,7 @@ namespace Services.Data_sync;
 public class HeroesDataService(
     IStratzApiService apiService,
     IStratzHeroParser heroParser,
-    DatabaseContext context,
+    HeroesDbContext context,
     HeroesDataCache cache) : IHeroesDataService
 {
     /// <summary>
@@ -20,10 +20,13 @@ public class HeroesDataService(
     /// </summary>
     public async Task UpdateNewStatsAsync(CancellationToken cancellationToken = default)
     {
-        cache.NewHeroesStats = heroParser.ParseHeroStats(
-            await apiService.GetHeroesStats());
-        cache.HeroesNames = heroParser.ParseHeroesNames(
-            await apiService.GetHeroesNames());
+        var stats = heroParser.ParseHeroStats(await apiService.GetHeroesStats());
+
+        if (stats.Count == 0)
+            throw new InvalidOperationException("Stratz API вернул пустой список героев.");
+
+        cache.NewHeroesStats = stats;
+        cache.HeroesNames = heroParser.ParseHeroesNames(await apiService.GetHeroesNames());
         cache.UpdateTime = DateTime.UtcNow;
     }
 
