@@ -4,17 +4,17 @@ using Microsoft.Extensions.Configuration;
 
 namespace Context;
 
-public class DatabaseContextFactory : IDesignTimeDbContextFactory<DatabaseContext>
+public class HeroesDbContextFactory : IDesignTimeDbContextFactory<HeroesDbContext>
 {
-    public DatabaseContext CreateDbContext(string[] args)
+    public HeroesDbContext CreateDbContext(string[] args)
     {
         var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .Build();
 
-        var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
+        var optionsBuilder = new DbContextOptionsBuilder<HeroesDbContext>();
         optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
 
-        return new DatabaseContext(optionsBuilder.Options);
+        return new HeroesDbContext(optionsBuilder.Options);
     }
 }

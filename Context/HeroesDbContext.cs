@@ -6,7 +6,7 @@ namespace Context;
 /// <summary>
 ///     Контекст базы данных Entity Framework Core для работы с Postgre SQL
 /// </summary>
-public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options)
+public class HeroesDbContext(DbContextOptions<HeroesDbContext> options) : DbContext(options)
 {
     // DbSet-ы и OnModelCreating остаются без изменений
 

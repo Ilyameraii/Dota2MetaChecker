@@ -27,7 +27,7 @@ var builder = Host.CreateApplicationBuilder(args);
 builder.Logging.AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning);
 
 // === КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ ===
-builder.Services.AddDbContext<DatabaseContext>(options =>
+builder.Services.AddDbContext<HeroesDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // === КЭШИРОВАНИЕ ===
@@ -105,7 +105,7 @@ var host = builder.Build();
 // Применяем миграции при старте (опционально)
 using (var scope = host.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    var db = scope.ServiceProvider.GetRequiredService<HeroesDbContext>();
     await db.Database.MigrateAsync();
 }
 
