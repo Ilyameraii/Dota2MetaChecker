@@ -8,7 +8,7 @@ public class UserPreferences
     /// <summary>
     ///     Номер текущей страницы
     /// </summary>
-    public int PageNumber { get; set; } = 0;
+    public int PageNumber { get; set; }
 
     /// <summary>
     ///     Параметры обработки (сортировка и фильтрация)

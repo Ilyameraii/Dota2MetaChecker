@@ -8,11 +8,11 @@ public static class RoleFlagsExtensions
     {
         var baseText = roleFlag switch
         {
-            RoleFlags.Safelane => "Керри",
-            RoleFlags.Midlane => "Мидер",
-            RoleFlags.Offlane => "Оффлейнер",
-            RoleFlags.Support => "Роумер",
-            RoleFlags.HardSupport => "Поддержка",
+            RoleFlags.Safelane => "Safelane",
+            RoleFlags.Midlane => "Midlane",
+            RoleFlags.Offlane => "Offlane",
+            RoleFlags.Support => "Support",
+            RoleFlags.HardSupport => "Hard Support",
             _ => "?"
         };
         return selectedFlags.HasFlag(roleFlag) ? "✅ " + baseText : baseText;

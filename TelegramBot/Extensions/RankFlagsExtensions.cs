@@ -8,11 +8,11 @@ public static class RankFlagsExtensions
     {
         var baseText = rankFlag switch
         {
-            RankFlags.Uncalibrated => "Неоткалиброванный",
-            RankFlags.HeraldGuardian => "Рекрут-Страж",
-            RankFlags.CrusaderArchon => "Рыцарь-Герой",
-            RankFlags.LegendAncient => "Легенда-Властелин",
-            RankFlags.DivineImmortal => "Божество-Титан",
+            RankFlags.Uncalibrated => "Uncalibrated",
+            RankFlags.HeraldGuardian => "Herald-Guardian",
+            RankFlags.CrusaderArchon => "Crusader-Archon",
+            RankFlags.LegendAncient => "Legend-Ancient",
+            RankFlags.DivineImmortal => "Divine-Immortal",
             _ => "?"
         };
 

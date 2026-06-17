@@ -8,7 +8,7 @@ public static class SortTypeExtensions
     {
         var baseText = sortType switch
         {
-            SortType.MatchCount => "Матчи",
+            SortType.MatchCount => "Пикрейт",
             SortType.WinRate => "Винрейт",
             SortType.Rating => "Рейтинг",
             SortType.WinrateDelta => "Рост винрейта",

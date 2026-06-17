@@ -13,10 +13,7 @@ public class UserPreferencesService(IEnumerable<ICallbackHandler> handlers) : IU
     /// </summary>
     public UserPreferences GetOrCreate(long userId)
     {
-        if (!preferences.ContainsKey(userId))
-            preferences[userId] = new UserPreferences();
-
-        return preferences[userId];
+        return preferences.GetOrAdd(userId, _ => new  UserPreferences());
     }
 
     /// <summary>
